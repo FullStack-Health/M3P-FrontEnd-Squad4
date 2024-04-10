@@ -76,12 +76,12 @@ loginForm = new FormGroup ({
     if(!findUser){
       users.push(testUser);
       localStorage.setItem('users', JSON.stringify(users));
-      
+
     }
   }
 
   getUsersStorage(){
-    const users = localStorage.getItem('usersList');
+    const users = localStorage.getItem('users');
     if(!!users) {
       return JSON.parse(users);
     } else {
@@ -93,25 +93,24 @@ loginForm = new FormGroup ({
   submit(){
     const email = this.loginForm.value.email;
     const password = this.loginForm.value.password;
+    const users = this.getUsersStorage();
+    const signedupUser = users.find((user: {email: string})=> user.email === email);
     // se email && senha estiverem válidos
-    if(!email){
-      alert("Preencha o campo email")
-      if (!password){
-        alert("Preencha o campo senha")
+    if (signedupUser && password === signedupUser.password){
+        alert("Entrou na home")
+        this.router.navigate('home');
+      } else {
+        alert("Email ou senha incorretos");
       }
+      //  && se usuário for localizado no localStorage -> redireciona para 'home'
     }
 
-    //  && se usuário for localizado no localStorage -> redireciona para 'home'
-    this.router.navigate('home')
-  }
+  
 
-
-  createAccount(){
-    // abre um modal com um formulário para criar o usuário com campos obrigatórios email válido, senha e confirmar senha, verificar se senhas são iguais e têm mais de 8 caracteres e salvar usuário no localStorage
-  }
+  
 
   forgotPassword(){
-    // usar toast ou alert avisando que funcionalidade está em construção
+    alert("Funcionalidade em construção")
   }
 
 

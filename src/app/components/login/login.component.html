@@ -5,21 +5,19 @@
       <mat-form-field>
         <mat-label>Email</mat-label>
         <input matInput formControlName="email" type="email">
-      </mat-form-field>
-
-      <br>
+      </mat-form-field><br>
     
       <mat-form-field>
         <mat-label>Senha</mat-label>
         <input matInput formControlName="password" type="password">
-      </mat-form-field>
+      </mat-form-field><br>
 
-  </form>
+      <button mat-flat-button color="primary" class="btn-submit">Enviar</button><br>
+    </form>
+    
+    <button mat-raised-button class="btn btn-open-dialog" (click)="openDialog()">Criar conta</button>
+    <button mat-raised-button class="tbn btn-forgot-password" (click)="forgotPassword()">Esqueceu sua senha?</button>
+  </div>
 
 
-  <button mat-raised-button class="btn-submit">Enviar</button>
-  <button mat-raised-button (click)="openDialog()">Criar conta</button>
 
-  <button mat-raised-button class="btn-forgot-password" (click)="forgotPassword()">Esqueceu sua senha?</button>
-
-</div>

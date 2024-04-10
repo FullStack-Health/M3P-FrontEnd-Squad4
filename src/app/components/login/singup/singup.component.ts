@@ -24,6 +24,8 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class SingupComponent {
 
+  
+
   constructor(
     public dialogRef: MatDialogRef<SingupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -43,7 +45,7 @@ export class SingupComponent {
 
 
   submit(){
-
+    
   }
 
 
