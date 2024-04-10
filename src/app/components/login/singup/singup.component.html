@@ -1,0 +1,42 @@
+<div class="form-container">
+  
+  <form (ngSubmit)="submit()" [formGroup]="signupForm">
+
+<h2 mat-dialog-title>Cadastro</h2>
+<mat-dialog-content>
+
+  <mat-form-field>
+    <mat-label>Nome completo</mat-label>
+    <input matInput formControlName="fullName" type="text">
+  </mat-form-field>
+
+  <br>
+  
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" type="email">
+  </mat-form-field>
+  
+  <br>
+  
+  <mat-form-field>
+    <mat-label>Senha</mat-label>
+    <input matInput formControlName="password" type="password">
+  </mat-form-field>
+
+  <br>
+  
+  <mat-form-field>
+    <mat-label>Confirmar senha</mat-label>
+    <input matInput formControlName="password" type="password">
+  </mat-form-field>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>
+
+
+</form>
+</div>
