@@ -1,17 +1,25 @@
+<div class="form-container">
+  
+    <form (ngSubmit)="submit()" [formGroup]="loginForm">
 
-<form (ngSubmit)="submit()" [formGroup]="formLogin">
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email">
+      </mat-form-field>
 
-  <label for="email">Email</label>
-  <input type="email" formControlName="email" name="email">
-  <br>
+      <br>
+    
+      <mat-form-field>
+        <mat-label>Senha</mat-label>
+        <input matInput formControlName="password" type="password">
+      </mat-form-field>
 
-  <label for="password">Senha</label>
-  <input type="password" formControlName="password" name="password">
-  <br>
+  </form>
 
 
-  <button class="btn-submit">Enviar</button>
-  <button class="btn-create-account" (click)="createAccount()">Criar conta</button>
-  <button class="btn-forgot-password" (click)="forgotPassword()">Esqueceu sua senha?</button>
-</form>
+  <button mat-raised-button class="btn-submit">Enviar</button>
+  <button mat-raised-button (click)="openDialog()">Criar conta</button>
 
+  <button mat-raised-button class="btn-forgot-password" (click)="forgotPassword()">Esqueceu sua senha?</button>
+
+</div>
