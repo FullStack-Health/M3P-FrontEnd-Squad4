@@ -76,8 +76,8 @@ export class LoginComponent {
 
 
     signedupUser(){
-      let listaUsuarios = this.userService.getUsers();
-      return listaUsuarios.find((usuario: { email: string }) => usuario.email === this.loginForm.value.email);
+      let usersList = this.userService.getUsers();
+      return usersList.find((usuario: { email: string }) => usuario.email === this.loginForm.value.email);
   };
 
 
