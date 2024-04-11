@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { UserService } from '../../../services/users-storage.service';
 
 @Component({
   selector: 'app-singup',
@@ -25,10 +26,10 @@ import { MatInputModule } from '@angular/material/input';
 export class SingupComponent {
 
   
-
   constructor(
     public dialogRef: MatDialogRef<SingupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private usersService: UserService
   ) {}
   
   fullName: string | null | undefined;
@@ -45,7 +46,9 @@ export class SingupComponent {
 
 
   submit(){
-    
+    if(this.signupForm.valid){
+      this.usersService.addUser(this.signupForm.value);
+    }
   }
 
 

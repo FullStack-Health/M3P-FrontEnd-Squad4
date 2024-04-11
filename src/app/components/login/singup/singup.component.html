@@ -28,13 +28,13 @@
   
   <mat-form-field>
     <mat-label>Confirmar senha</mat-label>
-    <input matInput formControlName="password" type="password">
+    <input matInput formControlName="confirmPassword" type="password">
   </mat-form-field>
 
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Fechar</button>
-  <button mat-button (click)="submit()">Fazer cadastro</button>
+  <button mat-button type="submit">Fazer cadastro</button>
 </mat-dialog-actions>
 
 
