@@ -15,6 +15,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDialogModule} from '@angular/material/dialog';
 import { SingupComponent } from './singup/singup.component';
 import { UserService } from '../../services/users-storage.service';
+import { Router } from '@angular/router';
 
 
 
@@ -35,10 +36,9 @@ export class LoginComponent {
   
   signupForm: FormGroup | undefined;
   usersList: any = [];
-  router: any;
   fullName: string | undefined;
   
-  constructor(public dialog: MatDialog, private userService: UserService) {}
+  constructor(public dialog: MatDialog, private userService: UserService, private router: Router) {}
   
   ngOnInit(): void {
  
@@ -67,8 +67,7 @@ export class LoginComponent {
     // se email && senha estiverem válidos
     if (signedupUser && password === signedupUser.password){
       this.userService.setLoggedUser(signedupUser);
-        alert("Entrou na home")
-        this.router.navigate('home');
+        this.router.navigate(['home']);
       } else {
         alert("Email ou senha incorretos");
       }

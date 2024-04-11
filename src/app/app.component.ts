@@ -11,4 +11,5 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class AppComponent {
   title = 'LABMedical';
+
 }
