@@ -1,16 +1,11 @@
-<mat-toolbar class="mat-elevation-z3">
-  <button mat-icon-button>
-    <mat-icon>menu</mat-icon>
-  </button>
-</mat-toolbar>
-<mat-sidenav-container >
 
 
-  <mat-sidenav opened mode="side" [style.width]="'250px'">
+<mat-sidenav-container>
+  <mat-sidenav opened mode="side">
     <div class="sidenav-header">
       <img id="logo" src="../../../assets/LABMedical.svg">
     </div>
-
+    
     <mat-nav-list class="sidenav">
       <h3 matListItemTitle>Geral</h3>
       <mat-list>
@@ -22,15 +17,15 @@
         <button mat-flat-button (click)="logout()" color="primary"><mat-icon matListItemIcon>logout</mat-icon>Sair</button>
       </mat-list>
     </mat-nav-list>
-
+    
     <mat-nav-list class="sidenav">
       <h3 matListItemTitle>Pacientes</h3>
       <mat-list>
-       <button mat-flat-button routerLink="/cadastrar" color="primary"><mat-icon matListItemIcon>add</mat-icon>Cadastrar</button><br>
-       <button mat-flat-button routerLink="/listar-prontuario" color="primary"><mat-icon matListItemIcon>list</mat-icon>Listar prontuário</button>
+        <button mat-flat-button routerLink="/cadastrar" color="primary"><mat-icon matListItemIcon>add</mat-icon>Cadastrar</button><br>
+        <button mat-flat-button routerLink="/listar-prontuario" color="primary"><mat-icon matListItemIcon>list</mat-icon>Listar prontuário</button>
       </mat-list>
     </mat-nav-list>
-
+    
     <mat-nav-list class="sidenav">
       <h3 matListItemTitle>Exames</h3>
       <mat-list>
@@ -38,9 +33,20 @@
        <button mat-flat-button routerLink="/listar-exame" color="primary"><mat-icon matListItemIcon>add</mat-icon>Cadastrar exame</button>
       </mat-list>
     </mat-nav-list>
-
+    
   </mat-sidenav>
   <mat-sidenav-content class="content">
-    <router-outlet></router-outlet>
+    <router-outlet>
+    </router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<mat-toolbar class="mat-elevation-z3">
+  <h1>Título da Página</h1>
+  <div class="profile-container">
+    <h3>Nome do Médico</h3>
+    <button mat-icon-button class="btn-profile">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
