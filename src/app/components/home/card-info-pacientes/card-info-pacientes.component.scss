@@ -1,0 +1,58 @@
+
+.title-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: #f44336;
+  // background-color: #f0ecf9;
+  height: 56px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+
+  h1 {
+    margin: 0;
+    font-weight: bolder;
+    font-size: 18px;
+  }
+}
+
+.search-patient {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  
+  .search-input {
+    flex: 1;
+  }
+  
+  button {
+    height: 56px;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-left: 12px;
+  }
+}
+
+
+.cards-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.example-card {
+  align-items: center;
+  text-align: center;
+  width: calc(25%);
+  margin-bottom: 20px;
+
+  .profile-icon {
+    font-size: 100px;
+    height: 100px;
+    width: 100px;
+    color: #23143e;
+  }
+
+  mat-card-content {
+    padding-top: 12px;
+  }
+}

@@ -4,7 +4,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatList, MatListModule, MatNavList } from '@angular/material/list';
+import { MatList, MatNavList } from '@angular/material/list';
 
 
 @Component({
