@@ -3,11 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MenuLateralComponent } from "./shared/menu-lateral/menu-lateral.component";
 import { RouterLink } from '@angular/router';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatList, MatListModule, MatNavList } from '@angular/material/list';
+import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 
 @Component({
     selector: 'app-root',
@@ -19,12 +19,12 @@ import { MatList, MatListModule, MatNavList } from '@angular/material/list';
       MenuLateralComponent,
       RouterLink,
       RouterOutlet,
-      MatToolbarModule,
       MatIconModule,
       MatButtonModule,
       MatSidenavModule,
       MatNavList,
-      MatList, 
+      MatList,
+      ToolbarComponent ,
     ]
 })
 export class AppComponent {

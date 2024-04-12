@@ -1,0 +1,23 @@
+mat-toolbar {
+  position: fixed;
+  background-color: #683ab749;
+  
+  
+  h1 {
+    position: absolute;
+    left: 300px;
+  }
+  
+  .profile-container {
+    position: absolute;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    
+    h3{
+      font-size: 14px;
+      font-weight: 400;
+      padding-right: 12px;
+    }
+  }
+}
