@@ -1,11 +1,12 @@
 mat-toolbar {
   position: fixed;
-  background-color: #683ab749;
+  background-color: #d0c1eb;
   
   
   h1 {
     position: absolute;
     left: 300px;
+    color: #23143e;
   }
   
   .profile-container {
@@ -18,6 +19,18 @@ mat-toolbar {
       font-size: 14px;
       font-weight: 400;
       padding-right: 12px;
+      color: #23143e;
+    }
+
+    .btn-profile{
+      color: #23143e;
     }
   }
 }
+
+// #23143e
+// #673ab6
+// #d0c1eb
+// #f0ecf9
+// #edf5df
+// #dcebc1
