@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MenuLateralComponent } from "./shared/menu-lateral/menu-lateral.component";
 import { RouterLink } from '@angular/router';
@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatList, MatListModule, MatNavList } from '@angular/material/list';
 import { ToolbarComponent } from './shared/toolbar/toolbar.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-root',
@@ -24,13 +25,23 @@ import { ToolbarComponent } from './shared/toolbar/toolbar.component';
       MatSidenavModule,
       MatNavList,
       MatList,
-      ToolbarComponent ,
+      ToolbarComponent,
+      CommonModule
     ]
 })
 export class AppComponent {
   title = 'LABMedical';
 
+  isNotLogin = false;
 
+  constructor(private router: Router) {
+    router.events.subscribe(evento => {
+      if (evento instanceof NavigationEnd) {
+        this.isNotLogin = evento.urlAfterRedirects !== '/login' && evento.urlAfterRedirects !== '/cadastro';
+      }
+    });
+  }
+  
   logout(){
 
   }
