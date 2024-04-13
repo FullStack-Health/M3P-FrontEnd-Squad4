@@ -1,0 +1,74 @@
+
+// Definindo estilos para o componente de cadastro de consulta
+cadastro-consulta {
+  // Estilizando o formulário
+  form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+    // Estilizando o grupo de campos
+    .form-group {
+      width: calc(50% - 10px);
+      margin-right: 10px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      // Estilizando as etiquetas dos campos
+      mat-label {
+        font-weight: bold;
+      }
+
+      // Estilizando os campos de entrada e seleção
+      input.mat-input,
+      mat-select,
+      textarea.mat-input {
+        width: 100%;
+      }
+
+      // Estilizando o botão de enviar dentro do grupo de campos
+      button[type="submit"] {
+        width: 100%;
+      }
+    }
+
+    // Estilizando os campos de texto grandes
+    .textarea {
+      width: calc(100% - 16px);
+      height: 120px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    // Estilizando o botão de enviar
+    button[type="submit"] {
+      width: 100%;
+      margin-top: 24px;
+    }
+  }
+
+  // Estilizando os títulos h3 dentro do componente
+  h3 {
+    font-weight: lighter;
+    color: #b0b0b0;
+    letter-spacing: 2px;
+  }
+
+  // Estilizando os botões de edição e exclusão
+  .edit-button, .delete-button {
+    width: 50%;
+    margin-right: 5px;
+  }
+
+  // Estilizando o botão de salvar
+  .save-button {
+    width: 100%;
+    margin-top: 24px;
+  }
+}
