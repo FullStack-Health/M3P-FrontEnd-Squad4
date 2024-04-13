@@ -42,7 +42,4 @@ export class AppComponent {
     });
   }
   
-  logout(){
-
-  }
 }
