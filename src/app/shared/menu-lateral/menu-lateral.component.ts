@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,10 +26,7 @@ import { MatList, MatNavList } from '@angular/material/list';
 export class MenuLateralComponent {
   router: any;
 
-  navigateToHome(){
-    this.router.navigate(['home'])
-  }
-
+  
   logout(){
 
   }

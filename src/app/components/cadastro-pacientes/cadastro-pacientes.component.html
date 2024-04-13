@@ -148,12 +148,13 @@
     
     <mat-form-field class="form-group">
       <mat-label>Cidade</mat-label>
-      <input matInput type="text" id="cidade" formControlName="cidade">
+      <input matInput type="text" id="cidade" formControlName="cidade" value="{{ endereco.localidade }}">
     </mat-form-field>
     
     <mat-form-field class="form-group">
       <mat-label>Estado</mat-label>
-      <mat-select formControlName="estado" required>
+      <input matInput type="text" id="estado" formControlName="estado" value="{{ endereco.uf }}">
+      <!-- <mat-select formControlName="estado" required>
         <mat-option value="">Selecione...</mat-option>
         <mat-option value="Acre">Acre</mat-option>
         <mat-option value="Alagoas">Alagoas</mat-option>
@@ -182,13 +183,13 @@
         <mat-option value="São Paulo">São Paulo</mat-option>
         <mat-option value="Sergipe">Sergipe</mat-option>
         <mat-option value="Tocantins">Tocantins</mat-option>
-      </mat-select>
+      </mat-select> -->
     </mat-form-field>
     
     
     <mat-form-field class="form-group">
       <mat-label>Logradouro</mat-label>
-      <input matInput type="text" id="logradouro" formControlName="logradouro">
+      <input matInput type="text" id="logradouro" formControlName="logradouro" value="{{ endereco.logradouro }}">
     </mat-form-field>
     
     <mat-form-field class="form-group">
@@ -203,7 +204,7 @@
     
     <mat-form-field class="form-group">
       <mat-label>Bairro</mat-label>
-      <input matInput type="text" id="bairro" formControlName="bairro">
+      <input matInput type="text" id="bairro" formControlName="bairro" value="{{ endereco.bairro }}">
     </mat-form-field>
     
     <mat-form-field class="form-group">
