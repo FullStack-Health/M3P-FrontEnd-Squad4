@@ -1,6 +1,7 @@
 mat-toolbar {
   position: fixed;
   background-color: #d0c1eb;
+  z-index: 1;
   
   
   h1 {
@@ -28,9 +29,3 @@ mat-toolbar {
   }
 }
 
-// #23143e
-// #673ab6
-// #d0c1eb
-// #f0ecf9
-// #edf5df
-// #dcebc1
