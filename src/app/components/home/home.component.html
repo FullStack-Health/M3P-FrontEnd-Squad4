@@ -1,5 +1,5 @@
 
-<app-card-estatisticas></app-card-estatisticas>
+<app-card-estatisticas [quantidadePacientes]="quantidadePacientes"></app-card-estatisticas>
 
 
 <div class="title-container">
@@ -9,14 +9,18 @@
 <div class="search-patient">
   <mat-form-field appearance="fill" class="search-input">
     <mat-label>Buscar paciente</mat-label>
-    <input matInput placeholder="Buscar por nome, telefone ou email">
+    <input matInput placeholder="Buscar por nome, telefone ou email" type="text" [(ngModel)]="textoPesquisa">
   </mat-form-field>
-  <button mat-flat-button color="primary" (click)="searchPatient()">
+  <button mat-flat-button color="primary" (click)="pesquisarPacientes()">
     <mat-icon matSuffix>search</mat-icon>
     Buscar
   </button>
+  <!-- <button mat-flat-button color="primary" (click)="mostrarTodos()">
+    <mat-icon matSuffix>search</mat-icon>
+    Todos pacientes
+  </button> -->
 </div>
 
 <div class="cards-container">
-  <app-card-info-pacientes *ngFor="let paciente of listaPacientes" [paciente]="paciente"></app-card-info-pacientes>
+  <app-card-info-pacientes *ngFor="let paciente of listaPacientesFiltro" [paciente]="paciente"></app-card-info-pacientes>
 </div>

@@ -8,6 +8,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-home',
@@ -22,12 +23,13 @@ import { MatButtonModule } from '@angular/material/button';
         CommonModule,
         MatIcon,
         MatLabel,
-        MatInputModule  ,
-        MatButtonModule   
+        MatInputModule,
+        MatButtonModule,
+        FormsModule   
     ]
 })
 export class HomeComponent {
-
+    
     listaPacientes = [
         {
             imagem: 'assets/img/maria-da-silva.png',
@@ -95,22 +97,26 @@ export class HomeComponent {
         }
     ];
     
-          
-    textoPesquisa: string | undefined;
+    quantidadePacientes = this.listaPacientes.length;
+    
+    textoPesquisa: string | undefined = '';
     listaPacientesFiltro = this.listaPacientes;
-paciente: any;
-  
-searchPatient() {
-
-    if(!this.textoPesquisa) {
-        this.listaPacientesFiltro = this.listaPacientes;
-    } else {
-        this.listaPacientesFiltro = this.listaPacientes.filter(item => item.nomeCompleto === this.textoPesquisa);
-        this.listaPacientesFiltro = this.listaPacientes.filter(item => item.tel === this.textoPesquisa);
-        this.listaPacientesFiltro = this.listaPacientes.filter(item => item.tel === this.textoPesquisa);
-
-        
+    paciente: any;
+    
+    
+    pesquisarPacientes() {
+        const textoPesquisa = this.textoPesquisa ?? '';
+        if (!this.textoPesquisa) {
+            this.listaPacientesFiltro = this.listaPacientes;
+        } else {
+            this.listaPacientesFiltro = this.listaPacientes.filter(item => 
+                item.nomeCompleto.toLowerCase().includes(textoPesquisa.toLowerCase()) ||
+                item.tel.includes(textoPesquisa) ||
+                item.email.includes(textoPesquisa)
+            )
+        }
+        this.textoPesquisa = '';
     }
-}
-
+    
+  
 }
