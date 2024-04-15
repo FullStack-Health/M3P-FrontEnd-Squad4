@@ -5,7 +5,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatList, MatNavList } from '@angular/material/list';
-
+import { MatDividerModule } from '@angular/material/divider';
+import { UserService } from '../../services/users-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu-lateral',
@@ -18,16 +20,18 @@ import { MatList, MatNavList } from '@angular/material/list';
     MatButtonModule,
     MatSidenavModule,
     MatNavList,
-    MatList, 
+    MatList,
+    MatDividerModule 
   ],
   templateUrl: './menu-lateral.component.html',
   styleUrl: './menu-lateral.component.scss'
 })
 export class MenuLateralComponent {
-  router: any;
 
-  
-  logout(){
+  constructor(private userService: UserService, private router: Router){}
 
+  removeLoggedUser(): void{
+    this.userService.removeLoggedUser();
+    this.router.navigate(['/login']);
   }
 }

@@ -6,30 +6,37 @@
       <img id="logo" src="../../../assets/img/labmedical_white.svg" alt="logo-labmed">
     </div>
     
-    <mat-nav-list class="sidenav">
-      <h3 matListItemTitle>Geral</h3>
+    <div class="sections-container">
+
+      <mat-nav-list class="sidenav">
+        <h3 matListItemTitle>Geral</h3>
       <mat-list>
-        <button mat-flat-button routerLink="/home" color="primary"><mat-icon matListItemIcon>home</mat-icon>Início</button><br>
-        <button mat-flat-button (click)="logout()" color="primary"><mat-icon matListItemIcon>logout</mat-icon>Sair</button>
+        <button mat-flat-button routerLink="/home" ><mat-icon matListItemIcon>home</mat-icon>Início</button><br>
+        <button mat-flat-button (click)="removeLoggedUser()" ><mat-icon matListItemIcon>logout</mat-icon>Sair</button>
       </mat-list>
     </mat-nav-list>
-    
+
+    <mat-divider></mat-divider>
+
     <mat-nav-list class="sidenav">
       <h3 matListItemTitle>Pacientes</h3>
       <mat-list>
-        <button mat-flat-button routerLink="/cadastro-paciente" color="primary"><mat-icon matListItemIcon>add</mat-icon>Cadastrar</button><br>
-        <button mat-flat-button routerLink="/listar-prontuario" color="primary"><mat-icon matListItemIcon>list</mat-icon>Listar prontuário</button>
+        <button mat-flat-button routerLink="/cadastro-paciente" ><mat-icon matListItemIcon>add</mat-icon>Cadastrar</button><br>
+        <button mat-flat-button routerLink="/listar-prontuario" ><mat-icon matListItemIcon>list</mat-icon>Listar prontuário</button>
       </mat-list>
     </mat-nav-list>
+
+    <mat-divider></mat-divider>
     
     <mat-nav-list class="sidenav">
       <h3 matListItemTitle>Exames</h3>
       <mat-list>
-       <button mat-flat-button routerLink="/cadastro-consulta" color="primary"><mat-icon matListItemIcon>add</mat-icon>Cadastrar consulta</button><br>
-       <button mat-flat-button routerLink="/cadastro-exame" color="primary"><mat-icon matListItemIcon>add</mat-icon>Cadastrar exame</button>
+       <button mat-flat-button routerLink="/cadastro-consulta" ><mat-icon matListItemIcon>add</mat-icon>Cadastrar consulta</button><br>
+       <button mat-flat-button routerLink="/cadastro-exame" ><mat-icon matListItemIcon>add</mat-icon>Cadastrar exame</button>
       </mat-list>
     </mat-nav-list>
     
-  </mat-sidenav>
-
+  </div>
+</mat-sidenav>
+  
 </mat-sidenav-container>
