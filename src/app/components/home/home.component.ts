@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenuLateralComponent } from "../../shared/menu-lateral/menu-lateral.component";
 import { RouterOutlet } from '@angular/router';
@@ -9,6 +9,7 @@ import { MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
+import { PageTitleService } from '../../services/title.service';
 
 @Component({
     selector: 'app-home',
@@ -28,7 +29,14 @@ import { FormsModule } from '@angular/forms';
         FormsModule   
     ]
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+
+    constructor(private pageTitleService: PageTitleService) { }
+  
+    ngOnInit(): void {
+      this.pageTitleService.setPageTitle('ESTATÍSTICAS E INFORMAÇÕES');
+    }
+
     
     listaPacientes = [
         {

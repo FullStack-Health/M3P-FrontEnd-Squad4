@@ -3,6 +3,7 @@ import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { CadastroPacientesComponent } from './components/cadastro-pacientes/cadastro-pacientes.component';
 import { CadastroConsultaComponent } from './components/cadastro-consulta/cadastro-consulta.component';
+import { CadastroExamesComponent } from './components/cadastro-exames/cadastro-exames.component';
 
 
 export const routes: Routes = [
@@ -11,5 +12,6 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'cadastro-paciente', component: CadastroPacientesComponent},
   { path: 'cadastro-consulta', component: CadastroConsultaComponent},
+  { path: 'cadastro-exames', component: CadastroExamesComponent}
   
 ];

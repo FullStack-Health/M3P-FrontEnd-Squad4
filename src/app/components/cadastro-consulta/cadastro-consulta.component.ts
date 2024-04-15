@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCard, MatCardContent } from '@angular/material/card';
@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { PageTitleService } from '../../services/title.service';
 
 @Component({
   selector: 'app-cadastro-consulta',
@@ -24,10 +25,14 @@ import { MatSelectModule } from '@angular/material/select';
   templateUrl: './cadastro-consulta.component.html',
   styleUrl: './cadastro-consulta.component.scss'
 })
-export class CadastroConsultaComponent {
-today: any;
+export class CadastroConsultaComponent implements OnInit {
 
-  constructor() { }
+  constructor(private pageTitleService: PageTitleService) {}
+
+  ngOnInit(): void {
+    this.pageTitleService.setPageTitle('CADASTRO DE CONSULTA');
+  }
+today: any;
 
   consultaForm = new FormGroup({
     pacienteSearch: new FormControl(''),

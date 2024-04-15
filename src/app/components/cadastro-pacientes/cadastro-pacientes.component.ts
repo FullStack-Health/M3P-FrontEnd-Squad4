@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ConsultaCepService } from '../../services/consulta-cep.service';
+import { PageTitleService } from '../../services/title.service';
 
 @Component({
   selector: 'app-cadastro-pacientes',
@@ -20,8 +21,13 @@ import { ConsultaCepService } from '../../services/consulta-cep.service';
   templateUrl: './cadastro-pacientes.component.html',
   styleUrl: './cadastro-pacientes.component.scss'
 })
-export class CadastroPacientesComponent {
+export class CadastroPacientesComponent implements OnInit {
 
+  constructor(private pageTitleService: PageTitleService, private consultaCepService: ConsultaCepService) { }
+  
+  ngOnInit(): void {
+    this.pageTitleService.setPageTitle('CADASTRO DE PACIENTE');
+  }
 
 patRegForm = new FormGroup ({
   fullName: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]),
@@ -53,7 +59,6 @@ patRegForm = new FormGroup ({
   endereco: any | undefined = undefined;
   ;
 
-constructor ( private consultaCepService: ConsultaCepService ) {}
 
 
 
