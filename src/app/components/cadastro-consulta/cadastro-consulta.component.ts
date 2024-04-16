@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
@@ -20,7 +20,8 @@ import { PageTitleService } from '../../services/title.service';
     ReactiveFormsModule,
     MatCard,
     MatIcon,
-    MatCardContent
+    MatCardContent,
+    MatButton
   ],
   templateUrl: './cadastro-consulta.component.html',
   styleUrl: './cadastro-consulta.component.scss'

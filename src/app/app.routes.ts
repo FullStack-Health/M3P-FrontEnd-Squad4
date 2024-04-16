@@ -12,6 +12,6 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'cadastro-paciente', component: CadastroPacientesComponent},
   { path: 'cadastro-consulta', component: CadastroConsultaComponent},
-  { path: 'cadastro-exames', component: CadastroExamesComponent}
-  
+  { path: 'cadastro-exames', component: CadastroExamesComponent},
+
 ];

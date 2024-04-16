@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ConsultaCepService } from '../../services/consulta-cep.service';
 import { PageTitleService } from '../../services/title.service';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-cadastro-pacientes',
@@ -14,10 +16,11 @@ import { PageTitleService } from '../../services/title.service';
     MatSelectModule,
     MatInputModule,
     MatFormFieldModule,
-    MatSelectModule,
     MatButtonModule,
-    ReactiveFormsModule
-  ],
+    ReactiveFormsModule,
+    CommonModule,
+    FormsModule
+   ],
   templateUrl: './cadastro-pacientes.component.html',
   styleUrl: './cadastro-pacientes.component.scss'
 })
@@ -45,13 +48,13 @@ patRegForm = new FormGroup ({
   convenio: new FormControl(''),
   numeroConvenio: new FormControl(''),
   validadeConvenio: new FormControl(''),
-  cep: new FormControl(''),
-  cidade: new FormControl(''),
-  estado: new FormControl(''),
-  logradouro: new FormControl(''),
-  numero: new FormControl(''),
-  complemento: new FormControl(''),
-  bairro: new FormControl(''),
+  // cep: new FormControl(''),
+  // cidade: new FormControl(''),
+  // estado: new FormControl(''),
+  // logradouro: new FormControl(''),
+  // numero: new FormControl(''),
+  // complemento: new FormControl(''),
+  // bairro: new FormControl(''),
   pontoReferencia: new FormControl('')
 });
 
@@ -63,19 +66,19 @@ patRegForm = new FormGroup ({
 
 
 
-consultaCEP() {
-    this.consultaCepService.obterEndereco(this.patRegForm.value.cep).subscribe(
-      {
-        next: (response: any) => {
-          this.endereco = response;
-          console.log(response);
-        },
-        error: (error: any) => {
-          console.error(error);
-        }
-      }
-    )
-}
+// consultaCEP() {
+//     this.consultaCepService.obterEndereco(this.patRegForm.value.cep).subscribe(
+//       {
+//         next: (response: any) => {
+//           this.endereco = response;
+//           console.log(response);
+//         },
+//         error: (error: any) => {
+//           console.error(error);
+//         }
+//       }
+//     )
+// }
 
   submitForm(){
 

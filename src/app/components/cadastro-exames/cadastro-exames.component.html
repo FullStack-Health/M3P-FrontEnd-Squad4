@@ -1,1 +1,36 @@
-<p>cadastro-exames works!</p>
+<form id="form-container" [formGroup]="exameForm" (ngSubmit)="cadastrarExame()">
+  <mat-form-field class="form-group">
+    <mat-label>Nome do Exame</mat-label>
+    <input matInput id="nomeExame" formControlName="nomeExame" placeholder="Nome do Exame">
+  </mat-form-field>
+
+  <mat-form-field class="form-group">
+    <mat-label>Horário do Exame</mat-label>
+    <input matInput id="dataExame" [ngxTimepicker]="picker" formControlName="horarioExame" placeholder="Horário do Exame">
+    <ngx-material-timepicker #picker></ngx-material-timepicker>
+  </mat-form-field>
+
+  <mat-form-field class="form-group">
+    <mat-label>Tipo do Exame</mat-label>
+    <input matInput id="tipoExame" formControlName="tipoExame" placeholder="Tipo do Exame">
+  </mat-form-field>
+
+  <mat-form-field class="form-group">
+    <mat-label>Laboratório</mat-label>
+    <input matInput id="laboratorio" formControlName="laboratorio" placeholder="Laboratório">
+  </mat-form-field>
+
+  <mat-form-field class="form-group">
+    <mat-label>URL do Documento</mat-label>
+    <input matInput id="urlDocumento" formControlName="urlDocumento" placeholder="URL do Documento">
+  </mat-form-field>
+
+  <mat-form-field class="form-group textarea">
+    <mat-label>Resultados</mat-label>
+    <textarea matInput id="resultados" formControlName="resultados" placeholder="Resultados"></textarea>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="!exameForm.valid">Salvar</button>
+  <button mat-raised-button color="warn" type="button" [disabled]="!exameForm.valid">Editar</button>
+  <button mat-raised-button color="warn" type="button" [disabled]="!exameForm.valid">Deletar</button>
+</form>

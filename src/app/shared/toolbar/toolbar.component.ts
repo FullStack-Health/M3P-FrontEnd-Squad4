@@ -20,7 +20,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './toolbar.component.scss'
 })
 export class ToolbarComponent implements OnInit {
-  pageTitle$ = this.pageTitleService.getPageTitle();
+  pageTitle = this.pageTitleService.getPageTitle();
 
   loggedUser: any;
 

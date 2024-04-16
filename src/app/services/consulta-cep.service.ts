@@ -6,12 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ConsultaCepService {
-  httpClient: any;
 
   constructor ( private http: HttpClient ){}
 
   obterEndereco(cep: any): Observable<any>{
-    const headers = new HttpHeaders({ 'Content-Type':  'application/json'});
-    return this.httpClient.get(`https://viacep.com.br/ws/${cep}/json/`, { headers });
+    // const headers = new HttpHeaders({ 'Content-Type':  'application/json'});
+    return this.http.get(`https://viacep.com.br/ws/${cep}/json/`);
   }
 }
