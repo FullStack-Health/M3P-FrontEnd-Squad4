@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenuLateralComponent } from "../../shared/menu-lateral/menu-lateral.component";
 import { RouterOutlet } from '@angular/router';
@@ -31,10 +31,12 @@ import { PageTitleService } from '../../services/title.service';
 })
 export class HomeComponent implements OnInit {
 
-    constructor(private pageTitleService: PageTitleService) { }
+    constructor(private pageTitleService: PageTitleService) {
+        
+        this.pageTitleService.setPageTitle('ESTATÍSTICAS E INFORMAÇÕES');
+    }
   
     ngOnInit(): void {
-      this.pageTitleService.setPageTitle('ESTATÍSTICAS E INFORMAÇÕES');
     }
 
     

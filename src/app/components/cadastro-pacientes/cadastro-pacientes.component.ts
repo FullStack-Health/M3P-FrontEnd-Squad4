@@ -26,10 +26,12 @@ import { CommonModule } from '@angular/common';
 })
 export class CadastroPacientesComponent implements OnInit {
 
-  constructor(private pageTitleService: PageTitleService, private consultaCepService: ConsultaCepService) { }
+  constructor(private pageTitleService: PageTitleService, private consultaCepService: ConsultaCepService) {
+
+    this.pageTitleService.setPageTitle('CADASTRO DE PACIENTE');
+   }
   
   ngOnInit(): void {
-    this.pageTitleService.setPageTitle('CADASTRO DE PACIENTE');
   }
 
 patRegForm = new FormGroup ({

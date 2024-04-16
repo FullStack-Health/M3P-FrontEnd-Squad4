@@ -30,10 +30,12 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 })
 export class CadastroConsultaComponent implements OnInit {
 
-  constructor(private pageTitleService: PageTitleService) {}
+  constructor(private pageTitleService: PageTitleService) {
+    
+    this.pageTitleService.setPageTitle('CADASTRO DE CONSULTA');
+  }
 
   ngOnInit(): void {
-    this.pageTitleService.setPageTitle('CADASTRO DE CONSULTA');
   }
 today: any;
 

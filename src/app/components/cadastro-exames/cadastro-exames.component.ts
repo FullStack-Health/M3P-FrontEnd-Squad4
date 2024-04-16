@@ -33,8 +33,12 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 })
 export class CadastroExamesComponent {
 
-  // constructor(private pageTitleService: PageTitleService) {}
+  constructor (private pageTitleService: PageTitleService) {
+    this.pageTitleService.setPageTitle('CADASTRO DE EXAMES');
+   }
   
+  ngOnInit(): void {
+  }  
   exameForm = new FormGroup({
     nomeExame: new FormControl('', [Validators.required]),
     dataExame: new FormControl('', [Validators.required]),

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentInit, Component, OnInit } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { UserService } from '../../services/users-storage.service';
 import { PageTitleService } from '../../services/title.service';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -20,13 +21,30 @@ import { CommonModule } from '@angular/common';
   styleUrl: './toolbar.component.scss'
 })
 export class ToolbarComponent implements OnInit {
-  pageTitle = this.pageTitleService.getPageTitle();
-
   loggedUser: any;
 
-  constructor(private userService: UserService, private pageTitleService: PageTitleService) {}
+  pageTitle: string = '';
 
+  private titleSubscription: Subscription | undefined;
+
+  constructor(private userService: UserService, private pageTitleService: PageTitleService) {
+    this.pageTitleService.getPageTitle().subscribe(title => {
+      this.pageTitle = title;
+    });
+  }
+
+
+  
   ngOnInit() {
     this.loggedUser = this.userService.getLoggedUser();
+    // this.titleSubscription = this.pageTitleService.getPageTitle().subscribe(title => {
+    //   this.pageTitle = title;
+    // });
+  }
+
+  ngOnDestroy() {
+    if (this.titleSubscription) {
+      this.titleSubscription.unsubscribe();
+    }
   }
 }

@@ -13,7 +13,7 @@ export class PageTitleService {
     this.pageTitleSubject.next(title);
   }
 
-  getPageTitle(): BehaviorSubject<string> {
-    return this.pageTitleSubject;
+  getPageTitle() {
+    return this.pageTitleSubject.asObservable()
   }
 }
