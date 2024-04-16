@@ -1,55 +1,57 @@
-<p>cadastro-consulta works!</p>
 
-<form [formGroup]="consultaForm" (ngSubmit)="submitForm()">
-  <!-- Busca de Paciente -->
-  <mat-form-field class="form-group">
-    <mat-label>Buscar Paciente</mat-label>
-    <input matInput type="text" formControlName="pacienteSearch" placeholder="Digite o nome do paciente">
-    <button mat-button matSuffix aria-label="Search">
-      <mat-icon>search</mat-icon>
-    </button>
-  </mat-form-field>
+<div class="container">
 
-  <!-- Formulário para cadastro de consulta -->
-  <mat-card class="consulta-card">
-    <mat-card-content>
-      <mat-form-field class="form-group">
-        <mat-label>Motivo da Consulta</mat-label>
-        <input matInput type="text" formControlName="motivoConsulta" required minlength="8" maxlength="64">
+  <div class="buscar-paciente">
+    <mat-form-field appearance="fill" class="input-busca">
+      <mat-label>Buscar paciente</mat-label>
+        <input id="input-busca" matInput placeholder="Buscar por nome, telefone ou email" type="text">
       </mat-form-field>
-
-      <mat-form-field class="form-group">
-        <mat-label>Data da Consulta</mat-label>
-        <input matInput type="date" formControlName="dataConsulta" required [value]="getCurrentTime">
-      </mat-form-field>
-
-      <mat-form-field class="form-group">
-        <mat-label>Horário da Consulta</mat-label>
-        <input matInput type="time" formControlName="horarioConsulta" required [value]="getCurrentTime">
-      </mat-form-field>
-
-      <mat-form-field class="form-group">
-        <mat-label>Descrição do Problema</mat-label>
-        <textarea matInput formControlName="descricaoProblema" required minlength="16" maxlength="1024"></textarea>
-      </mat-form-field>
-
-      <mat-form-field class="form-group">
-        <mat-label>Medicação Receitada</mat-label>
-        <input matInput type="text" formControlName="medicacaoReceitada">
-      </mat-form-field>
-
-      <mat-form-field class="form-group">
-        <mat-label>Dosagem e Precauções</mat-label>
-        <textarea matInput formControlName="dosagemPrecaucoes" required minlength="16" maxlength="256"></textarea>
-      </mat-form-field>
-
-      <!-- Botões -->
-      <div class="buttons-container">
-        <button mat-button type="button" class="edit-button" [disabled]="!consultaForm.valid">Editar</button>
-        <button mat-button type="button" class="delete-button" [disabled]="!consultaForm.valid">Deletar</button>
-        <button mat-raised-button type="submit" class="save-button" [disabled]="!consultaForm.valid">Salvar</button>
+        <!-- [(ngModel)]="textoPesquisa -->
+        <button mat-flat-button color="primary" (click)="pesquisarPacientes()">
+          <mat-icon matSuffix>search</mat-icon>
+          Buscar
+        </button>
       </div>
-    </mat-card-content>
-  </mat-card>
-</form>
+      
+  <form [formGroup]="consultaForm" (ngSubmit)="submitForm()">
+      
+    <mat-form-field class="form-group">
+      <mat-label>Motivo da Consulta</mat-label>
+      <input id="motivoConsulta" matInput type="text" formControlName="motivoConsulta" required minlength="8" maxlength="64">
+    </mat-form-field>
+  
+    <mat-form-field class="form-group">
+      <mat-label>Data da Consulta</mat-label>
+      <input id="dataConsulta" matInput type="date" formControlName="dataConsulta" required>
+    </mat-form-field>
+  
+    <mat-form-field class="form-group">
+      <mat-label>Horário do Exame</mat-label>
+      <input matInput type="time" id="dataExame" [ngxTimepicker]="picker" formControlName="horarioConsulta" placeholder="Horário do Exame">
+      <ngx-material-timepicker #picker></ngx-material-timepicker>
+    </mat-form-field>
+  
+    <mat-form-field class="form-group textarea">
+      <mat-label>Descrição do Problema</mat-label>
+      <textarea id="descricaoProblema" matInput formControlName="descricaoProblema" required minlength="16" maxlength="1024"></textarea>
+    </mat-form-field>
+  
+    <mat-form-field class="form-group" >
+      <mat-label>Medicação Receitada</mat-label>
+      <input id="medicacaoReceitada" matInput type="text" formControlName="medicacaoReceitada">
+    </mat-form-field>
+  
+    <mat-form-field class="form-group textarea">
+      <mat-label>Dosagem e Precauções</mat-label>
+      <textarea id="dosagemPrecaucoes" matInput formControlName="dosagemPrecaucoes" required minlength="16" maxlength="256"></textarea>
+    </mat-form-field>
+  
+    <div class="buttons-container">
+      <button mat-button type="button" class="edit-button" [disabled]="!consultaForm.valid">Editar</button>
+      <button mat-button type="button" class="delete-button" [disabled]="!consultaForm.valid">Deletar</button>
+      <button mat-raised-button type="submit" class="save-button" [disabled]="!consultaForm.valid">Salvar</button>
+    </div>
+  </form>
+
+</div>  
 

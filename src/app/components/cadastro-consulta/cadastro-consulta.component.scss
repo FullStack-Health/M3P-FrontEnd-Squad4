@@ -1,74 +1,98 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
 
-// Definindo estilos para o componente de cadastro de consulta
-cadastro-consulta {
-  // Estilizando o formulário
-  form {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 24px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+.buscar-paciente {
+  display: flex;
+  align-items: flex-start;
+  margin: 0 auto;
+  max-width: 800px;
+  width: 100%;
 
-    // Estilizando o grupo de campos
-    .form-group {
-      width: calc(50% - 10px);
-      margin-right: 10px;
 
-      &:last-child {
-        margin-right: 0;
-      }
-
-      // Estilizando as etiquetas dos campos
-      mat-label {
-        font-weight: bold;
-      }
-
-      // Estilizando os campos de entrada e seleção
-      input.mat-input,
-      mat-select,
-      textarea.mat-input {
-        width: 100%;
-      }
-
-      // Estilizando o botão de enviar dentro do grupo de campos
-      button[type="submit"] {
-        width: 100%;
-      }
-    }
-
-    // Estilizando os campos de texto grandes
-    .textarea {
-      width: calc(100% - 16px);
-      height: 120px;
-
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-
-    // Estilizando o botão de enviar
-    button[type="submit"] {
-      width: 100%;
-      margin-top: 24px;
-    }
+  .input-busca {
+    flex: 1;
   }
-
-  // Estilizando os títulos h3 dentro do componente
-  h3 {
-    font-weight: lighter;
-    color: #b0b0b0;
-    letter-spacing: 2px;
-  }
-
-  // Estilizando os botões de edição e exclusão
-  .edit-button, .delete-button {
-    width: 50%;
-    margin-right: 5px;
-  }
-
-  // Estilizando o botão de salvar
-  .save-button {
-    width: 100%;
-    margin-top: 24px;
+  
+  button {
+    height: 56px;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-left: 12px;
   }
 }
+
+
+
+h3 {
+  font-weight: lighter;
+  color: #b0b0b0;
+  letter-spacing: 2px;
+}
+
+#medicacaoReceitada {
+  width: calc(100% - 10px);
+  margin-right: 10px;
+}
+
+.form-group {
+  width: calc(50% - 10px);
+  margin-right: 10px;
+  
+  
+  .textarea {
+    width: calc(100%);
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  mat-label {
+    font-weight: bold;
+  }
+
+  input.mat-input,
+  mat-select,
+  textarea.mat-input {
+    width: 100%;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+  }
+}
+
+.textarea {
+  width: calc(100% - 16px); // Calcula a largura para ocupar duas colunas com espaçamento
+  height: 120px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+// Estilizando o formulário como um todo
+form {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  // Estilizando o botão de enviar
+  button {
+    margin-top: 16px;
+    width: calc(33.33% - 10px);
+    margin-right: 10px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+
+

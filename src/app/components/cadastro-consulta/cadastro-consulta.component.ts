@@ -7,6 +7,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { PageTitleService } from '../../services/title.service';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 @Component({
   selector: 'app-cadastro-consulta',
@@ -21,7 +22,8 @@ import { PageTitleService } from '../../services/title.service';
     MatCard,
     MatIcon,
     MatCardContent,
-    MatButton
+    MatButton,
+    NgxMaterialTimepickerModule
   ],
   templateUrl: './cadastro-consulta.component.html',
   styleUrl: './cadastro-consulta.component.scss'
@@ -39,7 +41,7 @@ today: any;
     pacienteSearch: new FormControl(''),
     motivoConsulta: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]),
     dataConsulta: new FormControl(this.getCurrentDate(), Validators.required),
-    horarioConsulta: new FormControl(this.getCurrentTime(), Validators.required),
+    horarioConsulta: new FormControl('', Validators.required),
     descricaoProblema: new FormControl('', [Validators.required, Validators.minLength(16), Validators.maxLength(1024)]),
     medicacaoReceitada: new FormControl(''),
     dosagemPrecaucoes: new FormControl('', [Validators.required, Validators.minLength(16), Validators.maxLength(256)])
@@ -60,16 +62,19 @@ today: any;
     return today.toISOString().split('T')[0];
   }
 
-  getCurrentTime(): string {
-    const now = new Date();
-    const hours = this.padZero(now.getHours());
-    const minutes = this.padZero(now.getMinutes());
-    return `${hours}:${minutes}`;
-  }
+  // getCurrentTime(): string {
+  //   const now = new Date();
+  //   const hours = this.padZero(now.getHours());
+  //   const minutes = this.padZero(now.getMinutes());
+  //   return `${hours}:${minutes}`;
+  // }
 
-  padZero(num: number): string {
-    return num < 10 ? `0${num}` : num.toString();
-  }
+  // padZero(num: number): string {
+  //   return num < 10 ? `0${num}` : num.toString();
+  // }
 
+  pesquisarPacientes(){
+    
+  }  
 
 }
