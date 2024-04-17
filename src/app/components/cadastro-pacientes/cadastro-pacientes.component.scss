@@ -7,6 +7,7 @@ h3 {
   font-weight: lighter;
   color: #b0b0b0;
   letter-spacing: 2px;
+  margin-bottom: 0px;
 }
 
 .form-group {
@@ -61,5 +62,9 @@ form {
     &:last-child {
       margin-right: 0;
     }
+  }
+
+  .infos-rg {
+    margin-bottom: 30px;
   }
 }

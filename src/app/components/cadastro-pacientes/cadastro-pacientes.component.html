@@ -24,16 +24,18 @@
     <input matInput type="text" id="cpf" formControlName="cpf" mask="000.000.000-00" placeholder="000.000.000-00" required>
   </mat-form-field>
   
+  <section class="infos-rg section-info">
+    <h3 class="section-title">RG</h3>
+    <mat-form-field class="form-group">
+      <mat-label>Número de RG</mat-label>
+      <input matInput type="text" id="rg" formControlName="rg" maxlength="20" mask="0000000||00000000||000000000" placeholder="digite apenas os números" required>
+    </mat-form-field>
 
-  <mat-form-field class="form-group">
-    <mat-label>Número de RG</mat-label>
-    <input matInput type="text" id="rg" formControlName="rg" maxlength="20" required>
-  </mat-form-field>
-
-  <mat-form-field class="form-group">
-    <mat-label>Órgão Expedidor</mat-label>
-    <input matInput type="text" id="orgaoExpedidor" formControlName="orgaoExpedidor" maxlength="20" required>
-  </mat-form-field>
+    <mat-form-field class="form-group">
+      <mat-label>Órgão Expedidor</mat-label>
+      <input matInput type="text" id="orgaoExpedidor" formControlName="orgaoExpedidor" maxlength="20" required>
+    </mat-form-field>
+  </section>
     
     
   <mat-form-field class="form-group">
@@ -143,8 +145,8 @@
   </section>
 
   <div class="buttons-container">
-    <button mat-button type="button" class="edit-button" [disabled]="patRegForm.invalid">Editar</button>
+    <button mat-button type="button" class="edit-button" [disabled]="patRegForm.valid">Editar</button>
     <button mat-button type="button" class="delete-button" [disabled]="patRegForm.invalid">Deletar</button>
-    <button mat-raised-button type="submit" class="save-button" [disabled]="patRegForm.invalid">Salvar</button>
+    <button mat-raised-button type="submit" class="save-button" [disabled]="!patRegForm.valid">Salvar</button>
   </div>
 </form>

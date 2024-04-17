@@ -19,9 +19,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     MatSelectModule,
     MatButtonModule,
     ReactiveFormsModule,
-    MatCard,
     MatIcon,
-    MatCardContent,
     MatButton,
     NgxMaterialTimepickerModule
   ],

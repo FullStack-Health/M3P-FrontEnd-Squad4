@@ -7,11 +7,11 @@
         <input id="input-busca" matInput placeholder="Buscar por nome, telefone ou email" type="text">
       </mat-form-field>
         <!-- [(ngModel)]="textoPesquisa -->
-        <button mat-flat-button color="primary" (click)="pesquisarPacientes()">
-          <mat-icon matSuffix>search</mat-icon>
-          Buscar
-        </button>
-      </div>
+      <button mat-flat-button color="primary" (click)="pesquisarPacientes()">
+        <mat-icon matSuffix>search</mat-icon>
+        Buscar
+      </button>
+  </div>
       
   <form [formGroup]="consultaForm" (ngSubmit)="submitForm()">
       
