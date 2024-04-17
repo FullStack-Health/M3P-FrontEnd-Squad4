@@ -46,7 +46,6 @@ button[type="submit"] {
   width: 100%;
 }
 
-// Estilizando o formulário como um todo
 form {
   max-width: 600px;
   margin: 0 auto;
@@ -54,8 +53,13 @@ form {
   border: 1px solid #ccc;
   border-radius: 8px;
 
-  // Estilizando o botão de enviar
-  button[type="submit"] {
-    margin-top: 24px;
+  button {
+    margin-top: 16px;
+    width: calc(33.33% - 10px);
+    margin-right: 10px;
+
+    &:last-child {
+      margin-right: 0;
+    }
   }
 }
