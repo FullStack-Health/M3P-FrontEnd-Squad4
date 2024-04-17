@@ -5,6 +5,7 @@ import { CadastroPacientesComponent } from './components/cadastro-pacientes/cada
 import { CadastroConsultaComponent } from './components/cadastro-consulta/cadastro-consulta.component';
 import { CadastroExamesComponent } from './components/cadastro-exames/cadastro-exames.component';
 import { ListagemProntuarioComponent } from './components/listagem-prontuario/listagem-prontuario.component';
+import { ProntuarioPacienteComponent } from './components/prontuario-paciente/prontuario-paciente.component';
 
 
 export const routes: Routes = [
@@ -15,5 +16,5 @@ export const routes: Routes = [
   { path: 'cadastro-consulta', component: CadastroConsultaComponent},
   { path: 'cadastro-exames', component: CadastroExamesComponent},
   { path: 'listagem-prontuario', component: ListagemProntuarioComponent },
-  
+  { path: 'prontuario-paciente', component: ProntuarioPacienteComponent },
 ];
