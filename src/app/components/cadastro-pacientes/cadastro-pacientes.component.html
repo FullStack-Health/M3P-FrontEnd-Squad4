@@ -1,12 +1,12 @@
 <form id="form-container" [formGroup]="patRegForm" (ngSubmit)="submitForm()" >
   <mat-form-field class="form-group">
     <mat-label>Nome Completo</mat-label>
-    <input matInput type="text" id="fullName" formControlName="fullName" required minlength="8" maxlength="64">
+    <input matInput type="text" id="nomeCompleto" formControlName="nomeCompleto" required minlength="8" maxlength="64">
   </mat-form-field>
 
   <mat-form-field class="form-group">
     <mat-label>Gênero</mat-label>
-    <select matNativeControl required>
+    <select matNativeControl formControlName="genero" required>
       <option value="">Selecione...</option>
       <option value="masculino">Masculino</option>
       <option value="feminino">Feminino</option>
@@ -40,7 +40,7 @@
     
   <mat-form-field class="form-group">
     <mat-label>Estado Civil</mat-label>
-    <select matNativeControl required>
+    <select matNativeControl formControlName="estadoCivil" required>
       <option value="">Selecione...</option>
       <option value="solteiro">Solteiro(a)</option>
       <option value="casado">Casado(a)</option>
@@ -145,8 +145,9 @@
   </section>
 
   <div class="buttons-container">
-    <button mat-button type="button" class="edit-button" [disabled]="patRegForm.valid">Editar</button>
-    <button mat-button type="button" class="delete-button" [disabled]="patRegForm.invalid">Deletar</button>
-    <button mat-raised-button type="submit" class="save-button" [disabled]="!patRegForm.valid">Salvar</button>
+    <button mat-button type="button" class="edit-button" [disabled]="!patRegForm.valid">Editar</button>
+    <button mat-button type="button" class="delete-button" [disabled]="!patRegForm.valid">Deletar</button>
+    <button mat-raised-button type="submit" class="save-button" [disabled]="!isFormValid()">Salvar</button>
   </div>
 </form>
+

@@ -8,7 +8,7 @@ import { ConsultaCepService } from '../../services/consulta-cep.service';
 import { PageTitleService } from '../../services/title.service';
 import { CommonModule } from '@angular/common';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
-
+import { PacientesService } from '../../services/pacientes.service';
 
 
 @Component({
@@ -23,24 +23,22 @@ import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
     CommonModule,
     FormsModule,
     NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskPipe,
   ],
   templateUrl: './cadastro-pacientes.component.html',
   styleUrl: './cadastro-pacientes.component.scss'
 })
 export class CadastroPacientesComponent implements OnInit {
 
-  constructor(private pageTitleService: PageTitleService, private consultaCepService: ConsultaCepService) {
+  constructor(private pageTitleService: PageTitleService, private consultaCepService: ConsultaCepService, private pacientesService: PacientesService) {
 
     this.pageTitleService.setPageTitle('CADASTRO DE PACIENTE');
    }
   
-  ngOnInit(): void {
-  }
 
 patRegForm = new FormGroup ({
-  fullName: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]),
-  gender: new FormControl('', [Validators.required]),
+  nomeCompleto: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]),
+  genero: new FormControl('', [Validators.required]),
   dataNascimento: new FormControl('', [Validators.required]),
   cpf: new FormControl('', [Validators.required]),
   rg: new FormControl('', [Validators.required, Validators.maxLength(20)]),
@@ -64,6 +62,13 @@ patRegForm = new FormGroup ({
   bairro: new FormControl(''),
   pontoReferencia: new FormControl('')
 });
+
+ngOnInit(): void {
+  const paciente = this.pacientesService.obterPaciente();
+  if (paciente) {
+    this.patRegForm.patchValue(paciente);
+  }
+}
 
 
   endereco: any | undefined = undefined;
@@ -97,9 +102,27 @@ patRegForm = new FormGroup ({
   }
 
   
+  isFormValid(): boolean {
+    return this.patRegForm.valid &&
+      this.patRegForm.get('nomeCompleto')?.value !== '' &&
+      this.patRegForm.get('genero')?.value !== '' &&
+      this.patRegForm.get('dataNascimento')?.value !== '' &&
+      this.patRegForm.get('cpf')?.value !== '' &&
+      this.patRegForm.get('rg')?.value !== '' &&
+      this.patRegForm.get('orgaoExpedidor')?.value !== '' &&
+      this.patRegForm.get('telefone')?.value !== '' &&
+      this.patRegForm.get('naturalidade')?.value !== '' &&
+      this.patRegForm.get('contatoEmergencia')?.value !== '' &&
+      this.patRegForm.get('cep')?.value !== '';
+  }
   
 
   submitForm(){
-
+    console.log('Paciente salvo com sucesso!')
+    if(this.patRegForm.valid) {
+      const formData = this.patRegForm.value;
+      this.pacientesService.salvarPaciente(formData);
+      this.patRegForm.reset();
+    }
   }
 }
