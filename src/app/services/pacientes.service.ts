@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -9,13 +8,23 @@ export class PacientesService {
   constructor() { }
 
   salvarPaciente(paciente: any) {
-    let pacientes: any[] = JSON.parse(localStorage.getItem('pacientes') || '[]');
+    const pacientes: any[] = this.obterPacientes();
+    paciente.id = this.gerarIdSequencial(pacientes.length + 1);
     pacientes.push(paciente);
     localStorage.setItem('pacientes', JSON.stringify(pacientes));
   }
 
+  private gerarIdSequencial(numero: number): string {
+    return numero.toString().padStart(6, '0');
+  }
+
   obterPacientes(): any[] {
     return JSON.parse(localStorage.getItem('pacientes') || '[]');
+  }
+
+  obterPacientePorId(id: string): any {
+    const pacientes = this.obterPacientes();
+    return pacientes.find(paciente => paciente.id === id);
   }
 
   deletarPacientes() {

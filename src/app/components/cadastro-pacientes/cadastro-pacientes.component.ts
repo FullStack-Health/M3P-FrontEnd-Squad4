@@ -9,6 +9,7 @@ import { PageTitleService } from '../../services/title.service';
 import { CommonModule } from '@angular/common';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { PacientesService } from '../../services/pacientes.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -30,7 +31,12 @@ import { PacientesService } from '../../services/pacientes.service';
 })
 export class CadastroPacientesComponent implements OnInit {
 
-  constructor(private pageTitleService: PageTitleService, private consultaCepService: ConsultaCepService, private pacientesService: PacientesService) {
+  constructor(
+    private pageTitleService: PageTitleService,
+    private consultaCepService: ConsultaCepService,
+    private pacientesService: PacientesService,
+    private activatedRoute: ActivatedRoute,
+  ) {
 
     this.pageTitleService.setPageTitle('CADASTRO DE PACIENTE');
    }
@@ -64,10 +70,15 @@ patRegForm = new FormGroup ({
 });
 
 ngOnInit(): void {
-  const pacientes = this.pacientesService.obterPacientes();
-  if (pacientes && pacientes.length > 0) {
-    this.patRegForm.patchValue(pacientes[0]);
-  }
+  this.activatedRoute.params.subscribe(params => {
+    const idPaciente = params['id'];
+    if (idPaciente) {
+      const paciente = this.pacientesService.obterPacientePorId(idPaciente);
+      if (paciente) {
+        this.patRegForm.patchValue(paciente);
+      }
+    }
+  });
 }
 
   endereco: any | undefined = undefined;
