@@ -30,4 +30,13 @@ export class PacientesService {
   deletarPacientes() {
     localStorage.removeItem('pacientes');
   }
+
+  pesquisarPacientes(textoPesquisa: string): any[] {
+    const pacientes = this.obterPacientes();
+    return pacientes.filter(paciente =>
+      paciente.nomeCompleto.toLowerCase().includes(textoPesquisa.toLowerCase()) ||
+      paciente.telefone.includes(textoPesquisa) ||
+      paciente.email.includes(textoPesquisa)
+    );
+  }
 }

@@ -51,17 +51,13 @@ export class HomeComponent implements OnInit {
     }
 
     pesquisarPacientes() {
-        const textoPesquisa = this.textoPesquisa ?? '';
-        if (!this.textoPesquisa) {
-            this.pacientes = this.pacientesService.obterPacientes();
+        const textoPesquisa = this.textoPesquisa.trim();
+        if (!textoPesquisa) {
+          this.atualizarListaPacientes();
         } else {
-            this.pacientes = this.pacientesService.obterPacientes().filter(item =>
-                item.nomeCompleto.toLowerCase().includes(textoPesquisa.toLowerCase()) ||
-                item.tel.includes(textoPesquisa) ||
-                item.email.includes(textoPesquisa)
-            )
+          this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
         }
         this.textoPesquisa = '';
-    }
+      }
 
 }
