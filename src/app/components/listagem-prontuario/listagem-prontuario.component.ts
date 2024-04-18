@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { PageTitleService } from '../../services/title.service';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import { PacientesService } from '../../services/pacientes.service';
 
 
 @Component({
@@ -17,31 +18,36 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatIconModule,
     MatInputModule,
-    MatTableModule
+    MatTableModule,
+    FormsModule
   ],
   templateUrl: './listagem-prontuario.component.html',
   styleUrl: './listagem-prontuario.component.scss'
 })
 export class ListagemProntuarioComponent {
+  
+  displayedColumns: string[] = ['registro', 'nomePaciente', 'convenio', 'acao'];
+  pacientes: any[] = [];
+  textoPesquisa: any;
 
-  constructor(private pageTitleService: PageTitleService) {
-        
+  constructor(private pageTitleService: PageTitleService, private pacientesService: PacientesService) {  
     this.pageTitleService.setPageTitle('LISTAGEM DE PRONTUÁRIO');
+    this.atualizarListaPacientes();
 }
 
-displayedColumns: string[] = ['registro', 'nomePaciente', 'convenio', 'acao'];
-
-pacientes: any[] = [
-  { registro: '000001', nomePaciente: 'André Junckes da Silva Mattos', convenio: 'Unimed' },
-  { registro: '000002', nomePaciente: 'Maria da Silva', convenio: 'Amil' },
-  { registro: '000003', nomePaciente: 'João Santos', convenio: 'SulAmérica' }
-  // Adicione quantos pacientes desejar
-];
+atualizarListaPacientes() {
+  this.pacientes = this.pacientesService.obterPacientes();
+}
 
 
-  pesquisarPacientes() {
 
+pesquisarPacientes(textoPesquisa: string) {
+  if (!textoPesquisa) {
+    this.atualizarListaPacientes();
+  } else {
+    this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
   }
+}
 
   acessarProntuario(paciente: any) {
 

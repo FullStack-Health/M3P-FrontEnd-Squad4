@@ -36,7 +36,8 @@ export class PacientesService {
     return pacientes.filter(paciente =>
       paciente.nomeCompleto.toLowerCase().includes(textoPesquisa.toLowerCase()) ||
       paciente.telefone.includes(textoPesquisa) ||
-      paciente.email.includes(textoPesquisa)
+      paciente.email.includes(textoPesquisa) ||
+      paciente.id === textoPesquisa
     );
   }
 }
