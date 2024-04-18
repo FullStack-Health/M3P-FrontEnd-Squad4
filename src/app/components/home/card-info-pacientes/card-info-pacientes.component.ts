@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { PacientesService } from '../../../services/pacientes.service';
+import { IdadePipe } from '../../../pipes/idade.pipe';
 
 
 interface Paciente {
@@ -22,6 +23,7 @@ interface Paciente {
     MatIconModule,
     MatButtonModule,
     MatInputModule,
+    IdadePipe
   ],
   templateUrl: './card-info-pacientes.component.html',
   styleUrl: './card-info-pacientes.component.scss'
@@ -38,7 +40,4 @@ export class CardInfoPacientesComponent implements OnInit {
     this.pacientes = this.pacientesService.obterPacientes();
   }
 
-  searchPatient(){
-
-  } 
 }
