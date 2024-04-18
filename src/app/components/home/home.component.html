@@ -18,5 +18,7 @@
 </div>
 
 <div class="cards-container">
-  <app-card-info-pacientes *ngFor="let paciente of listaPacientesFiltro" [paciente]="paciente"></app-card-info-pacientes>
+  <ng-container *ngFor="let paciente of pacientes">
+    <app-card-info-pacientes [paciente]="paciente"></app-card-info-pacientes>
+  </ng-container>
 </div>

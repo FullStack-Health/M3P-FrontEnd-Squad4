@@ -64,12 +64,11 @@ patRegForm = new FormGroup ({
 });
 
 ngOnInit(): void {
-  const paciente = this.pacientesService.obterPaciente();
-  if (paciente) {
-    this.patRegForm.patchValue(paciente);
+  const pacientes = this.pacientesService.obterPacientes();
+  if (pacientes && pacientes.length > 0) {
+    this.patRegForm.patchValue(pacientes[0]);
   }
 }
-
 
   endereco: any | undefined = undefined;
   ;
@@ -82,7 +81,7 @@ ngOnInit(): void {
           next: (response: any) => {
             this.endereco = response;
             this.preencherCamposEndereco(response);
-            console.log(response);
+            // console.log(response);
           },
           error: (error: any) => {
             console.error(error);

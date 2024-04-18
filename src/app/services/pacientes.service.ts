@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -8,16 +9,16 @@ export class PacientesService {
   constructor() { }
 
   salvarPaciente(paciente: any) {
-    localStorage.setItem('paciente', JSON.stringify(paciente));
+    let pacientes: any[] = JSON.parse(localStorage.getItem('pacientes') || '[]');
+    pacientes.push(paciente);
+    localStorage.setItem('pacientes', JSON.stringify(pacientes));
   }
 
-  obterPaciente() {
-    const pacienteString = localStorage.getItem('paciente');
-    return pacienteString ? JSON.parse(pacienteString) : null;
+  obterPacientes(): any[] {
+    return JSON.parse(localStorage.getItem('pacientes') || '[]');
   }
 
-  deletarPaciente() {
-    localStorage.removeItem('paciente');
+  deletarPacientes() {
+    localStorage.removeItem('pacientes');
   }
-
 }

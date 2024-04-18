@@ -1,9 +1,18 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { PacientesService } from '../../../services/pacientes.service';
 
+
+interface Paciente {
+  imagem: string;
+  nomeCompleto: string;
+  dataNascimento: string;
+  telefone: string;
+  convenio: string;
+}
 
 @Component({
   selector: 'app-card-info-pacientes',
@@ -17,19 +26,19 @@ import { MatInputModule } from '@angular/material/input';
   templateUrl: './card-info-pacientes.component.html',
   styleUrl: './card-info-pacientes.component.scss'
 })
-export class CardInfoPacientesComponent {
 
-  @Input() paciente: {
-    imagem: string;
-    nomeCompleto: string;
-    idade: string;
-    tel: string;
-    convenio: string;
-  } | undefined;
+export class CardInfoPacientesComponent implements OnInit {
+  pacientes: Paciente[] = [];
+  @Input() paciente: any;
 
+
+  constructor(private pacientesService: PacientesService) { }
+
+  ngOnInit(): void {
+    this.pacientes = this.pacientesService.obterPacientes();
+  }
 
   searchPatient(){
 
-  }
-  
+  } 
 }
