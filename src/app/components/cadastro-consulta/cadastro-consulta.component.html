@@ -37,6 +37,9 @@
   </table>
       
   <form [formGroup]="consultaForm" (ngSubmit)="submitForm()">
+
+    
+    <h1 *ngIf="pacienteSelecionado">Consulta de {{ pacienteSelecionado.nomeCompleto }}</h1>
       
     <mat-form-field class="form-group">
       <mat-label>Motivo da Consulta</mat-label>

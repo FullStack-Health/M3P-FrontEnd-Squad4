@@ -41,6 +41,9 @@
 
 
 <form id="form-container" [formGroup]="exameForm" (ngSubmit)="cadastrarExame()">
+
+  <h1 *ngIf="pacienteSelecionado">Exame de {{ pacienteSelecionado.nomeCompleto }}</h1>
+
   <mat-form-field class="form-group">
     <mat-label>Nome do Exame</mat-label>
     <input matInput id="nomeExame" formControlName="nomeExame" placeholder="Nome do Exame">

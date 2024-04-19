@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgModule, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton, MatButtonModule } from '@angular/material/button';
-import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -12,7 +11,7 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { PacientesService } from '../../services/pacientes.service';
 import { MatLine } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cadastro-consulta',
@@ -32,7 +31,8 @@ import { MatTableModule } from '@angular/material/table';
     MatLine,
     MatIconModule,
     MatTableModule,
-    FormsModule
+    FormsModule,
+    CommonModule
   ],
   templateUrl: './cadastro-consulta.component.html',
   styleUrl: './cadastro-consulta.component.scss'
