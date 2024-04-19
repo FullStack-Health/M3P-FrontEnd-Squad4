@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { PageTitleService } from '../../services/title.service';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatList, MatListItem } from '@angular/material/list';
+import { PacientesService } from '../../services/pacientes.service';
+import { MatLine } from '@angular/material/core';
+import { MatTableModule } from '@angular/material/table';
+
 
 @Component({
   selector: 'app-cadastro-consulta',
@@ -21,24 +26,41 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     ReactiveFormsModule,
     MatIcon,
     MatButton,
-    NgxMaterialTimepickerModule
+    NgxMaterialTimepickerModule,
+    MatList,
+    MatListItem,
+    MatLine,
+    MatIconModule,
+    MatTableModule,
+    FormsModule
   ],
   templateUrl: './cadastro-consulta.component.html',
   styleUrl: './cadastro-consulta.component.scss'
 })
 export class CadastroConsultaComponent implements OnInit {
 
-  constructor(private pageTitleService: PageTitleService) {
+  pacientes: any[] = [];
+  textoPesquisa: string = '';
+  displayedColumns: string[] = ['registro', 'nomePaciente', 'acao'];
+  pacienteSelecionado: any | null = null;
+  today: any;
+
+  constructor(private pageTitleService: PageTitleService, private pacientesService: PacientesService) {
     
     this.pageTitleService.setPageTitle('CADASTRO DE CONSULTA');
   }
 
   ngOnInit(): void {
+    this.atualizarListaPacientes();
   }
-today: any;
+
+  atualizarListaPacientes() {
+    this.pacientes = this.pacientesService.obterPacientes();
+  }
 
   consultaForm = new FormGroup({
-    pacienteSearch: new FormControl(''),
+    buscarPaciente: new FormControl(''),
+    idPaciente: new FormControl(''),
     motivoConsulta: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]),
     dataConsulta: new FormControl(this.getCurrentDate(), Validators.required),
     horarioConsulta: new FormControl('', Validators.required),
@@ -62,19 +84,20 @@ today: any;
     return today.toISOString().split('T')[0];
   }
 
-  // getCurrentTime(): string {
-  //   const now = new Date();
-  //   const hours = this.padZero(now.getHours());
-  //   const minutes = this.padZero(now.getMinutes());
-  //   return `${hours}:${minutes}`;
-  // }
 
-  // padZero(num: number): string {
-  //   return num < 10 ? `0${num}` : num.toString();
-  // }
 
-  pesquisarPacientes(){
-    
-  }  
+  pesquisarPacientes() {
+    const textoPesquisa = this.textoPesquisa.trim();
+    if (!textoPesquisa) {
+      this.atualizarListaPacientes();
+    } else {
+      this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
+      this.pacienteSelecionado = null;  
+    }
+  }
+
+  selecionarPaciente(paciente: any) {
+    this.pacienteSelecionado = paciente;
+  }
 
 }
