@@ -13,6 +13,7 @@ import { PageTitleService } from '../../services/title.service';
 import { PacientesService } from '../../services/pacientes.service';
 import { ConsultasService } from '../../services/consultas.service';
 import { ExamesService } from '../../services/exames.service';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
     selector: 'app-home',
@@ -29,7 +30,8 @@ import { ExamesService } from '../../services/exames.service';
         MatLabel,
         MatInputModule,
         MatButtonModule,
-        FormsModule   
+        FormsModule,
+        MatDividerModule   
     ]
 })
 export class HomeComponent implements OnInit {

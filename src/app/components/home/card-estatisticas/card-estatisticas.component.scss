@@ -11,10 +11,10 @@
 
   h1 {
     margin: 0;
-    font-weight: bolder;
-    font-size: 18px;
+    font-weight: lighter;
+    font-size: 20px;
+    letter-spacing: 0.25em;  }
   }
-}
 
 .cards-container {
   display: flex;
@@ -48,5 +48,8 @@
 
   mat-card-subtitle {
     padding-bottom: 20px;
+    text-transform: uppercase;
+    font-weight: light;
+    letter-spacing: .5em;
   }
 }
