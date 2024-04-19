@@ -3,7 +3,7 @@
   <div class="buscar-paciente">
     <mat-form-field appearance="fill" class="input-busca">
       <mat-label>Buscar paciente</mat-label>
-        <input id="input-busca" matInput placeholder="Buscar por nome, telefone ou email" type="text" [(ngModel)]="textoPesquisa">
+        <input id="input-busca" matInput placeholder="Buscar por nome ou por registro" type="text" [(ngModel)]="textoPesquisa">
       </mat-form-field>
       <button mat-flat-button color="primary" (click)="pesquisarPacientes(textoPesquisa)">
         <mat-icon matSuffix>search</mat-icon>
