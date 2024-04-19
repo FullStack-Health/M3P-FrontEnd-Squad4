@@ -88,5 +88,5 @@ export class CadastroExamesComponent {
 
   cadastrarExame(){
 
-  }
+  } 
 }

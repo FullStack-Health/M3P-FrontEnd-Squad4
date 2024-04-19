@@ -53,8 +53,8 @@
   
     <mat-form-field class="form-group">
       <mat-label>Horário do Exame</mat-label>
-      <input matInput type="time" id="dataExame" [ngxTimepicker]="picker" formControlName="horarioConsulta" placeholder="Horário do Exame">
-      <ngx-material-timepicker #picker></ngx-material-timepicker>
+      <input matInput type="time" formControlName="horarioConsulta" placeholder="Horário do Exame">
+       <!-- [ngxTimepicker]="picker"<ngx-material-timepicker #picker></ngx-material-timepicker> -->
     </mat-form-field>
   
     <mat-form-field class="form-group textarea">

@@ -12,6 +12,7 @@ import { PacientesService } from '../../services/pacientes.service';
 import { MatLine } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
+import { ConsultasService } from '../../services/consultas.service';
 
 @Component({
   selector: 'app-cadastro-consulta',
@@ -32,7 +33,7 @@ import { CommonModule } from '@angular/common';
     MatIconModule,
     MatTableModule,
     FormsModule,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './cadastro-consulta.component.html',
   styleUrl: './cadastro-consulta.component.scss'
@@ -44,8 +45,12 @@ export class CadastroConsultaComponent implements OnInit {
   displayedColumns: string[] = ['registro', 'nomePaciente', 'acao'];
   pacienteSelecionado: any | null = null;
   today: any;
+  consultaEditando: any | null = null;
 
-  constructor(private pageTitleService: PageTitleService, private pacientesService: PacientesService) {
+  constructor(
+    private pageTitleService: PageTitleService,
+    private pacientesService: PacientesService,
+    private consultasService: ConsultasService) {
     
     this.pageTitleService.setPageTitle('CADASTRO DE CONSULTA');
   }
@@ -59,7 +64,7 @@ export class CadastroConsultaComponent implements OnInit {
   }
 
   consultaForm = new FormGroup({
-    buscarPaciente: new FormControl(''),
+    nomeCompletoPaciente: new FormControl(''),
     idPaciente: new FormControl(''),
     motivoConsulta: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]),
     dataConsulta: new FormControl(this.getCurrentDate(), Validators.required),
@@ -69,22 +74,12 @@ export class CadastroConsultaComponent implements OnInit {
     dosagemPrecaucoes: new FormControl('', [Validators.required, Validators.minLength(16), Validators.maxLength(256)])
   });
 
- 
-  submitForm() {
-    if (this.consultaForm?.valid) {
-      // Implementar a lógica para salvar a consulta aqui
-      console.log('Formulário válido. Salvando consulta...');
-    } else {
-      console.log('Formulário inválido. Verifique os campos.');
-    }
-  }
-
+  
   getCurrentDate(): string {
     const today = new Date();
     return today.toISOString().split('T')[0];
   }
-
-
+  
 
   pesquisarPacientes() {
     const textoPesquisa = this.textoPesquisa.trim();
@@ -95,9 +90,31 @@ export class CadastroConsultaComponent implements OnInit {
       this.pacienteSelecionado = null;  
     }
   }
-
+  
   selecionarPaciente(paciente: any) {
     this.pacienteSelecionado = paciente;
   }
+  
+  submitForm() {
+    if (this.consultaForm.valid && this.pacienteSelecionado) {
+      const formConsultaPreenchido = this.consultaForm.value;
+      this.consultasService.salvarConsulta(formConsultaPreenchido, this.pacienteSelecionado);
+      this.consultaForm.reset();
+    } else {
+      alert('Formulário inválido ou nenhum paciente selecionado. Verifique os campos.');
+    }
+  }
 
+  editarConsulta(consulta: any) {
+    this.consultaEditando = consulta;
+    // Preencher o formulário com os dados da consulta para edição
+    this.consultaForm.patchValue({
+      // Preencher os campos conforme necessário com os dados da consulta selecionada
+    });
+    
+  }
+
+  deletarConsulta(id: string) {
+    this.consultasService.deletarConsulta(id);
+  }
 }
