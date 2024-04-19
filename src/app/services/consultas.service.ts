@@ -38,4 +38,8 @@ export class ConsultasService {
     return JSON.parse(localStorage.getItem('consultas') || '[]');
   }
 
+  obterQuantidadeConsultas(): number {
+    return this.obterConsultas().length;
+  }
+
 }

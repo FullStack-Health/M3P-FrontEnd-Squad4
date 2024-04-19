@@ -21,4 +21,7 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
 export class CardEstatisticasComponent {
 
   @Input() quantidadePacientes: number | undefined;
+  @Input() quantidadeExames: number | undefined;
+  @Input() quantidadeConsultas: number | undefined;
+  
 }

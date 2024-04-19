@@ -37,5 +37,9 @@ export class ExamesService {
     return JSON.parse(localStorage.getItem('exames') || '[]');
   }
 
+  obterQuantidadeExames(): number {
+    return this.obterExames().length;
+  }
+
   
 }
