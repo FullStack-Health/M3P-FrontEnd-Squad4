@@ -7,6 +7,7 @@ import { PageTitleService } from '../../services/title.service';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { PacientesService } from '../../services/pacientes.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -30,7 +31,11 @@ export class ListagemProntuarioComponent {
   pacientes: any[] = [];
   textoPesquisa: any;
 
-  constructor(private pageTitleService: PageTitleService, private pacientesService: PacientesService) {  
+  constructor(
+    private pageTitleService: PageTitleService,
+    private pacientesService: PacientesService,
+    private router: Router
+  ) {  
     this.pageTitleService.setPageTitle('LISTAGEM DE PRONTUÁRIO');
     this.atualizarListaPacientes();
 }
@@ -50,7 +55,7 @@ pesquisarPacientes(textoPesquisa: string) {
 }
 
   acessarProntuario(paciente: any) {
-
+    this.router.navigate(['/prontuario-paciente', paciente.id]);
   }
 
 }

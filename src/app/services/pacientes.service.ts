@@ -24,8 +24,9 @@ export class PacientesService {
 
   obterPacientePorId(id: string): any {
     const pacientes = this.obterPacientes();
-    return pacientes.find(paciente => paciente.id === id);
+    return pacientes.find(paciente => paciente.id === id.toString());
   }
+  
 
   deletarPacientes() {
     localStorage.removeItem('pacientes');

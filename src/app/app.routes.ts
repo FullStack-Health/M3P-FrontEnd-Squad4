@@ -17,6 +17,7 @@ export const routes: Routes = [
   { path: 'cadastro-consulta', component: CadastroConsultaComponent},
   { path: 'cadastro-exames', component: CadastroExamesComponent},
   { path: 'listagem-prontuario', component: ListagemProntuarioComponent },
+  { path: 'prontuario-paciente/:id', component: ProntuarioPacienteComponent },
   { path: 'prontuario-paciente', component: ProntuarioPacienteComponent },
   { path: '**', redirectTo: '/', pathMatch: 'full' },
 ];

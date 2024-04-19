@@ -37,6 +37,11 @@ export class ExamesService {
     return JSON.parse(localStorage.getItem('exames') || '[]');
   }
 
+  obterExamesPorId(idPaciente: string): any[] {
+    const consultas = this.obterExames();
+    return consultas.filter(consulta => consulta.idPaciente === idPaciente);
+  }
+
   obterQuantidadeExames(): number {
     return this.obterExames().length;
   }

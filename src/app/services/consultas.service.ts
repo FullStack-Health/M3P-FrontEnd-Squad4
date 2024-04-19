@@ -38,8 +38,14 @@ export class ConsultasService {
     return JSON.parse(localStorage.getItem('consultas') || '[]');
   }
 
+  obterConsultasPorId(idPaciente: string): any[] {
+    const consultas = this.obterConsultas();
+    return consultas.filter(consulta => consulta.idPaciente === idPaciente);
+  }
+  
   obterQuantidadeConsultas(): number {
     return this.obterConsultas().length;
   }
-
+  
 }
+
