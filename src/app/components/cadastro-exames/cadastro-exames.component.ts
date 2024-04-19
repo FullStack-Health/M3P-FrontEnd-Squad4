@@ -12,6 +12,8 @@ import { PacientesService } from '../../services/pacientes.service';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { CardInfoPacientesComponent } from '../home/card-info-pacientes/card-info-pacientes.component';
 import { MatTable, MatTableModule } from '@angular/material/table';
+import { ExamesService } from '../../services/exames.service';
+import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 
 
 @Component({
@@ -27,12 +29,13 @@ import { MatTable, MatTableModule } from '@angular/material/table';
     CommonModule,
     FormsModule,
     MatLabel,
-    NgxMaterialTimepickerModule,
     MatIcon,
     CardInfoPacientesComponent,
     MatTable,
     MatIconModule,
     MatTableModule,
+    MatDatepickerModule,
+    MatDatepicker
    ],
   templateUrl: './cadastro-exames.component.html',
   styleUrls: ['./cadastro-exames.component.scss'],
@@ -47,7 +50,11 @@ export class CadastroExamesComponent {
   displayedColumns: string[] = ['registro', 'nomePaciente', 'acao'];
 
 
-  constructor (private pageTitleService: PageTitleService, private pacientesService: PacientesService) {
+  constructor (
+    private pageTitleService: PageTitleService,
+    private pacientesService: PacientesService,
+    private examesService: ExamesService
+  ) {
     this.pageTitleService.setPageTitle('CADASTRO DE EXAMES');
   }
   
@@ -60,7 +67,7 @@ export class CadastroExamesComponent {
   }
 
   exameForm = new FormGroup({
-    buscarPaciente: new FormControl(''),
+    nomeCompletoPaciente: new FormControl(''),
     idPaciente: new FormControl(''),
     nomeExame: new FormControl('', [Validators.required]),
     dataExame: new FormControl('', [Validators.required]),
@@ -87,6 +94,13 @@ export class CadastroExamesComponent {
   }
 
   cadastrarExame(){
-
+    if (this.exameForm.valid && this.pacienteSelecionado) {
+      const exameFormPreenchido = this.exameForm.value;
+      this.examesService.salvarExame(exameFormPreenchido, this.pacienteSelecionado);
+      this.exameForm.reset();
+      alert("Exames cadastrados com sucesso!")
+    } else {
+      alert('Formulário inválido ou nenhum paciente selecionado. Verifique os campos.');
+    }
   } 
 }

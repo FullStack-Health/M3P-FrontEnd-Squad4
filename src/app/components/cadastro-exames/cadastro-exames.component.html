@@ -50,11 +50,17 @@
   </mat-form-field>
 
   <mat-form-field class="form-group">
-    <mat-label>Horário do Exame</mat-label>
-    <input matInput id="dataExame" [ngxTimepicker]="picker" formControlName="horarioExame" placeholder="Horário do Exame">
-    <ngx-material-timepicker #picker></ngx-material-timepicker>
+    <mat-label>Data do Exame</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="dataExame" placeholder="MM/DD/YYYY">
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 
+  <mat-form-field class="form-group">
+    <mat-label>Horário do Exame</mat-label>
+    <input matInput type="time" formControlName="horarioExame" required>
+  </mat-form-field>
+  
   <mat-form-field class="form-group">
     <mat-label>Tipo do Exame</mat-label>
     <input matInput id="tipoExame" formControlName="tipoExame" placeholder="Tipo do Exame">

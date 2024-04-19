@@ -127,7 +127,7 @@ ngOnInit(): void {
   }
   
 
-  submitForm(){
+  cadastrarPaciente(){
     console.log('Paciente salvo com sucesso!')
     if(this.patRegForm.valid) {
       const formData = this.patRegForm.value;

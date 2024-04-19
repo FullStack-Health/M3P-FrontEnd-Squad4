@@ -6,7 +6,6 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { PageTitleService } from '../../services/title.service';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatList, MatListItem } from '@angular/material/list';
 import { PacientesService } from '../../services/pacientes.service';
 import { MatLine } from '@angular/material/core';
@@ -26,7 +25,6 @@ import { ConsultasService } from '../../services/consultas.service';
     ReactiveFormsModule,
     MatIcon,
     MatButton,
-    NgxMaterialTimepickerModule,
     MatList,
     MatListItem,
     MatLine,
@@ -95,11 +93,12 @@ export class CadastroConsultaComponent implements OnInit {
     this.pacienteSelecionado = paciente;
   }
   
-  submitForm() {
+  cadastrarConsulta() {
     if (this.consultaForm.valid && this.pacienteSelecionado) {
       const formConsultaPreenchido = this.consultaForm.value;
       this.consultasService.salvarConsulta(formConsultaPreenchido, this.pacienteSelecionado);
       this.consultaForm.reset();
+      alert('Consulta cadastrada com sucesso!');
     } else {
       alert('Formulário inválido ou nenhum paciente selecionado. Verifique os campos.');
     }
