@@ -147,7 +147,7 @@
 
   <div class="buttons-container">
     <button mat-button type="button" class="edit-button" [disabled]="!pacienteId">Editar</button>
-    <button mat-button type="button" class="delete-button" [disabled]="!pacienteId">Deletar</button>
+    <button mat-button type="button" class="delete-button" [disabled]="!pacienteId" (click)="deletarPaciente()">Deletar</button>
     <button mat-raised-button type="submit" class="save-button" [disabled]="!pacienteForm.valid">Salvar</button>
   </div>
 
