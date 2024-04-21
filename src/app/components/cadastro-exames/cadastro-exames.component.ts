@@ -14,7 +14,7 @@ import { CardInfoPacientesComponent } from '../home/card-info-pacientes/card-inf
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { ExamesService } from '../../services/exames.service';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -49,7 +49,7 @@ export class CadastroExamesComponent {
   textoPesquisa: string = '';
   pacienteSelecionado: any | null = null;
   displayedColumns: string[] = ['registro', 'nomePaciente', 'acao'];
-  exameId: string | null = null;
+  exameId: string | any;
   exameForm: FormGroup;
 
 
@@ -57,7 +57,8 @@ export class CadastroExamesComponent {
     private pageTitleService: PageTitleService,
     private pacientesService: PacientesService,
     private examesService: ExamesService,
-    private route: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
   ) {
     this.pageTitleService.setPageTitle('CADASTRO DE EXAMES');
 
@@ -75,7 +76,7 @@ export class CadastroExamesComponent {
   }
   
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.activatedRoute.params.subscribe(params => {
       this.exameId = params['exameId']; 
       if (this.exameId) {
         this.carregarExame();
@@ -136,4 +137,15 @@ export class CadastroExamesComponent {
       alert('Formulário inválido ou nenhum paciente selecionado. Verifique os campos.');
     }
   } 
+
+
+  deletarExame() {
+    if (this.exameId) {
+      this.examesService.deletarExame(this.exameId);
+      alert("Exame deletado com sucesso!");
+      this.router.navigate(['home']);
+    } else {
+      console.error('ID do exame não encontrado para exclusão.');
+    }
+  }
 }

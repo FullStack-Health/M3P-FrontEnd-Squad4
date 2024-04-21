@@ -18,7 +18,7 @@ export class ExamesService {
 
   deletarExame(id: string) {
     let exames: any[] = this.obterExames();
-    const index = exames.findIndex(exame => exame.id === id);
+    const index = exames.findIndex(exame => exame.idExame === id);
     if (index !== -1) {
       exames.splice(index, 1); 
       localStorage.setItem('exames', JSON.stringify(exames));

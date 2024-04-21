@@ -81,7 +81,7 @@
 
   <div class="buttons-container">
     <button mat-button type="button" class="edit-button" [disabled]="!exameId">Editar</button>
-    <button mat-button type="button" class="delete-button" [disabled]="!exameId">Deletar</button>
+    <button mat-button type="button" class="delete-button" [disabled]="!exameId" (click)="deletarExame()">Deletar</button>
     <button mat-raised-button type="submit" class="save-button" [disabled]="!exameForm.valid">Salvar</button>
   </div>
 </form>
