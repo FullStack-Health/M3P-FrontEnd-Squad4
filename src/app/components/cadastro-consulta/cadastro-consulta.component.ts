@@ -58,8 +58,6 @@ export class CadastroConsultaComponent implements OnInit {
     
     this.pageTitleService.setPageTitle('CADASTRO DE CONSULTA');
     this.consultaForm = new FormGroup({
-      nomeCompletoPaciente: new FormControl(''),
-      idPaciente: new FormControl(''),
       motivoConsulta: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]),
       dataConsulta: new FormControl('', Validators.required),
       horarioConsulta: new FormControl('', Validators.required),
@@ -115,13 +113,14 @@ export class CadastroConsultaComponent implements OnInit {
       this.atualizarListaPacientes();
     } else {
       this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
-      this.pacienteSelecionado = null;  
+      // this.pacienteSelecionado = null;  
     }
   }
   
   selecionarPaciente(paciente: any) {
     this.pacienteSelecionado = paciente;
     this.consultaForm.patchValue({
+      ...this.consultaForm.value, 
       nomeCompletoPaciente: paciente.nomeCompleto,
       idPaciente: paciente.id
     });

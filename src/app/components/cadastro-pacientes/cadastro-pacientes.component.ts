@@ -31,6 +31,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class CadastroPacientesComponent implements OnInit {
 
+  pacienteId: string | null = null;
+  endereco: any | undefined = undefined;
+
   constructor(
     private pageTitleService: PageTitleService,
     private consultaCepService: ConsultaCepService,
@@ -42,7 +45,7 @@ export class CadastroPacientesComponent implements OnInit {
    }
   
 
-patRegForm = new FormGroup ({
+pacienteForm = new FormGroup ({
   nomeCompleto: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]),
   genero: new FormControl('', [Validators.required]),
   dataNascimento: new FormControl('', [Validators.required]),
@@ -71,21 +74,19 @@ patRegForm = new FormGroup ({
 
 ngOnInit(): void {
   this.activatedRoute.params.subscribe(params => {
-    const idPaciente = params['id'];
-    if (idPaciente) {
-      const paciente = this.pacientesService.obterPacientePorId(idPaciente);
+    this.pacienteId = params['id'];
+    if (this.pacienteId) {
+      const paciente = this.pacientesService.obterPacientePorId(this.pacienteId);
       if (paciente) {
-        this.patRegForm.patchValue(paciente);
+        this.pacienteForm.patchValue(paciente);
       }
     }
   });
 }
 
-  endereco: any | undefined = undefined;
-  ;
 
   consultaCEP() {
-    const cepValue = this.patRegForm.get('cep')?.value;
+    const cepValue = this.pacienteForm.get('cep')?.value;
     if (cepValue && cepValue.length === 8) { 
       this.consultaCepService.obterEndereco(cepValue).subscribe(
         {
@@ -102,7 +103,7 @@ ngOnInit(): void {
   }
 
   preencherCamposEndereco(endereco: any) {
-    this.patRegForm.patchValue({
+    this.pacienteForm.patchValue({
       cidade: endereco.localidade,
       estado: endereco.uf,
       logradouro: endereco.logradouro,
@@ -110,28 +111,13 @@ ngOnInit(): void {
     });
   }
 
-  
-  isFormValid(): boolean {
-    return this.patRegForm.valid &&
-      this.patRegForm.get('nomeCompleto')?.value !== '' &&
-      this.patRegForm.get('genero')?.value !== '' &&
-      this.patRegForm.get('dataNascimento')?.value !== '' &&
-      this.patRegForm.get('cpf')?.value !== '' &&
-      this.patRegForm.get('rg')?.value !== '' &&
-      this.patRegForm.get('orgaoExpedidor')?.value !== '' &&
-      this.patRegForm.get('telefone')?.value !== '' &&
-      this.patRegForm.get('naturalidade')?.value !== '' &&
-      this.patRegForm.get('contatoEmergencia')?.value !== '' &&
-      this.patRegForm.get('cep')?.value !== '';
-  }
-  
 
   cadastrarPaciente(){
     console.log('Paciente salvo com sucesso!')
-    if(this.patRegForm.valid) {
-      const formData = this.patRegForm.value;
+    if(this.pacienteForm.valid) {
+      const formData = this.pacienteForm.value;
       this.pacientesService.salvarPaciente(formData);
-      this.patRegForm.reset();
+      this.pacienteForm.reset();
     }
   }
 }

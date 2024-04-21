@@ -1,5 +1,5 @@
 
-<div class="container">
+<div class="container" *ngIf="!consultaId">
 
   <div class="buscar-paciente">
     <mat-form-field appearance="fill" class="input-busca">
@@ -35,48 +35,51 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let paciente; columns: displayedColumns;"></tr>
   </table>
-      
-  <form [formGroup]="consultaForm" (ngSubmit)="cadastrarConsulta()">
-
-    
-    <h1 *ngIf="pacienteSelecionado">Consulta de {{ pacienteSelecionado.nomeCompleto }}</h1>
-      
-    <mat-form-field class="form-group">
-      <mat-label>Motivo da Consulta</mat-label>
-      <input id="motivoConsulta" matInput type="text" formControlName="motivoConsulta" required minlength="8" maxlength="64">
-    </mat-form-field>
   
-    <mat-form-field class="form-group">
-      <mat-label>Data da Consulta</mat-label>
-      <input id="dataConsulta" matInput type="date" formControlName="dataConsulta" required>
-    </mat-form-field>
-  
-    <mat-form-field class="form-group">
-      <mat-label>Horário da Consulta</mat-label>
-      <input matInput type="time" formControlName="horarioConsulta" required>
-    </mat-form-field>
-  
-    <mat-form-field class="form-group textarea">
-      <mat-label>Descrição do Problema</mat-label>
-      <textarea id="descricaoProblema" matInput formControlName="descricaoProblema" required minlength="16" maxlength="1024"></textarea>
-    </mat-form-field>
-  
-    <mat-form-field class="form-group" >
-      <mat-label>Medicação Receitada</mat-label>
-      <input id="medicacaoReceitada" matInput type="text" formControlName="medicacaoReceitada">
-    </mat-form-field>
-  
-    <mat-form-field class="form-group textarea">
-      <mat-label>Dosagem e Precauções</mat-label>
-      <textarea id="dosagemPrecaucoes" matInput formControlName="dosagemPrecaucoes" required minlength="16" maxlength="256"></textarea>
-    </mat-form-field>
-  
-    <div class="buttons-container">
-      <button mat-button type="button" class="edit-button" [disabled]="!consultaForm.valid">Editar</button>
-      <button mat-button type="button" class="delete-button" [disabled]="!consultaForm.valid">Deletar</button>
-      <button mat-raised-button type="submit" class="save-button" [disabled]="!consultaForm.valid">Salvar</button>
-    </div>
-  </form>
-
 </div>  
+  
+
+
+<form [formGroup]="consultaForm" (ngSubmit)="cadastrarConsulta()">
+  <div *ngIf="pacienteSelecionado">
+    <h1>Consulta de {{ pacienteSelecionado.nomeCompleto }}</h1>
+  </div>
+  
+  <mat-form-field class="form-group">
+    <mat-label>Motivo da Consulta</mat-label>
+    <input id="motivoConsulta" matInput type="text" formControlName="motivoConsulta" required minlength="8" maxlength="64">
+  </mat-form-field>
+
+  <mat-form-field class="form-group">
+    <mat-label>Data da Consulta</mat-label>
+    <input id="dataConsulta" matInput type="date" formControlName="dataConsulta" required>
+  </mat-form-field>
+  
+  <mat-form-field class="form-group">
+    <mat-label>Horário da Consulta</mat-label>
+    <input matInput type="time" formControlName="horarioConsulta" required>
+  </mat-form-field>
+
+  <mat-form-field class="form-group textarea">
+    <mat-label>Descrição do Problema</mat-label>
+    <textarea id="descricaoProblema" matInput formControlName="descricaoProblema" required minlength="16" maxlength="1024"></textarea>
+  </mat-form-field>
+
+  <mat-form-field class="form-group" >
+    <mat-label>Medicação Receitada</mat-label>
+    <input id="medicacaoReceitada" matInput type="text" formControlName="medicacaoReceitada">
+  </mat-form-field>
+
+  <mat-form-field class="form-group textarea">
+    <mat-label>Dosagem e Precauções</mat-label>
+    <textarea id="dosagemPrecaucoes" matInput formControlName="dosagemPrecaucoes" required minlength="16" maxlength="256"></textarea>
+  </mat-form-field>
+
+  <div class="buttons-container">
+    <button mat-button type="button" class="edit-button" [disabled]="!consultaId">Editar</button>
+    <button mat-button type="button" class="delete-button" [disabled]="!consultaId">Deletar</button>
+    <button mat-raised-button type="submit" class="save-button" [disabled]="!consultaForm.valid">Salvar</button>
+  </div>
+</form>
+
 
