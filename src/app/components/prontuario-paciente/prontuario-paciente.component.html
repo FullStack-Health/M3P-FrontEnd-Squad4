@@ -1,5 +1,5 @@
 <div class="container">
-<h1>Prountuário de {{ paciente.nomeCompleto }}</h1>  <div class="container">
+<h1>Prontuário de {{ paciente.nomeCompleto }}</h1>  <div class="container">
     <!-- Informações do Paciente -->
     <div *ngIf="paciente">
       <section class="info-paciente-container" class="mat-elevation-z2">
@@ -12,7 +12,7 @@
           <p><strong>Convênio:</strong> {{ paciente.convenio }}</p>
         </div>
         <div class="item-info">
-          <p><strong>Contato de Emergência:</strong> {{ paciente.contatoEmergencia }}</p>
+          <p><strong>Contato de Emergência:</strong> {{ paciente.contatoEmergencia | formatarTelefone }}</p>
         </div>
         <div class="item-info">
           <p><strong>Alergias:</strong> {{ paciente.alergias }}</p>

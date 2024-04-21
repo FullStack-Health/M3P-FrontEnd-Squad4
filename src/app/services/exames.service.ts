@@ -8,9 +8,9 @@ export class ExamesService {
 
   salvarExame(exame: any, pacienteSelecionado: any) {
     const idExame = this.gerarIdExame();
-    exame.idExame = idExame; // Adiciona o idExame ao objeto de exame
-    exame.nomeCompletoPaciente = pacienteSelecionado.nomeCompleto; // Adiciona o nome do paciente
-    exame.idPaciente = pacienteSelecionado.id; // Adiciona o id do paciente
+    exame.idExame = idExame; 
+    exame.nomeCompletoPaciente = pacienteSelecionado.nomeCompleto;
+    exame.idPaciente = pacienteSelecionado.id;
     let exames: any[] = this.obterExames();
     exames.push(exame);
     localStorage.setItem('exames', JSON.stringify(exames));
