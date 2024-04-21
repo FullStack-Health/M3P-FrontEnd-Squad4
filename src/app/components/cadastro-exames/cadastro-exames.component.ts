@@ -91,6 +91,10 @@ export class CadastroExamesComponent {
 
   selecionarPaciente(paciente: any) {
     this.pacienteSelecionado = paciente;
+    this.exameForm.patchValue({
+      nomeCompletoPaciente: paciente.nomeCompleto,
+      idPaciente: paciente.id
+    });
   }
 
   cadastrarExame(){

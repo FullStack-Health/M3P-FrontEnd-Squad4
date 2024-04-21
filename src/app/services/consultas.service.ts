@@ -42,6 +42,13 @@ export class ConsultasService {
     const consultas = this.obterConsultas();
     return consultas.filter(consulta => consulta.idPaciente === idPaciente);
   }
+
+  obterConsultaPorId(idConsulta: string): any {
+    const consultas = this.obterConsultas();
+    return consultas.find(consulta => consulta.idConsulta === idConsulta);
+  }
+  
+
   
   obterQuantidadeConsultas(): number {
     return this.obterConsultas().length;

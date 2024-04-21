@@ -86,13 +86,12 @@ ngOnInit(): void {
 
   consultaCEP() {
     const cepValue = this.patRegForm.get('cep')?.value;
-    if (cepValue && cepValue.length === 8) { // Verifica se o CEP tem 8 dígitos
+    if (cepValue && cepValue.length === 8) { 
       this.consultaCepService.obterEndereco(cepValue).subscribe(
         {
           next: (response: any) => {
             this.endereco = response;
             this.preencherCamposEndereco(response);
-            // console.log(response);
           },
           error: (error: any) => {
             console.error(error);

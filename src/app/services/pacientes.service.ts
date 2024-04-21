@@ -24,8 +24,10 @@ export class PacientesService {
 
   obterPacientePorId(id: string): any {
     const pacientes = this.obterPacientes();
-    return pacientes.find(paciente => paciente.id === id.toString());
+    const pacienteEncontrado = pacientes.find(paciente => paciente.id === id);
+    return pacienteEncontrado ? pacienteEncontrado : null;
   }
+  
   
 
   deletarPacientes() {

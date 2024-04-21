@@ -12,6 +12,7 @@ import { MatLine } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { ConsultasService } from '../../services/consultas.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cadastro-consulta',
@@ -44,35 +45,64 @@ export class CadastroConsultaComponent implements OnInit {
   pacienteSelecionado: any | null = null;
   today: any;
   consultaEditando: any | null = null;
+  consulta: any;
+  consultaId!: string;
+  consultaForm: FormGroup;
 
   constructor(
     private pageTitleService: PageTitleService,
     private pacientesService: PacientesService,
-    private consultasService: ConsultasService) {
+    private consultasService: ConsultasService,
+    private route: ActivatedRoute
+  ) {
     
     this.pageTitleService.setPageTitle('CADASTRO DE CONSULTA');
+    this.consultaForm = new FormGroup({
+      nomeCompletoPaciente: new FormControl(''),
+      idPaciente: new FormControl(''),
+      motivoConsulta: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]),
+      dataConsulta: new FormControl('', Validators.required),
+      horarioConsulta: new FormControl('', Validators.required),
+      descricaoProblema: new FormControl('', [Validators.required, Validators.minLength(16), Validators.maxLength(1024)]),
+      medicacaoReceitada: new FormControl(''),
+      dosagemPrecaucoes: new FormControl('', [Validators.required, Validators.minLength(16), Validators.maxLength(256)])
+    });
   }
 
   ngOnInit(): void {
-    this.atualizarListaPacientes();
+    this.route.params.subscribe(params => {
+      this.consultaId = params['consultaId'];
+      if (this.consultaId) {
+        this.carregarConsulta();
+      }
+    });
+  }
+  
+
+  carregarConsulta() {
+    const consulta = this.consultasService.obterConsultaPorId(this.consultaId);
+    console.log(consulta)
+    if (consulta) {
+    this.consultaForm.patchValue({
+      nomeCompletoPaciente: consulta.nomeCompletoPaciente,
+      idPaciente: consulta.idPaciente,
+      motivoConsulta: consulta.motivoConsulta,
+      dataConsulta: consulta.dataConsulta,
+      horarioConsulta: consulta.horarioConsulta,
+      descricaoProblema: consulta.descricaoProblema,
+      medicacaoReceitada: consulta.medicacaoReceitada,
+      dosagemPrecaucoes: consulta.dosagemPrecaucoes
+    });
+    
+    } else {
+      console.error('Consulta não encontrada');
+    }
   }
 
   atualizarListaPacientes() {
     this.pacientes = this.pacientesService.obterPacientes();
   }
 
-  consultaForm = new FormGroup({
-    nomeCompletoPaciente: new FormControl(''),
-    idPaciente: new FormControl(''),
-    motivoConsulta: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]),
-    dataConsulta: new FormControl(this.getCurrentDate(), Validators.required),
-    horarioConsulta: new FormControl('', Validators.required),
-    descricaoProblema: new FormControl('', [Validators.required, Validators.minLength(16), Validators.maxLength(1024)]),
-    medicacaoReceitada: new FormControl(''),
-    dosagemPrecaucoes: new FormControl('', [Validators.required, Validators.minLength(16), Validators.maxLength(256)])
-  });
-
-  
   getCurrentDate(): string {
     const today = new Date();
     return today.toISOString().split('T')[0];
@@ -91,6 +121,10 @@ export class CadastroConsultaComponent implements OnInit {
   
   selecionarPaciente(paciente: any) {
     this.pacienteSelecionado = paciente;
+    this.consultaForm.patchValue({
+      nomeCompletoPaciente: paciente.nomeCompleto,
+      idPaciente: paciente.id
+    });
   }
   
   cadastrarConsulta() {
@@ -106,9 +140,15 @@ export class CadastroConsultaComponent implements OnInit {
 
   editarConsulta(consulta: any) {
     this.consultaEditando = consulta;
-    // Preencher o formulário com os dados da consulta para edição
     this.consultaForm.patchValue({
-      // Preencher os campos conforme necessário com os dados da consulta selecionada
+      nomeCompletoPaciente: consulta.nomeCompletoPaciente,
+      idPaciente: consulta.idPaciente,
+      motivoConsulta: consulta.motivoConsulta,
+      dataConsulta: consulta.dataConsulta,
+      horarioConsulta: consulta.horarioConsulta,
+      descricaoProblema: consulta.descricaoProblema,
+      medicacaoReceitada: consulta.medicacaoReceitada,
+      dosagemPrecaucoes: consulta.dosagemPrecaucoes
     });
     
   }
