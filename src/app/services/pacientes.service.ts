@@ -7,6 +7,20 @@ export class PacientesService {
 
   constructor() { }
 
+  atualizarPaciente(id: string, paciente: any) {
+    const pacientes: any[] = this.obterPacientes();
+
+    const indice = pacientes.findIndex(paciente => paciente.id === id);
+
+    if (indice !== -1) {
+      pacientes[indice] = { ...paciente, id: id };
+
+      localStorage.setItem('pacientes', JSON.stringify(pacientes));
+    } else {
+      console.error('Paciente não encontrado com o ID fornecido:', id);
+    }
+  }
+
   salvarPaciente(paciente: any) {
     const pacientes: any[] = this.obterPacientes();
     paciente.id = this.gerarIdSequencial(pacientes.length + 1);
@@ -28,10 +42,14 @@ export class PacientesService {
     return pacienteEncontrado ? pacienteEncontrado : null;
   }
   
-  
-
   deletarPacientes() {
     localStorage.removeItem('pacientes');
+  }
+
+  deletarPacientePorId(id: string) {
+    let pacientes: any[] = this.obterPacientes();
+    pacientes = pacientes.filter(paciente => paciente.id !== id);
+    localStorage.setItem('pacientes', JSON.stringify(pacientes));
   }
 
   pesquisarPacientes(textoPesquisa: string): any[] {

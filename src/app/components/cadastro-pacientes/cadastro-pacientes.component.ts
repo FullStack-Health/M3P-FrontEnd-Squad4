@@ -9,7 +9,7 @@ import { PageTitleService } from '../../services/title.service';
 import { CommonModule } from '@angular/common';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { PacientesService } from '../../services/pacientes.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -39,6 +39,7 @@ export class CadastroPacientesComponent implements OnInit {
     private consultaCepService: ConsultaCepService,
     private pacientesService: PacientesService,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
   ) {
 
     this.pageTitleService.setPageTitle('CADASTRO DE PACIENTE');
@@ -111,13 +112,26 @@ ngOnInit(): void {
     });
   }
 
+  deletarPaciente() {
+    if (this.pacienteId) {
+      if (confirm('Tem certeza que deseja deletar este paciente?')) {
+        this.pacientesService.deletarPacientePorId(this.pacienteId);
+        alert('Paciente deletado com sucesso!');
+        this.router.navigate(['home'])
+      }
+    }
+  }
 
-  cadastrarPaciente(){
-    console.log('Paciente salvo com sucesso!')
-    if(this.pacienteForm.valid) {
+  cadastrarPaciente() {
+    if (this.pacienteForm.valid) {
       const formData = this.pacienteForm.value;
-      this.pacientesService.salvarPaciente(formData);
-      this.pacienteForm.reset();
+      if (this.pacienteId) {
+        this.pacientesService.atualizarPaciente(this.pacienteId, formData);
+        alert('Paciente atualizado com sucesso!');
+      } else {
+        this.pacientesService.salvarPaciente(formData);
+        alert('Paciente cadastrado com sucesso!');
+      }
     }
   }
 }
