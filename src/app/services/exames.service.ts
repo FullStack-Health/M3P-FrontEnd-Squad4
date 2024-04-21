@@ -42,6 +42,11 @@ export class ExamesService {
     return consultas.filter(consulta => consulta.idPaciente === idPaciente);
   }
 
+  obterExamePorId(idExame: string): any {
+    const exames = this.obterExames();
+    return exames.find(exame => exame.idExame === idExame);
+  }
+
   obterQuantidadeExames(): number {
     return this.obterExames().length;
   }

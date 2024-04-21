@@ -14,6 +14,7 @@ import { CardInfoPacientesComponent } from '../home/card-info-pacientes/card-inf
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { ExamesService } from '../../services/exames.service';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -48,37 +49,65 @@ export class CadastroExamesComponent {
   textoPesquisa: string = '';
   pacienteSelecionado: any | null = null;
   displayedColumns: string[] = ['registro', 'nomePaciente', 'acao'];
+  exameId: string | null = null;
+  exameForm: FormGroup;
 
 
   constructor (
     private pageTitleService: PageTitleService,
     private pacientesService: PacientesService,
-    private examesService: ExamesService
+    private examesService: ExamesService,
+    private route: ActivatedRoute
   ) {
     this.pageTitleService.setPageTitle('CADASTRO DE EXAMES');
+
+    this.exameForm = new FormGroup({
+      nomeCompletoPaciente: new FormControl(''),
+      idPaciente: new FormControl(''),
+      nomeExame: new FormControl('', [Validators.required]),
+      dataExame: new FormControl('', [Validators.required]),
+      horarioExame: new FormControl('', [Validators.required]),
+      tipoExame: new FormControl('', [Validators.required]),
+      laboratorio: new FormControl('', [Validators.required]),
+      urlDocumento: new FormControl('', [Validators.required]),
+      resultados: new FormControl('', [Validators.required]),
+    });
   }
   
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.exameId = params['exameId']; 
+      if (this.exameId) {
+        this.carregarExame();
+      }
+    });
+
     this.atualizarListaPacientes();
-  }  
+  }
+
+  carregarExame() {
+    const exame = this.examesService.obterExamePorId(this.exameId!);
+    if (exame) {
+      this.exameForm.patchValue({
+        nomeCompletoPaciente: exame.nomeCompletoPaciente,
+        idPaciente: exame.idPaciente,
+        nomeExame: exame.nomeExame,
+        dataExame: exame.dataExame,
+        horarioExame: exame.horarioExame,
+        tipoExame: exame.tipoExame,
+        laboratorio: exame.laboratorio,
+        urlDocumento: exame.urlDocumento,
+        resultados: exame.resultados,
+      });
+    } else {
+      console.error('Exame não encontrado');
+    }
+  }
 
   atualizarListaPacientes() {
     this.pacientes = this.pacientesService.obterPacientes();
   }
 
-  exameForm = new FormGroup({
-    nomeCompletoPaciente: new FormControl(''),
-    idPaciente: new FormControl(''),
-    nomeExame: new FormControl('', [Validators.required]),
-    dataExame: new FormControl('', [Validators.required]),
-    horarioExame: new FormControl('', [Validators.required]),
-    tipoExame: new FormControl('', [Validators.required]),
-    laboratorio: new FormControl('', [Validators.required]),
-    urlDocumento: new FormControl('', [Validators.required]),
-    resultados: new FormControl('', [Validators.required]),
-  });
-
-  
   pesquisarPacientes() {
     const textoPesquisa = this.textoPesquisa.trim();
     if (!textoPesquisa) {
