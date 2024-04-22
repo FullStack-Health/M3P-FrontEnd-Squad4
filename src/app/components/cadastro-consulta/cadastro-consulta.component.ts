@@ -75,6 +75,8 @@ export class CadastroConsultaComponent implements OnInit {
         this.carregarConsulta();
       }
     });
+
+    this.atualizarListaPacientes();
   }
   
 
@@ -138,22 +140,6 @@ export class CadastroConsultaComponent implements OnInit {
     }
   }
 
-  editarConsulta(consulta: any) {
-    this.consultaEditando = consulta;
-    this.consultaForm.patchValue({
-      nomeCompletoPaciente: consulta.nomeCompletoPaciente,
-      idPaciente: consulta.idPaciente,
-      motivoConsulta: consulta.motivoConsulta,
-      dataConsulta: consulta.dataConsulta,
-      horarioConsulta: consulta.horarioConsulta,
-      descricaoProblema: consulta.descricaoProblema,
-      medicacaoReceitada: consulta.medicacaoReceitada,
-      dosagemPrecaucoes: consulta.dosagemPrecaucoes
-    });
-    
-  }
-
-
   deletarConsulta() {
     console.log(this.consultaId)
     if (this.consultaId) {
@@ -166,15 +152,18 @@ export class CadastroConsultaComponent implements OnInit {
         console.error('ID da consulta não encontrado para exclusão.');
       }
   }
+
+ 
+  editarConsulta() {
+    if (this.consultaForm.valid && this.pacienteSelecionado) {
+      const consultaFormPreenchido = this.consultaForm.value;
+      consultaFormPreenchido.idConsulta = this.consultaId;
+      this.consultasService.atualizarConsulta(consultaFormPreenchido);
+      alert("Consulta atualizada com sucesso!");
+    } else {
+      alert('Nenhum paciente selecionado. Selecione um paciente na lista acima para atualizar a consulta.');
+    }
+  }
+
 }
 
-  // deletarExame() {
-  //   if (this.exameId) {
-  //     if (confirm("Tem certeza que deseja deletar essa consulta?")) {
-  //     this.examesService.deletarExame(this.exameId);
-  //     alert("Exame deletado com sucesso!");
-  //     this.router.navigate(['home']);}
-  //   } else {
-  //     console.error('ID do exame não encontrado para exclusão.');
-  //   }
-  // }

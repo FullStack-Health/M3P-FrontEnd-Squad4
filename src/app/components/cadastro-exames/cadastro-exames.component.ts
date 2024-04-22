@@ -144,9 +144,7 @@ export class CadastroExamesComponent {
   editarExame() {
     if (this.exameForm.valid && this.pacienteSelecionado) {
       const exameFormPreenchido = this.exameForm.value;
-      // Adiciona o ID do exame ao formulário
       exameFormPreenchido.idExame = this.exameId;
-      // Atualiza os dados do exame na lista de exames
       this.examesService.atualizarExame(exameFormPreenchido);
       alert("Exame atualizado com sucesso!");
     } else {

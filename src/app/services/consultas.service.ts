@@ -50,6 +50,17 @@ export class ConsultasService {
       console.error('Consulta não encontrada para deletar.');
     }
   }
+
+  atualizarConsulta(consultaAtualizada: any) {
+    let consultas: any[] = this.obterConsultas();
+    const index = consultas.findIndex(consulta => consulta.idConsulta === consultaAtualizada.idConsulta);
+    if (index !== -1) {
+      consultas[index] = consultaAtualizada;
+      localStorage.setItem('exames', JSON.stringify(consultas));
+    } else {
+      console.error('Exame não encontrado para atualizar.');
+    }
+  }
   
 }
 
