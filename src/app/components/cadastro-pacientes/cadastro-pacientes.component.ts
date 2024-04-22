@@ -134,4 +134,16 @@ ngOnInit(): void {
       }
     }
   }
+
+  editarPaciente() {
+    if (this.pacienteForm.valid && this.pacienteId) {
+      const pacienteFormPreenchido = this.pacienteForm.value;
+      this.pacientesService.atualizarPaciente(this.pacienteId, pacienteFormPreenchido);
+      alert("Dados do paciente atualizados com sucesso!");
+    } else {
+      alert('Formulário inválido ou nenhum paciente selecionado.');
+    }
+  }
+
+
 }
