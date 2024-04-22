@@ -51,5 +51,15 @@ export class ExamesService {
     return this.obterExames().length;
   }
 
+  atualizarExame(exameAtualizado: any) {
+    let exames: any[] = this.obterExames();
+    const index = exames.findIndex(exame => exame.idExame === exameAtualizado.idExame);
+    if (index !== -1) {
+      exames[index] = exameAtualizado;
+      localStorage.setItem('exames', JSON.stringify(exames));
+    } else {
+      console.error('Exame não encontrado para atualizar.');
+    }
+  }
   
 }

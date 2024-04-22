@@ -89,17 +89,8 @@ export class CadastroExamesComponent {
   carregarExame() {
     const exame = this.examesService.obterExamePorId(this.exameId!);
     if (exame) {
-      this.exameForm.patchValue({
-        nomeCompletoPaciente: exame.nomeCompletoPaciente,
-        idPaciente: exame.idPaciente,
-        nomeExame: exame.nomeExame,
-        dataExame: exame.dataExame,
-        horarioExame: exame.horarioExame,
-        tipoExame: exame.tipoExame,
-        laboratorio: exame.laboratorio,
-        urlDocumento: exame.urlDocumento,
-        resultados: exame.resultados,
-      });
+      this.exameForm.patchValue(exame);
+      this.exameForm.get('nomeCompletoPaciente')?.disable();
     } else {
       console.error('Exame não encontrado');
     }
@@ -149,4 +140,19 @@ export class CadastroExamesComponent {
       console.error('ID do exame não encontrado para exclusão.');
     }
   }
+
+  editarExame() {
+    if (this.exameForm.valid && this.pacienteSelecionado) {
+      const exameFormPreenchido = this.exameForm.value;
+      // Adiciona o ID do exame ao formulário
+      exameFormPreenchido.idExame = this.exameId;
+      // Atualiza os dados do exame na lista de exames
+      this.examesService.atualizarExame(exameFormPreenchido);
+      alert("Exame atualizado com sucesso!");
+    } else {
+      alert('Nenhum paciente selecionado. Selecione um paciente para atualizar o exame.');
+    }
+  }
+  
+
 }
