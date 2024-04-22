@@ -134,16 +134,17 @@ export class CadastroExamesComponent {
       this.exameForm.reset();
       alert("Exames cadastrados com sucesso!")
     } else {
-      alert('Formulário inválido ou nenhum paciente selecionado. Verifique os campos.');
+      alert('Nenhum paciente selecionado. Selecione um paciente para salvar o exame.');
     }
   } 
 
 
   deletarExame() {
     if (this.exameId) {
+      if (confirm("Tem certeza que deseja deletar esse exame?")) {
       this.examesService.deletarExame(this.exameId);
       alert("Exame deletado com sucesso!");
-      this.router.navigate(['home']);
+      this.router.navigate(['home']);}
     } else {
       console.error('ID do exame não encontrado para exclusão.');
     }

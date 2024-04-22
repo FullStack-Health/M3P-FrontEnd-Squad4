@@ -12,7 +12,7 @@ import { MatLine } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { ConsultasService } from '../../services/consultas.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-cadastro-consulta',
@@ -53,7 +53,8 @@ export class CadastroConsultaComponent implements OnInit {
     private pageTitleService: PageTitleService,
     private pacientesService: PacientesService,
     private consultasService: ConsultasService,
-    private route: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
     
     this.pageTitleService.setPageTitle('CADASTRO DE CONSULTA');
@@ -68,7 +69,7 @@ export class CadastroConsultaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.activatedRoute.params.subscribe(params => {
       this.consultaId = params['consultaId'];
       if (this.consultaId) {
         this.carregarConsulta();
@@ -152,7 +153,28 @@ export class CadastroConsultaComponent implements OnInit {
     
   }
 
-  deletarConsulta(id: string) {
-    this.consultasService.deletarConsulta(id);
+
+  deletarConsulta() {
+    console.log(this.consultaId)
+    if (this.consultaId) {
+      if (confirm("Tem certeza que deseja deletar essa consulta?")) {
+        this.consultasService.deletarConsulta(this.consultaId);
+        alert('Consulta deletada com sucesso!');
+        this.router.navigate(['home']);
+      }
+    } else {
+        console.error('ID da consulta não encontrado para exclusão.');
+      }
   }
 }
+
+  // deletarExame() {
+  //   if (this.exameId) {
+  //     if (confirm("Tem certeza que deseja deletar essa consulta?")) {
+  //     this.examesService.deletarExame(this.exameId);
+  //     alert("Exame deletado com sucesso!");
+  //     this.router.navigate(['home']);}
+  //   } else {
+  //     console.error('ID do exame não encontrado para exclusão.');
+  //   }
+  // }

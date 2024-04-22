@@ -16,18 +16,6 @@ export class ConsultasService {
     consultas.push(consulta);
     localStorage.setItem('consultas', JSON.stringify(consultas));
   }
-
-  deletarConsulta(id: string) {
-    let consultas: any[] = this.obterConsultas();
-    const index = consultas.findIndex(consulta => consulta.id === id);
-    if (index !== -1) {
-      consultas.splice(index, 1); 
-      localStorage.setItem('consultas', JSON.stringify(consultas));
-    } else {
-      console.error('Consulta não encontrada para deletar.');
-    }
-  }
-
   gerarIdConsulta(): string {
     const consultas = this.obterConsultas();
     const proximoId = consultas.length + 1;
@@ -48,10 +36,19 @@ export class ConsultasService {
     return consultas.find(consulta => consulta.idConsulta === idConsulta);
   }
   
-
-  
   obterQuantidadeConsultas(): number {
     return this.obterConsultas().length;
+  }
+
+  deletarConsulta(id: string) {
+    let consultas: any[] = this.obterConsultas();
+    const index = consultas.findIndex(consulta => consulta.idConsulta === id);
+    if (index !== -1) {
+      consultas.splice(index, 1); 
+      localStorage.setItem('consultas', JSON.stringify(consultas));
+    } else {
+      console.error('Consulta não encontrada para deletar.');
+    }
   }
   
 }
