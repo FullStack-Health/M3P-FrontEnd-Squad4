@@ -4,6 +4,9 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class UserService {
+
+  isLogged: boolean = false;
+
   constructor() {}
 
   addUser(user: any): void {
@@ -11,6 +14,8 @@ export class UserService {
     usersList.push(user);
     localStorage.setItem('usersList', JSON.stringify(usersList));
   }
+
+  
 
   getUsers(): any[] {
     let usersList = localStorage.getItem('usersList');

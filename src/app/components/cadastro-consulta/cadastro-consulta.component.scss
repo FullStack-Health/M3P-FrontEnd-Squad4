@@ -75,7 +75,7 @@ h3 {
 }
 
 .textarea {
-  width: calc(100% - 16px); // Calcula a largura para ocupar duas colunas com espaçamento
+  width: calc(100% - 16px); 
   height: 120px;
 
   &:last-child {

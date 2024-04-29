@@ -6,20 +6,21 @@ import { CadastroConsultaComponent } from './components/cadastro-consulta/cadast
 import { CadastroExamesComponent } from './components/cadastro-exames/cadastro-exames.component';
 import { ListagemProntuarioComponent } from './components/listagem-prontuario/listagem-prontuario.component';
 import { ProntuarioPacienteComponent } from './components/prontuario-paciente/prontuario-paciente.component';
+import { AuthGuard } from './guards/auth.guard';
 
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent},
+  { path: '', component: HomeComponent, canActivate: [AuthGuard]},
   { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent },
-  { path: 'cadastro-paciente', component: CadastroPacientesComponent},
-  { path: 'cadastro-paciente/:id', component: CadastroPacientesComponent },
-  { path: 'cadastro-consulta', component: CadastroConsultaComponent},
-  { path: 'cadastro-consulta/:consultaId', component: CadastroConsultaComponent },
-  { path: 'cadastro-exames', component: CadastroExamesComponent},
-  { path: 'cadastro-exames/:exameId', component: CadastroExamesComponent },
-  { path: 'prontuario-paciente', component: ProntuarioPacienteComponent },
-  { path: 'prontuario-paciente/:id', component: ProntuarioPacienteComponent },
-  { path: 'listagem-prontuario', component: ListagemProntuarioComponent },
-  { path: '**', redirectTo: '/', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'cadastro-paciente', component: CadastroPacientesComponent, canActivate: [AuthGuard] },
+  { path: 'cadastro-paciente/:id', component: CadastroPacientesComponent, canActivate: [AuthGuard] },
+  { path: 'cadastro-consulta', component: CadastroConsultaComponent, canActivate: [AuthGuard] },
+  { path: 'cadastro-consulta/:consultaId', component: CadastroConsultaComponent, canActivate: [AuthGuard] },
+  { path: 'cadastro-exames', component: CadastroExamesComponent, canActivate: [AuthGuard] },
+  { path: 'cadastro-exames/:exameId', component: CadastroExamesComponent, canActivate: [AuthGuard] },
+  { path: 'prontuario-paciente', component: ProntuarioPacienteComponent, canActivate: [AuthGuard] },
+  { path: 'prontuario-paciente/:id', component: ProntuarioPacienteComponent, canActivate: [AuthGuard] },
+  { path: 'listagem-prontuario', component: ListagemProntuarioComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];

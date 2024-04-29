@@ -40,14 +40,15 @@ export class SingupComponent {
   signupForm = new FormGroup ({
     fullName: new FormControl('', [Validators.required, Validators.minLength(9), Validators.maxLength(64)]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.maxLength(9)]),
-    confirmPassword: new FormControl('', [Validators.required, Validators.maxLength(9)])
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    confirmPassword: new FormControl('', [Validators.required, Validators.minLength(8)])
   })
 
 
   submit(){
     if(this.signupForm.valid){
       this.usersService.addUser(this.signupForm.value);
+      this.dialogRef.close();
     }
   }
 

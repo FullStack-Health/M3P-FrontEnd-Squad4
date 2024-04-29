@@ -8,11 +8,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { PageTitleService } from '../../services/title.service';
 import { MatList, MatListItem } from '@angular/material/list';
 import { PacientesService } from '../../services/pacientes.service';
-import { MatLine } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatLine, MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { ConsultasService } from '../../services/consultas.service';
 import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-cadastro-consulta',
@@ -33,9 +34,13 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatTableModule,
     FormsModule,
     CommonModule,
+    MatNativeDateModule
   ],
   templateUrl: './cadastro-consulta.component.html',
-  styleUrl: './cadastro-consulta.component.scss'
+  styleUrl: './cadastro-consulta.component.scss',
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
+  ]
 })
 export class CadastroConsultaComponent implements OnInit {
 
