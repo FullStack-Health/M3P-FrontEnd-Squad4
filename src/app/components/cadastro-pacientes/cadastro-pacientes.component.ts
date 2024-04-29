@@ -131,6 +131,7 @@ ngOnInit(): void {
       } else {
         this.pacientesService.salvarPaciente(formData);
         alert('Paciente cadastrado com sucesso!');
+        this.router.navigate(['home']);
       }
     }
   }
