@@ -1,4 +1,4 @@
-# LABMedical - Sistema de Gestão de Inventário Médico
+# LABMedical - Sistema de Gestão de Prontuários Médicos
 
 ## Introdução
 LABMedical, é uma aplicação para gestão de prontuários médicos desenvolvido para a empresa fictícia Medicine365 Inc. Este documento descreve o objetivo, tecnologias utilizadas e execução do sistema e possibilidades de melhorias futuras.
