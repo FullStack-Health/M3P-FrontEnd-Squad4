@@ -1,21 +1,13 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormControl, Validators, FormsModule, ReactiveFormsModule, FormGroup} from '@angular/forms';
-import {
-  MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
-} from '@angular/material/dialog';
-import {MatButtonModule} from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatDialogModule} from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { FormControl, Validators, FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { SingupComponent } from './singup/singup.component';
-import { UserService } from '../../services/users-storage.service';
+import { UserStorageService } from '../../services/users-storage.service';
 import { Router } from '@angular/router';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @Component({
   selector: 'app-login',
@@ -25,66 +17,63 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
-export class LoginComponent implements OnInit {
-  
+export class LoginComponent {
   signupForm: FormGroup | undefined;
+  forgotPasswordForm: FormGroup | undefined;
   usersList: any = [];
   fullName: string | undefined;
-  
+
   constructor(
     public dialog: MatDialog,
-    private userService: UserService,
-    private router: Router,
+    private readonly userService: UserStorageService,
+    private readonly router: Router
   ) {}
 
-  ngOnInit(): void {
- 
-  };
 
-  loginForm = new FormGroup ({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+  loginForm = new FormGroup({
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+    ]),
   });
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(SingupComponent, {
-      data: {signupForm: this.signupForm},
+    this.dialog.open(SingupComponent, {
+      data: { signupForm: this.signupForm },
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  };
-
-  
-    
-  login(){
-    const password = this.loginForm.value.password;
-    const signedupUser = this.signedupUser();
-    if (signedupUser && password === signedupUser.password){
-      this.userService.setLoggedUser(signedupUser);
-      this.router.navigate(['home']);
-    } else {
-      alert("Email ou senha incorretos");
-    }
-  };
-
-
-  signedupUser(){
-    let usersList = this.userService.getUsers();
-    return usersList.find((usuario: { email: string }) => usuario.email === this.loginForm.value.email);
-  };
-
-
-  forgotPassword(){
-    alert("Funcionalidade em construção")
   }
 
+  login() {
+    const password = this.loginForm.value.password;
+    const signedUser = this.signedUser();
+    if (signedUser && password === signedUser.password) {
+      this.userService.setLoggedUser(signedUser);
+      this.router.navigate(['home']);
+      alert('Entrou');
+    } else {
+      alert('Email ou senha incorretos');
+    }
+  }
 
+  signedUser() {
+    let usersList = this.userService.getUsers();
+    return usersList.find(
+      (usuario: { email: string }) =>
+        usuario.email === this.loginForm.value.email
+    );
+  }
 
+  forgotPassword() {
+    this.dialog.open(ForgotPasswordComponent, {
+      data: { forgotPasswordForm: this.forgotPasswordForm },
+    });
+  }
 }

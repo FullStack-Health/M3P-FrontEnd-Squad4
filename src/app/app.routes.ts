@@ -7,6 +7,8 @@ import { CadastroExamesComponent } from './components/cadastro-exames/cadastro-e
 import { ListagemProntuarioComponent } from './components/listagem-prontuario/listagem-prontuario.component';
 import { ProntuarioPacienteComponent } from './components/prontuario-paciente/prontuario-paciente.component';
 import { AuthGuard } from './guards/auth.guard';
+import { ListagemUsuariosComponent } from './components/listagem-usuarios/listagem-usuarios.component';
+import { EdicaoUsuariosComponent } from './components/edicao-usuarios/edicao-usuarios.component';
 
 
 export const routes: Routes = [
@@ -22,5 +24,7 @@ export const routes: Routes = [
   { path: 'prontuario-paciente', component: ProntuarioPacienteComponent, canActivate: [AuthGuard] },
   { path: 'prontuario-paciente/:id', component: ProntuarioPacienteComponent, canActivate: [AuthGuard] },
   { path: 'listagem-prontuario', component: ListagemProntuarioComponent, canActivate: [AuthGuard] },
+  { path: 'usuarios', component: ListagemUsuariosComponent, canActivate: [AuthGuard] },
+  { path: 'usuarios/:id', component: EdicaoUsuariosComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];

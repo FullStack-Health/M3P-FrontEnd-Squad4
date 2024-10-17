@@ -11,12 +11,11 @@
         <mat-label>Senha</mat-label>
         <input matInput formControlName="password" type="password">
       </mat-form-field><br>
-
-      <button mat-flat-button color="primary" class="btn-submit">Entrar</button><br>
     </form>
-    
+
+    <a (click)="forgotPassword()">Esqueceu a senha?</a>
+    <button mat-flat-button color="primary" class="btn-submit" (click)="login()">Entrar</button><br>
     <button mat-raised-button class="btn btn-open-dialog" (click)="openDialog()">Criar conta</button><br>
-    <button mat-raised-button class="tbn btn-forgot-password" (click)="forgotPassword()">Esqueceu a senha?</button>
   </div>
 
 

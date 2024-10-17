@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { PageTitleService } from '../../services/title.service';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
@@ -7,7 +7,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { PacientesService } from '../../services/pacientes.service';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { CardInfoPacientesComponent } from '../home/card-info-pacientes/card-info-pacientes.component';
@@ -47,18 +46,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class CadastroExamesComponent {
   pacientes: any[] = [];
   textoPesquisa: string = '';
-  pacienteSelecionado: any | null = null;
+  pacienteSelecionado: { id: string; nomeCompleto: string } | null = null;
   displayedColumns: string[] = ['registro', 'nomePaciente', 'acao'];
   exameId: string | any;
   exameForm: FormGroup;
 
 
   constructor (
-    private pageTitleService: PageTitleService,
-    private pacientesService: PacientesService,
-    private examesService: ExamesService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
+    private readonly pageTitleService: PageTitleService,
+    private readonly pacientesService: PacientesService,
+    private readonly examesService: ExamesService,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
   ) {
     this.pageTitleService.setPageTitle('CADASTRO DE EXAMES');
 
@@ -87,7 +86,7 @@ export class CadastroExamesComponent {
   }
 
   carregarExame() {
-    const exame = this.examesService.obterExamePorId(this.exameId!);
+    const exame = this.examesService.obterExamePorId(this.exameId);
     if (exame) {
       this.exameForm.patchValue(exame);
       this.exameForm.get('nomeCompletoPaciente')?.disable();

@@ -42,13 +42,13 @@ export class PacientesService {
   }
 
   obterPacientes(): any[] {
-    return JSON.parse(localStorage.getItem('pacientes') || '[]');
+    return JSON.parse(localStorage.getItem('pacientes') ?? '[]');
   }
 
   obterPacientePorId(id: string): any {
     const pacientes = this.obterPacientes();
     const pacienteEncontrado = pacientes.find(paciente => paciente.id === id);
-    return pacienteEncontrado ? pacienteEncontrado : null;
+    return pacienteEncontrado || null;
   }
   
   deletarPacientes() {

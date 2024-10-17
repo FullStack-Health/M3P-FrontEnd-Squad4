@@ -108,19 +108,19 @@
       <input matInput type="text" id="cep" formControlName="cep" (input)="consultaCEP()">
     </mat-form-field>
     
-    <mat-form-field class="form-group">
+    <mat-form-field class="form-group readonly">
       <mat-label>Cidade</mat-label>
-      <input matInput type="text" id="cidade" formControlName="cidade" [value]="endereco ? endereco.localidade : ''">
+      <input matInput readonly type="text" id="cidade" formControlName="cidade" [value]="endereco ? endereco.localidade : ''">
     </mat-form-field>
   
-    <mat-form-field class="form-group">
+    <mat-form-field class="form-group readonly">
       <mat-label>Estado</mat-label>
-      <input matInput type="text" id="estado" formControlName="estado" [value]="endereco ? endereco.uf : ''">
+      <input matInput readonly type="text" id="estado" formControlName="estado" [value]="endereco ? endereco.uf : ''">
     </mat-form-field>
   
-    <mat-form-field class="form-group">
-      <mat-label>Logradouro</mat-label>
-      <input matInput type="text" id="logradouro" formControlName="logradouro" [value]="endereco ? endereco.logradouro : ''">
+    <mat-form-field class="form-group readonly">
+      <mat-label>Rua</mat-label>
+      <input matInput readonly type="text" id="logradouro" formControlName="logradouro" [value]="endereco ? endereco.logradouro : ''">
     </mat-form-field>
   
     <mat-form-field class="form-group">
@@ -128,14 +128,14 @@
       <input matInput type="text" id="numero" formControlName="numero">
     </mat-form-field>
   
-    <mat-form-field class="form-group">
+    <mat-form-field class="form-group readonly">
       <mat-label>Complemento</mat-label>
       <input matInput type="text" id="complemento" formControlName="complemento">
     </mat-form-field>
   
-    <mat-form-field class="form-group">
+    <mat-form-field class="form-group readonly">
       <mat-label>Bairro</mat-label>
-      <input matInput type="text" id="bairro" formControlName="bairro" [value]="endereco ? endereco.bairro : ''">
+      <input matInput readonly type="text" id="bairro" formControlName="bairro" [value]="endereco ? endereco.bairro : ''">
     </mat-form-field>
   
     <mat-form-field class="form-group">

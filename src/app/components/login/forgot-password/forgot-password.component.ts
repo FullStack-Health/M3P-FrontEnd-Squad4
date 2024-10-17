@@ -1,26 +1,14 @@
 import { Component, Inject } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
-} from '@angular/material/dialog';
+import { MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { UserStorageService } from '../../../services/users-storage.service';
+import { SingupComponent } from '../singup/singup.component';
 
 @Component({
-  selector: 'app-singup',
+  selector: 'app-forgot-password',
   standalone: true,
   imports: [
     MatFormFieldModule,
@@ -33,10 +21,11 @@ import { UserStorageService } from '../../../services/users-storage.service';
     MatDialogClose,
     ReactiveFormsModule,
   ],
-  templateUrl: './singup.component.html',
-  styleUrl: './singup.component.scss',
+  templateUrl: './forgot-password.component.html',
+  styleUrl: './forgot-password.component.scss'
 })
-export class SingupComponent {
+export class ForgotPasswordComponent {
+
   constructor(
     public dialogRef: MatDialogRef<SingupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -48,12 +37,9 @@ export class SingupComponent {
   password: string | null | undefined;
   confirmPassword: string | null | undefined;
 
-  signupForm = new FormGroup({
+  forgotPasswordForm = new FormGroup({
     email: new FormControl('', [Validators.required,
       Validators.email]),
-    profile: new FormControl('', [
-      Validators.required
-    ]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(8),
@@ -65,9 +51,16 @@ export class SingupComponent {
   });
 
   submit() {
-    if (this.signupForm.valid) {
-      this.usersService.addUser(this.signupForm.value);
-      this.dialogRef.close();
+    if (this.forgotPasswordForm.valid) {
+      const email = this.forgotPasswordForm.get('email')?.value as string;
+      const newPassword = this.forgotPasswordForm.get('password')?.value as string;
+
+      if (this.usersService.updatePassword(email, newPassword)){
+        alert('Senha alterada com sucesso!')
+        this.dialogRef.close();
+      } else {
+        alert('Usuário não encontrado')
+      }
     }
   }
 

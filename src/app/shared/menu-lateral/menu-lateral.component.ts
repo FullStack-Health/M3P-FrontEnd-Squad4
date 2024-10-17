@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatList, MatNavList } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
-import { UserService } from '../../services/users-storage.service';
+import { UserStorageService } from '../../services/users-storage.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -21,16 +21,18 @@ import { Router } from '@angular/router';
     MatSidenavModule,
     MatNavList,
     MatList,
-    MatDividerModule 
+    MatDividerModule,
   ],
   templateUrl: './menu-lateral.component.html',
-  styleUrl: './menu-lateral.component.scss'
+  styleUrl: './menu-lateral.component.scss',
 })
 export class MenuLateralComponent {
+  constructor(
+    private userService: UserStorageService,
+    private router: Router
+  ) {}
 
-  constructor(private userService: UserService, private router: Router){}
-
-  removeLoggedUser(): void{
+  removeLoggedUser(): void {
     this.userService.removeLoggedUser();
     this.router.navigate(['/login']);
   }

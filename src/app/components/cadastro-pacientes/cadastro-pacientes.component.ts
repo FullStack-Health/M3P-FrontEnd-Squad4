@@ -35,11 +35,11 @@ export class CadastroPacientesComponent implements OnInit {
   endereco: any | undefined = undefined;
 
   constructor(
-    private pageTitleService: PageTitleService,
-    private consultaCepService: ConsultaCepService,
-    private pacientesService: PacientesService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
+    private readonly pageTitleService: PageTitleService,
+    private readonly consultaCepService: ConsultaCepService,
+    private readonly pacientesService: PacientesService,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
   ) {
 
     this.pageTitleService.setPageTitle('CADASTRO DE PACIENTE');
@@ -95,7 +95,7 @@ ngOnInit(): void {
             this.endereco = response;
             this.preencherCamposEndereco(response);
           },
-          error: (error: any) => {
+          error: (error: any) => {''
             console.error(error);
           }
         }

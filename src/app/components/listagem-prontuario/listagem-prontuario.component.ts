@@ -32,9 +32,9 @@ export class ListagemProntuarioComponent {
   textoPesquisa: any;
 
   constructor(
-    private pageTitleService: PageTitleService,
-    private pacientesService: PacientesService,
-    private router: Router
+    private readonly pageTitleService: PageTitleService,
+    private readonly pacientesService: PacientesService,
+    private readonly router: Router
   ) {  
     this.pageTitleService.setPageTitle('LISTAGEM DE PRONTUÁRIO');
     this.atualizarListaPacientes();
@@ -43,8 +43,6 @@ export class ListagemProntuarioComponent {
 atualizarListaPacientes() {
   this.pacientes = this.pacientesService.obterPacientes();
 }
-
-
 
 pesquisarPacientes(textoPesquisa: string) {
   if (!textoPesquisa) {
