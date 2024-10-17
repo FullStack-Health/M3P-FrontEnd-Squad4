@@ -1,0 +1,22 @@
+<div class="form-container">
+  
+    <form (ngSubmit)="login()" [formGroup]="loginForm">
+
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email">
+      </mat-form-field><br>
+    
+      <mat-form-field>
+        <mat-label>Senha</mat-label>
+        <input matInput formControlName="password" type="password">
+      </mat-form-field><br>
+    </form>
+
+    <a (click)="forgotPassword()">Esqueceu a senha?</a>
+    <button mat-flat-button color="primary" class="btn-submit" (click)="login()">Entrar</button><br>
+    <button mat-raised-button class="btn btn-open-dialog" (click)="openDialog()">Criar conta</button><br>
+  </div>
+
+
+

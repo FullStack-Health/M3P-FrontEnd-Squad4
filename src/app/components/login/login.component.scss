@@ -1,0 +1,27 @@
+.form-container mat-form-field + mat-form-field {
+  margin-left: 8px;
+}
+
+.form-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  .mat-form-field {
+    width: 100%;
+  }
+
+    button {
+    width: calc(100%); // Calcula a largura dos botões para ser igual à largura dos campos de entrada (considerando o padding)
+    margin-bottom: 10px;
+  }
+}
+
+a {
+  display: flex;
+  justify-content: center;
+  text-decoration: underline;
+  padding-bottom: 4px;
+  cursor: pointer;
+}
