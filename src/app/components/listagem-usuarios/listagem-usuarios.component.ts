@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { PageTitleService } from '../../services/title.service';
 import { UserStorageService } from '../../services/users-storage.service';
+import { EsconderSenhaPipe } from '../../pipes/esconder-senha.pipe';
 
 @Component({
   selector: 'app-listagem-usuarios',
@@ -19,7 +20,8 @@ import { UserStorageService } from '../../services/users-storage.service';
     MatIconModule,
     MatInputModule,
     MatTableModule,
-    FormsModule
+    FormsModule,
+    EsconderSenhaPipe
   ],
   templateUrl: './listagem-usuarios.component.html',
   styleUrl: './listagem-usuarios.component.scss'
@@ -52,7 +54,7 @@ export class ListagemUsuariosComponent {
   }
 
   editarUsuario(usuario: any) {
-    this.router.navigate(['/usuarios/:id', usuario.id]); //TODO - arrumar redirecionamento
+    this.router.navigate(['/usuarios', usuario.id]);
   }
 
 }

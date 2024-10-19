@@ -10,7 +10,7 @@ export class UserStorageService {
   constructor() {}
 
   addUser(user: any): void {
-    let usersList = this.getUsers();
+    let usersList: any[] = this.getUsers();
     user.id = this.gerarIdSequencial(usersList.length + 1);
     usersList.push(user);
     localStorage.setItem('usersList', JSON.stringify(usersList));
@@ -47,6 +47,12 @@ export class UserStorageService {
     localStorage.removeItem('loggedUser');
   }
 
+  removeUser(userId: string): void {
+    let usersList: any[] = this.getUsers();
+    usersList = usersList.filter(user => user.id !== userId);
+    localStorage.setItem('usersList', JSON.stringify(usersList));
+  }
+
   getUserByEmailOrById(textoPesquisa: string): any[] {
     let usersList = this.getUsers();
     textoPesquisa = textoPesquisa.toLowerCase();
@@ -66,6 +72,18 @@ export class UserStorageService {
       return true;
     } else {
       return false;
+    }
+  }
+
+  updateUser(id: string, user: any) {
+    const usersList: any[] = this.getUsers();
+    const index = usersList.findIndex(user => user.id === id);
+
+    if (index !== -1) {
+      usersList[index] = { ...user, id: id }
+      localStorage.setItem('usersList', JSON.stringify(usersList));
+    } else {
+      console.error('Usuário não encontrado com o ID: ', id);
     }
   }
 }
