@@ -7,12 +7,12 @@ export class PacientesService {
 
   constructor() { }
 
-  atualizarPaciente(id: string, paciente: any) {
+  atualizarPaciente(id: string, paciente: any): void {
     const pacientes: any[] = this.obterPacientes();
-    const indice = pacientes.findIndex(paciente => paciente.id === id);
+    const indice = pacientes.findIndex(p => p.id === id);
 
     if (indice !== -1) {
-      pacientes[indice] = { ...paciente, id: id };
+      pacientes[indice] = { ...paciente, id };
       localStorage.setItem('pacientes', JSON.stringify(pacientes));
     } else {
       console.error('Paciente não encontrado com o ID fornecido:', id);
@@ -30,7 +30,7 @@ export class PacientesService {
   //   }
   // }
 
-  salvarPaciente(paciente: any) {
+  salvarPaciente(paciente: any): void {
     const pacientes: any[] = this.obterPacientes();
     paciente.id = this.gerarIdSequencial(pacientes.length + 1);
     pacientes.push(paciente);
@@ -45,20 +45,19 @@ export class PacientesService {
     return JSON.parse(localStorage.getItem('pacientes') ?? '[]');
   }
 
-  obterPacientePorId(id: string): any {
+  obterPacientePorId(id: string): any | null {
     const pacientes = this.obterPacientes();
-    const pacienteEncontrado = pacientes.find(paciente => paciente.id === id);
-    return pacienteEncontrado || null;
-  }
-  
-  deletarPacientes() {
-    localStorage.removeItem('pacientes');
+    return pacientes.find(paciente => paciente.id === id) || null;
   }
 
-  deletarPacientePorId(id: string) {
+  deletarPacientePorId(id: string): void {
     let pacientes: any[] = this.obterPacientes();
     pacientes = pacientes.filter(paciente => paciente.id !== id);
     localStorage.setItem('pacientes', JSON.stringify(pacientes));
+  }
+
+  deletarPacientes(): void {
+    localStorage.removeItem('pacientes');
   }
 
   pesquisarPacientes(textoPesquisa: string): any[] {
@@ -70,6 +69,4 @@ export class PacientesService {
       paciente.id === textoPesquisa
     );
   }
-
-
 }

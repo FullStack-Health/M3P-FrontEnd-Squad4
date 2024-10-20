@@ -1,7 +1,12 @@
-<form id="form-container" [formGroup]="pacienteForm" (ngSubmit)="cadastrarPaciente()" >
+<form id="form-container" [formGroup]="pacienteForm" (ngSubmit)="cadastrarPaciente()">
   <mat-form-field class="form-group">
     <mat-label>Nome Completo</mat-label>
-    <input matInput type="text" id="nomeCompleto" formControlName="nomeCompleto" required minlength="8" maxlength="64">
+    <input 
+      matInput 
+      type="text" 
+      id="nomeCompleto" 
+      formControlName="nomeCompleto" 
+      required minlength="8" maxlength="64">
   </mat-form-field>
 
   <mat-form-field class="form-group">
@@ -16,28 +21,53 @@
 
   <mat-form-field class="form-group">
     <mat-label>Data de Nascimento</mat-label>
-    <input matInput type="date" id="dataNascimento" formControlName="dataNascimento" required>
+    <input 
+      matInput 
+      type="date" 
+      id="dataNascimento" 
+      formControlName="dataNascimento" 
+      required>
   </mat-form-field>
-  
+
   <mat-form-field class="form-group">
     <mat-label>CPF</mat-label>
-    <input matInput type="text" id="cpf" formControlName="cpf" mask="000.000.000-00" placeholder="000.000.000-00" required>
+    <input 
+      matInput 
+      type="text" 
+      id="cpf" 
+      formControlName="cpf" 
+      mask="000.000.000-00" 
+      placeholder="000.000.000-00" 
+      required>
   </mat-form-field>
-  
+
   <section class="infos-rg section-info">
     <h3 class="section-title">RG</h3>
     <mat-form-field class="form-group">
       <mat-label>Número de RG</mat-label>
-      <input matInput type="text" id="rg" formControlName="rg" maxlength="20" mask="0000000||00000000||000000000" placeholder="digite apenas os números" required>
+      <input 
+        matInput 
+        type="text" 
+        id="rg" 
+        formControlName="rg" 
+        maxlength="20" 
+        mask="0000000||00000000||000000000" 
+        placeholder="Digite apenas os números" 
+        required>
     </mat-form-field>
 
     <mat-form-field class="form-group">
       <mat-label>Órgão Expedidor</mat-label>
-      <input matInput type="text" id="orgaoExpedidor" formControlName="orgaoExpedidor" maxlength="20" required>
+      <input 
+        matInput 
+        type="text" 
+        id="orgaoExpedidor" 
+        formControlName="orgaoExpedidor" 
+        maxlength="20" 
+        required>
     </mat-form-field>
   </section>
-    
-    
+
   <mat-form-field class="form-group">
     <mat-label>Estado Civil</mat-label>
     <select matNativeControl formControlName="estadoCivil" required>
@@ -49,107 +79,180 @@
       <option value="outro">Outro</option>
     </select>
   </mat-form-field>
-  
+
   <mat-form-field class="form-group">
     <mat-label>Telefone</mat-label>
-    <input matInput type="tel" mask="(00) 0 0000-0000" id="telefone" formControlName="telefone" placeholder="(99) 9 9999-9999" required>
+    <input 
+      matInput 
+      type="tel" 
+      mask="(00) 0 0000-0000" 
+      id="telefone" 
+      formControlName="telefone" 
+      placeholder="(99) 9 9999-9999" 
+      required>
   </mat-form-field>
-  
+
   <mat-form-field class="form-group">
     <mat-label>E-mail</mat-label>
-    <input matInput type="email"  id="email" formControlName="email" autocomplete="nope">
+    <input 
+      matInput 
+      type="email" 
+      id="email" 
+      formControlName="email" 
+      autocomplete="nope">
   </mat-form-field>
 
   <mat-form-field class="form-group">
     <mat-label>Naturalidade</mat-label>
-    <input matInput type="text" id="naturalidade" formControlName="naturalidade" required minlength="8" maxlength="64">
+    <input 
+      matInput 
+      type="text" 
+      id="naturalidade" 
+      formControlName="naturalidade" 
+      required minlength="8" maxlength="64">
   </mat-form-field>
-  
+
   <mat-form-field class="form-group">
     <mat-label>Contato de Emergência</mat-label>
-    <input matInput type="tel" id="contatoEmergencia" formControlName="contatoEmergencia" type="tel" mask="(00) 0 0000-0000" placeholder="(99) 9 9999-99999" required>
+    <input 
+      matInput 
+      type="tel" 
+      id="contatoEmergencia" 
+      formControlName="contatoEmergencia" 
+      mask="(00) 0 0000-0000" 
+      placeholder="(99) 9 9999-99999" 
+      required>
   </mat-form-field>
-  
+
   <mat-form-field class="form-group textarea">
     <mat-label>Lista de Alergias</mat-label>
     <textarea matInput id="alergias" formControlName="alergias"></textarea>
   </mat-form-field>
-  
+
   <mat-form-field class="form-group textarea">
     <mat-label>Lista de Cuidados Específicos</mat-label>
     <textarea matInput id="cuidadosEspecificos" formControlName="cuidadosEspecificos"></textarea>
   </mat-form-field>
 
-  
   <section class="section-info">
     <h3 class="section-title">CONVÊNIO</h3>
     <mat-form-field class="form-group">
       <mat-label>Nome do Convênio</mat-label>
       <input matInput type="text" id="convenio" formControlName="convenio">
     </mat-form-field>
-    
+
     <mat-form-field>
       <mat-label class="form-group">Número do Convênio</mat-label>
       <input matInput type="text" id="numeroConvenio" formControlName="numeroConvenio">
     </mat-form-field>
-    
+
     <mat-form-field>
       <mat-label class="form-group">Validade do Convênio</mat-label>
       <input matInput type="date" id="validadeConvenio" formControlName="validadeConvenio">
     </mat-form-field>
-  
   </section>
-  
 
   <section class="infos-endereco section-info">
-   <h3 class="section-title">ENDEREÇO</h3>
+    <h3 class="section-title">ENDEREÇO</h3>
     <mat-form-field class="form-group">
       <mat-label>CEP</mat-label>
-      <input matInput type="text" id="cep" formControlName="cep" (input)="consultaCEP()">
+      <input 
+        matInput 
+        type="text" 
+        id="cep" 
+        formControlName="cep" 
+        (input)="consultaCEP()">
     </mat-form-field>
-    
+
     <mat-form-field class="form-group readonly">
       <mat-label>Cidade</mat-label>
-      <input matInput readonly type="text" id="cidade" formControlName="cidade" [value]="endereco ? endereco.localidade : ''">
+      <input 
+        matInput 
+        readonly 
+        type="text" 
+        id="cidade" 
+        formControlName="cidade" 
+        [value]="endereco?.localidade || ''">
     </mat-form-field>
-  
+
     <mat-form-field class="form-group readonly">
       <mat-label>Estado</mat-label>
-      <input matInput readonly type="text" id="estado" formControlName="estado" [value]="endereco ? endereco.uf : ''">
+      <input 
+        matInput 
+        readonly 
+        type="text" 
+        id="estado" 
+        formControlName="estado" 
+        [value]="endereco?.uf || ''">
     </mat-form-field>
-  
+
     <mat-form-field class="form-group readonly">
       <mat-label>Rua</mat-label>
-      <input matInput readonly type="text" id="logradouro" formControlName="logradouro" [value]="endereco ? endereco.logradouro : ''">
+      <input 
+        matInput 
+        readonly 
+        type="text" 
+        id="logradouro" 
+        formControlName="logradouro" 
+        [value]="endereco?.logradouro || ''">
     </mat-form-field>
-  
+
     <mat-form-field class="form-group">
       <mat-label>Número</mat-label>
       <input matInput type="text" id="numero" formControlName="numero">
     </mat-form-field>
-  
+
     <mat-form-field class="form-group readonly">
       <mat-label>Complemento</mat-label>
       <input matInput type="text" id="complemento" formControlName="complemento">
     </mat-form-field>
-  
+
     <mat-form-field class="form-group readonly">
       <mat-label>Bairro</mat-label>
-      <input matInput readonly type="text" id="bairro" formControlName="bairro" [value]="endereco ? endereco.bairro : ''">
+      <input 
+        matInput 
+        readonly 
+        type="text" 
+        id="bairro" 
+        formControlName="bairro" 
+        [value]="endereco?.bairro || ''">
     </mat-form-field>
-  
+
     <mat-form-field class="form-group">
       <mat-label>Ponto de Referência</mat-label>
       <input matInput type="text" id="pontoReferencia" formControlName="pontoReferencia">
     </mat-form-field>
   </section>
 
-
+  <!-- Atualização: Botões com lógica de habilitação/desabilitação -->
   <div class="buttons-container">
-    <button mat-button type="button" class="edit-button" [disabled]="!pacienteId" (click)="editarPaciente()">Salvar edição</button>
-    <button mat-button type="button" class="delete-button" [disabled]="!pacienteId" (click)="deletarPaciente()">Deletar</button>
-    <button mat-raised-button type="submit" class="save-button" [disabled]="!pacienteForm.valid">Salvar</button>
+    <button 
+      mat-button 
+      type="button" 
+      class="edit-button" 
+      [disabled]="!pacienteId" 
+      (click)="cadastrarPaciente()">
+      Salvar edição
+    </button>
+
+    <button 
+      mat-button 
+      type="button" 
+      class="delete-button" 
+      [disabled]="!pacienteId" 
+      (click)="deletarPaciente()">
+      Deletar
+    </button>
+
+    <button 
+      mat-raised-button 
+      type="submit" 
+      class="save-button" 
+      [disabled]="!pacienteForm.valid">
+      Salvar
+    </button>
   </div>
 
+  <!-- Atualização: Snackbar para feedback -->
+  <mat-snack-bar-container></mat-snack-bar-container>
 </form>
-
