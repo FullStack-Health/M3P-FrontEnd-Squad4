@@ -1,93 +1,87 @@
 <div class="container">
-<h1>Prontuário de {{ paciente.nomeCompleto }}</h1>  <div class="container">
-    <!-- Informações do Paciente -->
-    <div *ngIf="paciente">
-      <section class="info-paciente-container" class="mat-elevation-z2">
-      <div class="info-paciente">
-        <h2>Informações de Paciente</h2>
-        <div class="item-info">
-          <p><strong>Nome do Paciente:</strong> {{ paciente.nomeCompleto }}</p>
-        </div>
-        <div class="item-info">
-          <p><strong>Convênio:</strong> {{ paciente.convenio }}</p>
-        </div>
-        <div class="item-info">
-          <p><strong>Contato de Emergência:</strong> {{ paciente.contatoEmergencia | formatarTelefone }}</p>
-        </div>
-        <div class="item-info">
-          <p><strong>Alergias:</strong> {{ paciente.alergias }}</p>
-        </div>
-        <div class="item-info">
-          <p><strong>Cuidados Específicos:</strong> {{ paciente.cuidadosEspecificos }}</p>
-        </div>
-      </div>
-    </section>
+  <h1>Prontuário de {{ paciente.nomeCompleto }}</h1>
+
+  <!-- Informações do Paciente -->
+  <div *ngIf="paciente" class="info-paciente-container mat-elevation-z2">
+    <h2>Informações do Paciente</h2>
+    <p><strong>Nome:</strong> {{ paciente.nomeCompleto }}</p>
+    <p><strong>Convênio:</strong> {{ paciente.convenio }}</p>
+    <p><strong>Contato:</strong> {{ paciente.telefone | formatarTelefone }}</p>
+    <p><strong>CPF:</strong> {{ paciente.cpf }}</p>
+    <p><strong>Data de Nascimento:</strong> {{ paciente.dataNascimento | date }}</p>
+    <p><strong>Contato de Emergência:</strong> {{ paciente.contatoEmergencia | formatarTelefone }}</p>
+    <p><strong>Alergias:</strong> {{ paciente.alergias }}</p>
+    <p><strong>Cuidados Específicos:</strong> {{ paciente.cuidadosEspecificos }}</p>
   </div>
-  
+
   <!-- Histórico de Consultas -->
-  <section class="historico-consultas" class="mat-elevation-z2">
+  <section class="historico-consultas mat-elevation-z2">
     <h2>Histórico de Consultas</h2>
     <table mat-table [dataSource]="consultas">
-      <!-- Colunas da Tabela -->
       <ng-container matColumnDef="data">
-        <th mat-header-cell *matHeaderCellDef>Data</th>
-        <td mat-cell *matCellDef="let consulta">{{ consulta.dataConsulta }}</td>
+        <th mat-header-cell *matHeaderCellDef> Data </th>
+        <td mat-cell *matCellDef="let consulta"> {{ consulta.dataConsulta | date }} </td>
       </ng-container>
+
       <ng-container matColumnDef="hora">
-        <th mat-header-cell *matHeaderCellDef>Hora</th>
-        <td mat-cell *matCellDef="let consulta">{{ consulta.horarioConsulta }}</td>
+        <th mat-header-cell *matHeaderCellDef> Hora </th>
+        <td mat-cell *matCellDef="let consulta"> {{ consulta.horarioConsulta }} </td>
       </ng-container>
+
       <ng-container matColumnDef="motivo">
-        <th mat-header-cell *matHeaderCellDef>Motivo</th>
-        <td mat-cell *matCellDef="let consulta">{{ consulta.motivoConsulta }}</td>
+        <th mat-header-cell *matHeaderCellDef> Motivo </th>
+        <td mat-cell *matCellDef="let consulta"> {{ consulta.motivoConsulta }} </td>
       </ng-container>
-      <!-- Botão de Edição -->
-      <ng-container matColumnDef="editar" >
-        <th mat-header-cell *matHeaderCellDef class="coluna-editar"></th>
+
+      <ng-container matColumnDef="editar">
+        <th mat-header-cell *matHeaderCellDef> </th>
         <td mat-cell *matCellDef="let consulta">
           <button mat-icon-button color="primary" (click)="editarConsulta(consulta)">
             <mat-icon>edit</mat-icon>
           </button>
         </td>
       </ng-container>
-      <!-- Linhas da Tabela -->
+
       <tr mat-header-row *matHeaderRowDef="colunasConsultas"></tr>
       <tr mat-row *matRowDef="let consulta; columns: colunasConsultas;"></tr>
     </table>
   </section>
 
-<section class="historico-exames" class="mat-elevation-z2">
-  <h2>Histórico de Exames</h2>
-  <table mat-table [dataSource]="exames">
-    <!-- Colunas da Tabela -->
-<ng-container matColumnDef="data">
-  <th mat-header-cell *matHeaderCellDef>Data</th>
-  <td mat-cell *matCellDef="let exame">{{ exame.dataExame }}</td>
-</ng-container>
-<ng-container matColumnDef="hora">
-  <th mat-header-cell *matHeaderCellDef>Hora</th>
-  <td mat-cell *matCellDef="let exame">{{ exame.horarioExame }}</td>
-</ng-container>
-<ng-container matColumnDef="nome">
-  <th mat-header-cell *matHeaderCellDef>Nome</th>
-  <td mat-cell *matCellDef="let exame">{{ exame.nomeExame }}</td>
-</ng-container>
-<ng-container matColumnDef="laboratorio">
-  <th mat-header-cell *matHeaderCellDef>Laboratório</th>
-  <td mat-cell *matCellDef="let exame">{{ exame.laboratorio }}</td>
-</ng-container>
-<!-- Botão de Edição -->
-<ng-container matColumnDef="editar">
-  <th mat-header-cell *matHeaderCellDef class="coluna-editar"></th>
-  <td mat-cell *matCellDef="let exame">
-    <button mat-icon-button color="primary" (click)="editarExame(exame)">
-      <mat-icon>edit</mat-icon>
-    </button>
-  </td>
-</ng-container>
-<!-- Linhas da Tabela -->
-<tr mat-header-row *matHeaderRowDef="colunasExames"></tr>
-<tr mat-row *matRowDef="let exame; columns: colunasExames;"></tr>
+  <!-- Histórico de Exames -->
+  <section class="historico-exames mat-elevation-z2">
+    <h2>Histórico de Exames</h2>
+    <table mat-table [dataSource]="exames">
+      <ng-container matColumnDef="data">
+        <th mat-header-cell *matHeaderCellDef> Data </th>
+        <td mat-cell *matCellDef="let exame"> {{ exame.dataExame | date }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="hora">
+        <th mat-header-cell *matHeaderCellDef> Hora </th>
+        <td mat-cell *matCellDef="let exame"> {{ exame.horarioExame }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef> Nome </th>
+        <td mat-cell *matCellDef="let exame"> {{ exame.nomeExame }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="laboratorio">
+        <th mat-header-cell *matHeaderCellDef> Laboratório </th>
+        <td mat-cell *matCellDef="let exame"> {{ exame.laboratorio }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="editar">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let exame">
+          <button mat-icon-button color="primary" (click)="editarExame(exame)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="colunasExames"></tr>
+      <tr mat-row *matRowDef="let exame; columns: colunasExames;"></tr>
     </table>
   </section>
 </div>
