@@ -18,6 +18,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { UserStorageService } from '../../../services/users-storage.service';
+import { User } from '../../../entities/user.model';
 
 @Component({
   selector: 'app-singup',
@@ -43,17 +44,16 @@ export class SingupComponent {
     private readonly usersService: UserStorageService
   ) {}
 
+  user: User | undefined;
+
   email: string | null | undefined;
   profile: string | null | undefined;
   password: string | null | undefined;
   confirmPassword: string | null | undefined;
 
   signupForm = new FormGroup({
-    email: new FormControl('', [Validators.required,
-      Validators.email]),
-    profile: new FormControl('', [
-      Validators.required
-    ]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    profile: new FormControl('', [Validators.required]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(8),
@@ -69,6 +69,10 @@ export class SingupComponent {
       this.usersService.addUser(this.signupForm.value);
       this.dialogRef.close();
     }
+  }
+
+  getUsers() {
+    this.usersService.urlPath;
   }
 
   onNoClick(): void {

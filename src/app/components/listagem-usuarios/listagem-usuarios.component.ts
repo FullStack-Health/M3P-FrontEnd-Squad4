@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { PageTitleService } from '../../services/title.service';
 import { UserStorageService } from '../../services/users-storage.service';
+import { EsconderSenhaPipe } from '../../pipes/esconder-senha.pipe';
 
 @Component({
   selector: 'app-listagem-usuarios',
@@ -19,7 +20,8 @@ import { UserStorageService } from '../../services/users-storage.service';
     MatIconModule,
     MatInputModule,
     MatTableModule,
-    FormsModule
+    FormsModule,
+    EsconderSenhaPipe
   ],
   templateUrl: './listagem-usuarios.component.html',
   styleUrl: './listagem-usuarios.component.scss'
@@ -40,19 +42,23 @@ export class ListagemUsuariosComponent {
   }
 
   atualizarListaUsuarios() {
-    this.usersList = this.userStorageService.getUsers();
+    this.userStorageService.getUsers().subscribe(users => {
+      this.usersList = users;
+    });
   }
 
   pesquisarUsuarios(textoPesquisa: string) {
     if (!this.textoPesquisa) {
       this.atualizarListaUsuarios();
     } else {
-      this.usersList = this.userStorageService.getUserByEmailOrById(textoPesquisa);
+      this.userStorageService.getUserByEmailOrById(textoPesquisa).subscribe(users => {
+        this.usersList = users;
+      });
     }
   }
 
   editarUsuario(usuario: any) {
-    this.router.navigate(['/usuarios/:id', usuario.id]); //TODO - arrumar redirecionamento
+    this.router.navigate(['/usuarios', usuario.id]);
   }
 
 }

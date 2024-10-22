@@ -8,6 +8,9 @@ import { SingupComponent } from './singup/singup.component';
 import { UserStorageService } from '../../services/users-storage.service';
 import { Router } from '@angular/router';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { User } from '../../entities/user.model';
+import { CommonModule } from '@angular/common';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +21,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    CommonModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -27,22 +31,19 @@ export class LoginComponent {
   forgotPasswordForm: FormGroup | undefined;
   usersList: any = [];
   fullName: string | undefined;
+  loginFailed: any;
 
   constructor(
     public dialog: MatDialog,
     private readonly userService: UserStorageService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly loginService: LoginService
   ) {}
 
 
   loginForm = new FormGroup({
-    email: new FormControl('', [
-      Validators.required,
-      Validators.email]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(8),
-    ]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
   });
 
   openDialog(): void {
@@ -52,24 +53,35 @@ export class LoginComponent {
   }
 
   login() {
-    const password = this.loginForm.value.password;
-    const signedUser = this.signedUser();
-    if (signedUser && password === signedUser.password) {
-      this.userService.setLoggedUser(signedUser);
-      this.router.navigate(['home']);
-      alert('Entrou');
-    } else {
-      alert('Email ou senha incorretos');
+    if (this.loginForm.invalid) {
+      return;
     }
-  }
 
-  signedUser() {
-    let usersList = this.userService.getUsers();
-    return usersList.find(
-      (usuario: { email: string }) =>
-        usuario.email === this.loginForm.value.email
-    );
+    const email = this.loginForm.value.email as string;
+    const password = this.loginForm.value.password as string;
+
+    this.loginService.login({ email, password }).subscribe({
+      next: (response: { token: string, tempoExpiracao: number }) => {
+        if (response && response.token) {
+          this.userService.setToken(response.token);
+          this.router.navigate(["home"]);
+        } else {
+          console.error("Resposta de login inválida: ", response);
+          this.loginFailed = true;
+        }
+      },
+      error: (error: any) => {
+        alert("Usuário ou senha inválidos")
+        // console.error("Erro ao fazer o login", error);
+        this.loginFailed = true;
+      }
+      // ,
+      // complete: () => {
+      //     console.log("Requisição de login completa")
+      // }
+    });
   }
+  
 
   forgotPassword() {
     this.dialog.open(ForgotPasswordComponent, {
