@@ -1,1 +1,36 @@
-<p>edicao-usuarios works!</p>
+<form id="form-container" [formGroup]="userForm" (ngSubmit)="editarUsuario()">
+
+  <mat-form-field class="form-group">
+    <mat-label>Nome Completo</mat-label>
+    <input matInput type="text" id="nomeCompleto" formControlName="nomeCompleto" required minlength="8" maxlength="64">
+  </mat-form-field>
+  
+  <mat-form-field class="form-group">
+    <mat-label>E-mail</mat-label>
+    <input matInput type="email"  id="email" formControlName="email" autocomplete="email">
+  </mat-form-field>
+  
+  <mat-form-field class="form-group">
+    <mat-label>CPF</mat-label>
+    <input matInput type="text" id="cpf" formControlName="cpf" mask="000.000.000-00" placeholder="000.000.000-00" required>
+  </mat-form-field>
+  
+    <mat-form-field class="form-group">
+      <mat-label>Data de Nascimento</mat-label>
+      <input matInput type="date" id="dataNascimento" formControlName="dataNascimento" required>
+    </mat-form-field>
+     
+  <mat-form-field class="form-group">
+    <mat-label>Telefone</mat-label>
+    <input matInput type="tel" mask="(00) 0 0000-0000" id="telefone" formControlName="telefone" placeholder="(99) 9 9999-9999" required>
+  </mat-form-field>
+
+  
+  <div class="buttons-container">
+    <button mat-button type="button" class="edit-button" (click)="editarUsuario()">Salvar</button>
+    <button mat-button type="button" class="delete-button" (click)="deletarUsuario()">Deletar</button>
+    <!-- <button mat-raised-button type="submit" class="save-button" [disabled]="!userId.valid">Salvar</button> -->
+  </div>
+
+</form>
+
