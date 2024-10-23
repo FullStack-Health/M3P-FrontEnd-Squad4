@@ -23,9 +23,9 @@
       <td mat-cell *matCellDef="let usuario"> {{ usuario.email }} </td>
     </ng-container>
   
-    <ng-container matColumnDef="password">
+    <ng-container matColumnDef="senhaComMascara">
       <th mat-header-cell *matHeaderCellDef> Senha </th>
-      <td mat-cell *matCellDef="let usuario"> {{ usuario.password | esconderSenha }} </td><!--Fazar pipe para mostrar somente 4 primeiros caracteres-->
+      <td mat-cell *matCellDef="let usuario"> {{ usuario.senhaComMascara }} </td><!--Fazar pipe para mostrar somente 4 primeiros caracteres-->
     </ng-container>
   
     <ng-container matColumnDef="acao">
