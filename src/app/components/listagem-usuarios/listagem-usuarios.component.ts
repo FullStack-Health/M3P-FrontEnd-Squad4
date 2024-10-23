@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { PageTitleService } from '../../services/title.service';
 import { UserStorageService } from '../../services/users-storage.service';
 import { EsconderSenhaPipe } from '../../pipes/esconder-senha.pipe';
+import { User } from '../../entities/user.model';
 
 @Component({
   selector: 'app-listagem-usuarios',
@@ -26,10 +27,10 @@ import { EsconderSenhaPipe } from '../../pipes/esconder-senha.pipe';
   templateUrl: './listagem-usuarios.component.html',
   styleUrl: './listagem-usuarios.component.scss'
 })
-export class ListagemUsuariosComponent {
+export class ListagemUsuariosComponent implements OnInit {
 
+  usersList: User[] = [];
   displayedColumns: string[] = ['id', 'email', 'password', 'acao'];
-  usersList: any[] = [];
   textoPesquisa: any;
 
   constructor(
@@ -39,6 +40,10 @@ export class ListagemUsuariosComponent {
     ) {  
       this.pageTitleService.setPageTitle('LISTAGEM DE USUÁRIOS');
       this.atualizarListaUsuarios();
+  }
+
+  ngOnInit() {
+    this.atualizarListaUsuarios();
   }
 
   atualizarListaUsuarios() {
