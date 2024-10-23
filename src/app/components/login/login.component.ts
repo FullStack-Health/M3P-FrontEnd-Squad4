@@ -8,7 +8,6 @@ import { SingupComponent } from './singup/singup.component';
 import { UserStorageService } from '../../services/users-storage.service';
 import { Router } from '@angular/router';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { User } from '../../entities/user.model';
 import { CommonModule } from '@angular/common';
 import { LoginService } from '../../services/login.service';
 
