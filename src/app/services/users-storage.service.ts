@@ -46,7 +46,7 @@ export class UserStorageService {
 
   addUser(user: any): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.post(this.urlPath, user, { headers });
+    return this.http.post(`${this.urlPath}/pre-registro`, user, { headers });
   };
 
   getUsers(): Observable<User[]> {
