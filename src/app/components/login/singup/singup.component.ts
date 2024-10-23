@@ -47,13 +47,13 @@ export class SingupComponent {
   user: User | undefined;
 
   email: string | null | undefined;
-  profile: string | null | undefined;
+  nomePerfil: string | null | undefined;
   password: string | null | undefined;
   confirmPassword: string | null | undefined;
 
   signupForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    profile: new FormControl('', [Validators.required]),
+    nomePerfil: new FormControl('', [Validators.required]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(8),
@@ -67,11 +67,11 @@ export class SingupComponent {
   submit() {
     if (this.signupForm.valid) {
       const formData = this.signupForm.value;
-      alert("Usuário cadastrado com sucesso!")
       console.log('Dados do formulário:', formData);
-
+      
       this.usersService.addUser(formData).subscribe({
         next: (response) => {
+          alert("Usuário cadastrado com sucesso!");
           console.log("Usuário cadastrado com sucesso: ", response);
           this.dialogRef.close();
         },
@@ -80,10 +80,6 @@ export class SingupComponent {
         }
       });
     }
-  }
-
-  getUsers() {
-    this.usersService.urlPath;
   }
 
   onNoClick(): void {
