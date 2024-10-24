@@ -26,10 +26,11 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ],
   templateUrl: './menu-lateral.component.html',
-  styleUrl: './menu-lateral.component.scss',
+  styleUrls: ['./menu-lateral.component.scss'],
 })
 export class MenuLateralComponent implements OnInit {
   profile: string = '';
+  isLoggedIn: boolean = false;
 
   constructor(
     private userService: UserStorageService,
@@ -38,8 +39,10 @@ export class MenuLateralComponent implements OnInit {
 
   ngOnInit(): void {
     const loggedUser = this.userService.getLoggedUser();
-    this.profile = loggedUser?.profile || '';
-  }
+    this.profile = this.userService.getProfile().toLowerCase(); // Transforme tudo em minúsculas
+    console.log("Retrieved profile: ", this.profile); // Verifique se está correto
+}
+
 
   removeLoggedUser(): void {
     this.userService.removeLoggedUser();
