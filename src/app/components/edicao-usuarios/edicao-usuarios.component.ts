@@ -10,7 +10,7 @@ import { PageTitleService } from '../../services/title.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserStorageService } from '../../services/users-storage.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { User } from '../entities/user.model';
+import { User } from '../../entities/user.model';
 
 @Component({
   selector: 'app-edicao-usuarios',
