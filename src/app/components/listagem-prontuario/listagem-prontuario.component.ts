@@ -56,4 +56,7 @@ pesquisarPacientes(textoPesquisa: string) {
     this.router.navigate(['/prontuario-paciente', paciente.id]);
   }
 
+  editarPaciente(idPaciente: string) {
+    this.router.navigate(['/cadastro-paciente', idPaciente]);
+  }
 }

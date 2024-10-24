@@ -117,7 +117,7 @@ export class UserStorageService {
 
   setProfile(profile: string): void {
     localStorage.setItem('profile', profile);
-    console.log('Profile armazenado:', profile); // Adicione um log para verificar
+    console.log('Profile armazenado:', profile);
 }
 
 

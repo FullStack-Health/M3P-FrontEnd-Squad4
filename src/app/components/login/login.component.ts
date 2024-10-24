@@ -22,19 +22,19 @@ import { AuthService } from '../../services/authservice.service';
     CommonModule
   ],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'], // Corrigido para styleUrls
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  loginForm: FormGroup; // Declarando o formulário de login
-  loginFailed: boolean = false; // Para controlar se o login falhou
+  loginForm: FormGroup; 
+  loginFailed: boolean = false;
 
   constructor(
     public dialog: MatDialog,
     private readonly userService: UserStorageService,
     private readonly router: Router,
-    private readonly authService: AuthService // Usando AuthService
+    private readonly authService: AuthService
   ) {
-    // Inicializando o formulário de login
+    
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
@@ -43,7 +43,7 @@ export class LoginComponent {
 
   openDialog(): void {
     this.dialog.open(SingupComponent, {
-      width: '400px', // Ajuste a largura conforme necessário
+      width: '260px', 
     });
   }
 
@@ -58,17 +58,14 @@ export class LoginComponent {
     this.authService.login({ email, password }).subscribe({
         next: (response) => {
             if (response && response.token) {
-                this.userService.setToken(response.token);
-
-                // Verifique a resposta do servidor
+                this.userService.setToken(response.token);                
                 console.log('Resposta do login:', response);
-
-                // Definindo o perfil a partir do listaNomesPerfis, se existir
+                
                 const perfil = response.listaNomesPerfis && response.listaNomesPerfis.length > 0
-                    ? response.listaNomesPerfis[0] // Pega o primeiro perfil da lista
-                    : ''; // Se não houver perfis, define como string vazia
+                    ? response.listaNomesPerfis[0] 
+                    : ''; 
 
-                this.userService.setProfile(perfil); // Armazenando o perfil
+                this.userService.setProfile(perfil);
 
                 this.router.navigate(["home"]);
             } else {
@@ -87,7 +84,7 @@ export class LoginComponent {
   
   forgotPassword() {
     this.dialog.open(ForgotPasswordComponent, {
-      width: '400px', // Ajuste a largura conforme necessário
+      width: '260px', 
     });
   }
 }
