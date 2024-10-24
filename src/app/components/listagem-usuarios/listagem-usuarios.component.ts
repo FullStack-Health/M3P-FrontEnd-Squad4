@@ -52,13 +52,26 @@ export class ListagemUsuariosComponent implements OnInit {
     });
   }
 
-  pesquisarUsuarios(textoPesquisa: string) {
-    if (!this.textoPesquisa) {
+  buscarUsuario(textoPesquisa: string) {
+    if (!textoPesquisa) {
       this.atualizarListaUsuarios();
-    } else {
-      this.userStorageService.getUserByEmailOrById(textoPesquisa).subscribe(users => {
-        this.usersList = users;
+      return;
+    }
+
+    const isEmail = textoPesquisa.includes('@');
+    const isId = !isNaN(Number(textoPesquisa));
+
+    if (isEmail) {
+      this.userStorageService.getUsersByEmail(textoPesquisa).subscribe(users => {
+        this.usersList = Array.isArray(users) ? users : [users];
       });
+    } else if (isId) {
+      this.userStorageService.getUserById(textoPesquisa).subscribe(user => {
+        this.usersList = user ? [user] : [];
+      });
+    } else {
+      alert('Por favor, insira um email válido ou um ID.');
+      this.usersList = [];
     }
   }
 
