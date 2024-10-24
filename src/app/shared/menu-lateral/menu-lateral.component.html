@@ -31,7 +31,7 @@
       <mat-divider *ngIf="profile === 'admin'"></mat-divider>
 
       <!-- Mostrar seções de Pacientes e Exames para 'medico' e 'admin' -->
-      <mat-nav-list *ngIf="profile === 'medico' || profile === 'admin'" class="sidenav">
+      <mat-nav-list *ngIf="profile === 'médico' || profile === 'admin'" class="sidenav">
         <h3 matListItemTitle>Pacientes</h3>
         <mat-list>
           <button mat-flat-button routerLink="/cadastro-paciente"><mat-icon matListItemIcon>add</mat-icon>Cadastrar</button><br>
@@ -39,9 +39,9 @@
         </mat-list>
       </mat-nav-list>
 
-      <mat-divider *ngIf="profile === 'medico' || profile === 'admin'"></mat-divider>
+      <mat-divider *ngIf="profile === 'médico' || profile === 'admin'"></mat-divider>
 
-      <mat-nav-list *ngIf="profile === 'medico' || profile === 'admin'" class="sidenav">
+      <mat-nav-list *ngIf="profile === 'médico' || profile === 'admin'" class="sidenav">
         <h3 matListItemTitle>Exames</h3>
         <mat-list>
           <button mat-flat-button routerLink="/cadastro-consulta"><mat-icon matListItemIcon>add</mat-icon>Cadastrar consulta</button><br>

@@ -17,7 +17,6 @@ export class UserStorageService {
 
   setToken(token: string): void {
     this.token = token;
-    // console.log('Token salvo:', token);
     localStorage.setItem('token', token);
   }
 
@@ -90,71 +89,16 @@ export class UserStorageService {
     const headers = this.getAuthHeaders();
     return this.http.put(`${this.urlPath}/${id}/password`, { id, newPassword }, { headers });
   }
+
+  setProfile(profile: string): void {
+    localStorage.setItem('profile', profile);
+    console.log('Profile armazenado:', profile); // Adicione um log para verificar
+}
+
+
+  getProfile(): string {
+    return localStorage.getItem('profile') || '';
+  }
+
   
-  // DEPRACATED
-  // updatePassword(email: string, newPassword: string): boolean {
-  //   let usersList = this.getUsers();
-  //   const user = usersList.find((user: any) => user.email === email);
-  //   if (user) {
-  //     user.password = newPassword;
-  //     localStorage.setItem('usersList', JSON.stringify(usersList));
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
-  // DEPRECATED 
-  // updateUser(id: string, user: any) {
-  //   const usersList: any[] = this.getUsers();
-  //   const index = usersList.findIndex((user) => user.id === id);
-  //   if (index !== -1) {
-  //     usersList[index] = { ...user, id: id };
-  //     localStorage.setItem('usersList', JSON.stringify(usersList));
-  //   } else {
-  //     console.error('Usuário não encontrado com o ID: ', id);
-  //   }
-  // }
-
-    // DEPRECATED > addUsers() via localStorage
-  // addUser(user: any): void {
-  //   let usersList: any[] = this.getUsers();
-  //   user.id = this.gerarIdSequencial(usersList.length + 1);
-  //   usersList.push(user);
-  //   localStorage.setItem('usersList', JSON.stringify(usersList));
-  // }
-
-  // DEPRECATED > getUsers() via localStorage
-  // getUsers(): any[] {
-  //   let usersList = localStorage.getItem('usersList');
-  //   if (!usersList) {
-  //     usersList = JSON.stringify([]);
-  //     localStorage.setItem('usersList', usersList);
-  //   }
-  //   return JSON.parse(usersList);
-  // }
-
-  // DEPRECATED > Id vai ser gerado no Back-End
-  // private gerarIdSequencial(numero: number): string {
-  //   return numero.toString().padStart(6, '0');
-  // }
-
-  // DEPRECATED
-  // getUserByEmailOrById(textoPesquisa: string): any[] {
-  //   let usersList = this.getUsers();
-  //   textoPesquisa = textoPesquisa.toLowerCase();
-  //   return usersList.filter(
-  //     (user: any) =>
-  //       user.email.toLowerCase().includes(textoPesquisa) ||
-  //       user.id.toString().includes(textoPesquisa)
-  //   );
-  // }
-
-  // DEPRECATED
-  // removeUser(userId: string): void {
-  //   let usersList: any[] = this.getUsers();
-  //   usersList = usersList.filter((user) => user.id !== userId);
-  //   localStorage.setItem('usersList', JSON.stringify(usersList));
-  // }
-
 }
