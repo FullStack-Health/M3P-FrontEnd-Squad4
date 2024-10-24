@@ -1,45 +1,70 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { apiUrl } from '../environments/environment';
+import { User } from '../entities/user.model';
+
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserStorageService {
-
   isLogged: boolean = false;
+  token: string | null = null;
 
-  constructor() {}
+  constructor(private readonly http: HttpClient) {}
 
-  addUser(user: any): void {
-    let usersList = this.getUsers();
-    user.id = this.gerarIdSequencial(usersList.length + 1);
-    usersList.push(user);
-    localStorage.setItem('usersList', JSON.stringify(usersList));
+  urlPath: string = `${apiUrl}/usuarios`;
+
+  setToken(token: string): void {
+    this.token = token;
+    localStorage.setItem('token', token);
   }
 
-  getUsers(): any[] {
-    let usersList = localStorage.getItem('usersList');
-    if (!usersList) {
-      usersList = JSON.stringify([]);
-      localStorage.setItem('usersList', usersList);
+  getToken(): string | null {
+    if(!this.token) {
+      this.token = localStorage.getItem('token');
     }
-    return JSON.parse(usersList);
+    console.log('Token recuperado:', this.token);
+    return this.token;
   }
 
-  private gerarIdSequencial(numero: number): string {
-    return numero.toString().padStart(6, '0');
+  getAuthHeaders(): HttpHeaders {
+    const token = this.getToken();
+    if(token) {
+      return new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      })
+    } else {
+      console.error('Nenhum token encontrado!');
+      return new HttpHeaders({
+        'Content-Type': 'application/json'
+      });
+    }
   }
-  
+
+  addUser(user: any): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.post(`${this.urlPath}/pre-registro`, user, { headers });
+  };
+
+  getUsers(): Observable<User[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<User[]>(this.urlPath, { headers });
+  }
+
   setLoggedUser(user: any): void {
     localStorage.setItem('loggedUser', JSON.stringify(user));
   }
 
   getLoggedUser(): any {
     const loggedUser = localStorage.getItem('loggedUser');
-      if (loggedUser){
-        return JSON.parse(loggedUser);
-      } else {
-        localStorage.setItem('loggedUser', JSON.stringify([]));
-        return [];
+    if (loggedUser) {
+      return JSON.parse(loggedUser);
+    } else {
+      localStorage.setItem('loggedUser', JSON.stringify([]));
+      return [];
     }
   }
 
@@ -47,25 +72,34 @@ export class UserStorageService {
     localStorage.removeItem('loggedUser');
   }
 
-  getUserByEmailOrById(textoPesquisa: string): any[] {
-    let usersList = this.getUsers();
-    textoPesquisa = textoPesquisa.toLowerCase();
-    return usersList.filter((user: any) =>
-      user.email.toLowerCase().includes(textoPesquisa) ||
-      user.id.toString().includes(textoPesquisa)
-    );
+  removeUser(id: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.delete(`${this.urlPath}/${id}`, { headers });
   }
 
-  updatePassword(email: string, newPassword: string): boolean {
-    let usersList = this.getUsers();
-    const user = usersList.find((user: any) => user.email === email);
-
-    if (user) {
-      user.password = newPassword;
-      localStorage.setItem('usersList', JSON.stringify(usersList));
-      return true;
-    } else {
-      return false;
-    }
+  getUserByEmailOrById(textoPesquisa: string): Observable<any []> {
+    return this.http.get<any[]>(`${this.urlPath}/${textoPesquisa}`);
   }
+
+  updateUser(id: string, user: any): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.put(`${apiUrl}/${id}`, user, { headers });
+  }
+
+  updatePassword(id: string, newPassword: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.put(`${this.urlPath}/${id}/password`, { id, newPassword }, { headers });
+  }
+
+  setProfile(profile: string): void {
+    localStorage.setItem('profile', profile);
+    console.log('Profile armazenado:', profile); // Adicione um log para verificar
+}
+
+
+  getProfile(): string {
+    return localStorage.getItem('profile') || '';
+  }
+
+  
 }
