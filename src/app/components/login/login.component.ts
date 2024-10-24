@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/authservice.service';
-import { LoginResponse } from '../../entities/auth.models';
 
 @Component({
   selector: 'app-login',

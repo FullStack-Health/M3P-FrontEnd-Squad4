@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { apiUrl } from '../environments/environment';
 import { User } from '../entities/user.model';
+import { map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root',
@@ -76,8 +78,31 @@ export class UserStorageService {
     return this.http.delete(`${this.urlPath}/${id}`, { headers });
   }
 
-  getUserByEmailOrById(textoPesquisa: string): Observable<any []> {
-    return this.http.get<any[]>(`${this.urlPath}/${textoPesquisa}`);
+
+  getUserByEmailOrById(id: string | null, email: string | null): Observable<User> {
+    const headers = this.getAuthHeaders();
+    let busca = new URLSearchParams();
+    if (id) {
+      busca.append('id', id);
+    }
+    if (email) {
+      busca.append('email', email);
+    }
+    return this.http.get<User>(`${this.urlPath}/buscar?${busca.toString()}`, { headers });
+  }
+
+  getUsersByEmail(email: string): Observable<User[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<User[]>(`${this.urlPath}/busca?email=${email}`, { headers }).pipe(
+          map((response: User | User[]) => {
+            return Array.isArray(response) ? response : [response];
+          })
+        );
+      }
+
+  getUserById(id: string): Observable<User> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<User>(`${this.urlPath}/busca?id=${id}`, { headers });
   }
 
   updateUser(id: string, user: any): Observable<any> {

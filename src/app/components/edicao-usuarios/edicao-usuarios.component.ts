@@ -9,7 +9,8 @@ import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { PageTitleService } from '../../services/title.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserStorageService } from '../../services/users-storage.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { User } from '../entities/user.model';
 
 @Component({
   selector: 'app-edicao-usuarios',
@@ -55,9 +56,8 @@ export class EdicaoUsuariosComponent implements OnInit  {
     this.activatedRoute.params.subscribe(params => {
       this.userId = params['id'];
       if (this.userId) {
-        this.userStorageService.getUserByEmailOrById(this.userId).subscribe(users => {
-          if (users && users.length > 0) {
-            const user = users[0];
+        this.userStorageService.getUserById(this.userId).subscribe((user: User) => {
+          if (user) {
             this.userForm.patchValue({ email: user.email });
           }
         });

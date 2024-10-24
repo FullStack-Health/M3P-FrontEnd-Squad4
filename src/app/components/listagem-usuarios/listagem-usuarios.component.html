@@ -5,7 +5,7 @@
       <mat-label>Buscar usuário</mat-label>
         <input id="input-busca" matInput placeholder="Buscar por email ou por id" type="text" [(ngModel)]="textoPesquisa">
       </mat-form-field>
-      <button mat-flat-button color="primary" (click)="pesquisarUsuarios(textoPesquisa)">
+      <button mat-flat-button color="primary" (click)="buscarUsuario(textoPesquisa)">
         <mat-icon matSuffix>search</mat-icon>
         Buscar
       </button>
