@@ -47,14 +47,18 @@ export class ListagemUsuariosComponent implements OnInit {
   }
 
   atualizarListaUsuarios() {
-    this.usersList = this.userStorageService.getUsers();
+    this.userStorageService.getUsers().subscribe(users => {
+      this.usersList = users;
+    });
   }
 
   pesquisarUsuarios(textoPesquisa: string) {
     if (!this.textoPesquisa) {
       this.atualizarListaUsuarios();
     } else {
-      this.usersList = this.userStorageService.getUserByEmailOrById(textoPesquisa);
+      this.userStorageService.getUserByEmailOrById(textoPesquisa).subscribe(users => {
+        this.usersList = users;
+      });
     }
   }
 
