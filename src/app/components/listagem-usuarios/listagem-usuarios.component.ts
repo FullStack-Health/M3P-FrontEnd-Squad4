@@ -53,7 +53,7 @@ export class ListagemUsuariosComponent implements OnInit {
   }
 
   buscarUsuario(buscaInput: string) {
-    this.userStorageService.getUserByEmailOrById(buscaInput).subscribe(users => {
+    this.userStorageService.getUsersByEmailOrById(buscaInput).subscribe(users => {
       this.usersList = Array.isArray(users) ? users : [users];
     });
   }

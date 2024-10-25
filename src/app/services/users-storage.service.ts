@@ -78,23 +78,23 @@ export class UserStorageService {
     return this.http.delete(`${this.urlPath}/${id}`, { headers });
   }
 
-  getUserByEmailOrById(buscaInput: string) {
+  getUsersByEmailOrById(buscaInput: string) {
     const headers = this.getAuthHeaders();
 
     if (this.isNumeric(buscaInput)) {
-      return this.http.get<User>(`${this.urlPath}/busca?id=${buscaInput}`, { headers });
+      return this.http.get<User>(`${this.urlPath}?id=${buscaInput}`, { headers });
     } else {
-      return this.http.get<User>(`${this.urlPath}/busca?email=${buscaInput}`, { headers });
+      return this.http.get<User>(`${this.urlPath}?email=${buscaInput}`, { headers });
     }
   }
 
-  private isNumeric(buscaInput: string) {
+  isNumeric(buscaInput: string) {
     return /^\d+$/.test(buscaInput);
   }
 
   getUserById(id: string): Observable<User> {
     const headers = this.getAuthHeaders();
-    return this.http.get<User>(`${this.urlPath}/busca?id=${id}`, { headers });
+    return this.http.get<User>(`${this.urlPath}?id=${id}`, { headers });
   }
 
   updateUser(id: string, user: any): Observable<any> {
