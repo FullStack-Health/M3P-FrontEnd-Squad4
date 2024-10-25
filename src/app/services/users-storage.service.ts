@@ -78,7 +78,7 @@ export class UserStorageService {
     return this.http.delete(`${this.urlPath}/${id}`, { headers });
   }
 
-  getUserByEmailOrById(buscaInput: string) {
+  getUsersByEmailOrById(buscaInput: string) {
     const headers = this.getAuthHeaders();
 
     if (this.isNumeric(buscaInput)) {
@@ -94,7 +94,7 @@ export class UserStorageService {
 
   getUserById(id: string): Observable<User> {
     const headers = this.getAuthHeaders();
-    return this.http.get<User>(`${this.urlPath}/?id=${id}`, { headers });
+    return this.http.get<User>(`${this.urlPath}?id=${id}`, { headers });
   }
 
   updateUser(id: string, user: any): Observable<any> {
