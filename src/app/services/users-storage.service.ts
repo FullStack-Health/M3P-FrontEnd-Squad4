@@ -26,7 +26,7 @@ export class UserStorageService {
     if(!this.token) {
       this.token = localStorage.getItem('token');
     }
-    console.log('Token recuperado:', this.token);
+    // console.log('Token recuperado:', this.token);
     return this.token;
   }
 
@@ -78,27 +78,19 @@ export class UserStorageService {
     return this.http.delete(`${this.urlPath}/${id}`, { headers });
   }
 
-
-  getUserByEmailOrById(id: string | null, email: string | null): Observable<User> {
+  getUserByEmailOrById(buscaInput: string) {
     const headers = this.getAuthHeaders();
-    let busca = new URLSearchParams();
-    if (id) {
-      busca.append('id', id);
+
+    if (this.isNumeric(buscaInput)) {
+      return this.http.get<User>(`${this.urlPath}/busca?id=${buscaInput}`, { headers });
+    } else {
+      return this.http.get<User>(`${this.urlPath}/busca?email=${buscaInput}`, { headers });
     }
-    if (email) {
-      busca.append('email', email);
-    }
-    return this.http.get<User>(`${this.urlPath}/buscar?${busca.toString()}`, { headers });
   }
 
-  getUsersByEmail(email: string): Observable<User[]> {
-    const headers = this.getAuthHeaders();
-    return this.http.get<User[]>(`${this.urlPath}/busca?email=${email}`, { headers }).pipe(
-          map((response: User | User[]) => {
-            return Array.isArray(response) ? response : [response];
-          })
-        );
-      }
+  private isNumeric(buscaInput: string) {
+    return /^\d+$/.test(buscaInput);
+  }
 
   getUserById(id: string): Observable<User> {
     const headers = this.getAuthHeaders();

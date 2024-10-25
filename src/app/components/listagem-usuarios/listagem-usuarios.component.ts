@@ -52,27 +52,10 @@ export class ListagemUsuariosComponent implements OnInit {
     });
   }
 
-  buscarUsuario(textoPesquisa: string) {
-    if (!textoPesquisa) {
-      this.atualizarListaUsuarios();
-      return;
-    }
-
-    const isEmail = textoPesquisa.includes('@');
-    const isId = !isNaN(Number(textoPesquisa));
-
-    if (isEmail) {
-      this.userStorageService.getUsersByEmail(textoPesquisa).subscribe(users => {
-        this.usersList = Array.isArray(users) ? users : [users];
-      });
-    } else if (isId) {
-      this.userStorageService.getUserById(textoPesquisa).subscribe(user => {
-        this.usersList = user ? [user] : [];
-      });
-    } else {
-      alert('Por favor, insira um email válido ou um ID.');
-      this.usersList = [];
-    }
+  buscarUsuario(buscaInput: string) {
+    this.userStorageService.getUserByEmailOrById(buscaInput).subscribe(users => {
+      this.usersList = Array.isArray(users) ? users : [users];
+    });
   }
 
   editarUsuario(usuario: any) {
