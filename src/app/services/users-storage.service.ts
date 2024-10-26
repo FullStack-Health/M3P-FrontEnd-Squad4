@@ -3,8 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { apiUrl } from '../environments/environment';
 import { User } from '../entities/user.model';
-import { map } from 'rxjs/operators';
-
 
 @Injectable({
   providedIn: 'root',
@@ -102,9 +100,13 @@ export class UserStorageService {
     return this.http.put(`${apiUrl}/${id}`, user, { headers });
   }
 
-  updatePassword(id: string, newPassword: string): Observable<any> {
+  updatePassword(email: string, password: string): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.put(`${this.urlPath}/${id}/password`, { id, newPassword }, { headers });
+    const body = { email, password };
+    const url = `${this.urlPath}/email/${email}/redefinir-senha`;
+    console.log('URL:', url); // Log para depuração
+    console.log('Corpo da requisição:', body); // Log para depuração
+    return this.http.patch(`${this.urlPath}/email/${email}/redefinir-senha`, { password }, { headers });
   }
 
   setProfile(profile: string): void {
@@ -114,7 +116,7 @@ export class UserStorageService {
 
 
   getProfile(): string {
-    return localStorage.getItem('profile') || '';
+    return localStorage.getItem('profile') ?? '';
   }
 
   

@@ -57,7 +57,7 @@ export class LoginComponent {
 
     this.authService.login({ email, password }).subscribe({
         next: (response) => {
-            if (response && response.token) {
+            if (response?.token) {
                 this.userService.setToken(response.token);                
                 console.log('Resposta do login:', response);
                 
