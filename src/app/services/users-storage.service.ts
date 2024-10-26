@@ -12,6 +12,7 @@ import { map } from 'rxjs/operators';
 export class UserStorageService {
   isLogged: boolean = false;
   token: string | null = null;
+  private profile: string | undefined;
 
   constructor(private readonly http: HttpClient) {}
 
@@ -108,13 +109,17 @@ export class UserStorageService {
   }
 
   setProfile(profile: string): void {
+    this.profile = profile;
     localStorage.setItem('profile', profile);
     console.log('Profile armazenado:', profile);
 }
 
 
   getProfile(): string {
-    return localStorage.getItem('profile') || '';
+    if (!this.profile) {
+      this.profile = localStorage.getItem('profile') || '';
+    }
+    return this.profile;
   }
 
   
