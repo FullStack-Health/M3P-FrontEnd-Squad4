@@ -39,8 +39,7 @@ export class MenuLateralComponent implements OnInit {
 
   ngOnInit(): void {
     const loggedUser = this.userService.getLoggedUser();
-    this.profile = this.userService.getProfile().toLowerCase(); // Transforme tudo em minúsculas
-    console.log("Retrieved profile: ", this.profile); // Verifique se está correto
+    this.profile = this.userService.getProfile().toLowerCase();
 }
 
 
