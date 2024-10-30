@@ -96,9 +96,16 @@ export class UserStorageService {
     return this.http.get<User>(`${this.urlPath}?id=${id}`, { headers });
   }
 
+  getUserById(id: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const url = `${this.urlPath}/${id}`;
+    return this.http.get(url, { headers });
+  }
+
   updateUser(id: string, user: any): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.put(`${apiUrl}/${id}`, user, { headers });
+    console.log("Usuário: " + user);
+    return this.http.put(`${this.urlPath}/${id}`, user, { headers });
   }
 
   updatePassword(email: string, password: string): Observable<any> {
