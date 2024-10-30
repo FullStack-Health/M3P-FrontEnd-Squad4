@@ -10,10 +10,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { PageTitleService } from '../../services/title.service';
-import { PacientesService } from '../../services/pacientes.service';
-import { ConsultasService } from '../../services/consultas.service';
-import { ExamesService } from '../../services/exames.service';
 import { MatDividerModule } from '@angular/material/divider';
+import { UserStorageService } from '../../services/users-storage.service';
+import { DashboardService } from '../../services/dashboard.service';
+import { PacientesService } from '../../services/pacientes.service';
 
 @Component({
     selector: 'app-home',
@@ -41,45 +41,54 @@ export class HomeComponent implements OnInit {
     textoPesquisa: string = '';
     quantidadeExames: number = 0;
     quantidadeConsultas: number = 0;
+    quantidadeUsuarios: number = 0;
+    profile: string | undefined;
 
     constructor(
+        private dashboardService: DashboardService,
+        private userService: UserStorageService,
         private pageTitleService: PageTitleService,
         private pacientesService: PacientesService,
-        private consultasService: ConsultasService,
-        private examesService: ExamesService
-    ) {
-        this.pageTitleService.setPageTitle('ESTATÍSTICAS E INFORMAÇÕES');
-    }
-
-    ngOnInit(): void {
+      ) {this.pageTitleService.setPageTitle('ESTATÍSTICAS E INFORMAÇÕES');}
+    
+      
+      ngOnInit(): void {
+        this.carregarDadosDoDashboard();
+        this.profile = this.userService.getProfile();
         this.pacientesService.obterPacientes();
         this.atualizarListaPacientes();
-        this.atualizarQuantidadeExames();
-        this.atualizarQuantidadeConsultas();
-    }
-    
+        console.log('Perfil recuperado no HomeComponent:', this.profile);
+      }
 
-    atualizarListaPacientes() {
+      atualizarListaPacientes() {
         this.pacientes = this.pacientesService.obterPacientes();
         this.quantidadePacientes = this.pacientes.length;
     }
 
-    atualizarQuantidadeExames() {
-        this.quantidadeExames = this.examesService.obterQuantidadeExames();
-    }
+    
+      carregarDadosDoDashboard(): void {
+        this.dashboardService.getDashboardData().subscribe(
+          (data) => {            
+            this.quantidadePacientes = data.numeroPacientes;
+            this.quantidadeConsultas = data.numeroConsultas;
+            this.quantidadeExames = data.numeroExames;
+            this.quantidadeUsuarios = data.numeroUsuarios;
+          },
+          (error) => {
+            console.error('Erro ao carregar dados do dashboard', error);
+          }
+        );
+      }
+    
 
-    atualizarQuantidadeConsultas() {
-        this.quantidadeConsultas = this.consultasService.obterQuantidadeConsultas();
-    }
-
-    pesquisarPacientes() {
-    const textoPesquisa = this.textoPesquisa.trim();
-    if (!textoPesquisa) {
-        this.atualizarListaPacientes();
-    } else {
-        this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
-    }
-    this.textoPesquisa = '';
-    }
+      pesquisarPacientes() {
+        const textoPesquisa = this.textoPesquisa.trim();
+        if (!textoPesquisa) {
+            this.atualizarListaPacientes();
+        } else {
+            this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
+        }
+        this.textoPesquisa = '';
+        }
 
 }

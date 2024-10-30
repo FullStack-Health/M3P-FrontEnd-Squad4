@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +8,7 @@ import { MatList, MatNavList } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { UserStorageService } from '../../services/users-storage.service';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-menu-lateral',
@@ -22,15 +23,25 @@ import { Router } from '@angular/router';
     MatNavList,
     MatList,
     MatDividerModule,
+    CommonModule
   ],
   templateUrl: './menu-lateral.component.html',
-  styleUrl: './menu-lateral.component.scss',
+  styleUrls: ['./menu-lateral.component.scss'],
 })
-export class MenuLateralComponent {
+export class MenuLateralComponent implements OnInit {
+  profile: string = '';
+  isLoggedIn: boolean = false;
+
   constructor(
     private userService: UserStorageService,
     private router: Router
   ) {}
+
+  ngOnInit(): void {
+    const loggedUser = this.userService.getLoggedUser();
+    this.profile = this.userService.getProfile().toLowerCase();
+}
+
 
   removeLoggedUser(): void {
     this.userService.removeLoggedUser();

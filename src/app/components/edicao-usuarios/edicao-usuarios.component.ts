@@ -14,6 +14,7 @@ import { cpfValidator } from '../../shared/validators/cpfValidator.validator';
 import { formatCPF } from '../../shared/formatters/formatCpf.format';
 import { formatDataNascimento } from '../../shared/formatters/formatDataNascimento.format';
 import { formatTelefone } from '../../shared/formatters/formatTelefone.format';
+
 @Component({
   selector: 'app-edicao-usuarios',
   standalone: true,

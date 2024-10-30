@@ -10,6 +10,7 @@ import { User } from '../entities/user.model';
 export class UserStorageService {
   isLogged: boolean = false;
   token: string | null = null;
+  private profile: string | undefined;
 
   constructor(private readonly http: HttpClient) {}
 
@@ -17,7 +18,6 @@ export class UserStorageService {
 
   setToken(token: string): void {
     this.token = token;
-    // console.log('Token salvo:', token);
     localStorage.setItem('token', token);
   }
 
@@ -25,7 +25,7 @@ export class UserStorageService {
     if(!this.token) {
       this.token = localStorage.getItem('token');
     }
-    console.log('Token recuperado:', this.token);
+    // console.log('Token recuperado:', this.token);
     return this.token;
   }
 
@@ -46,7 +46,7 @@ export class UserStorageService {
 
   addUser(user: any): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.post(this.urlPath, user, { headers });
+    return this.http.post(`${this.urlPath}/pre-registro`, user, { headers });
   };
 
   getUsers(): Observable<User[]> {
@@ -77,8 +77,23 @@ export class UserStorageService {
     return this.http.delete(`${this.urlPath}/${id}`, { headers });
   }
 
-  getUserByEmailOrById(textoPesquisa: string): Observable<any []> {
-    return this.http.get<any[]>(`${this.urlPath}/${textoPesquisa}`);
+  getUsersByEmailOrById(buscaInput: string) {
+    const headers = this.getAuthHeaders();
+
+    if (this.isNumeric(buscaInput)) {
+      return this.http.get<User>(`${this.urlPath}?id=${buscaInput}`, { headers });
+    } else {
+      return this.http.get<User>(`${this.urlPath}?email=${buscaInput}`, { headers });
+    }
+  }
+
+  isNumeric(buscaInput: string) {
+    return /^\d+$/.test(buscaInput);
+  }
+
+  getUserById(id: string): Observable<User> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<User>(`${this.urlPath}?id=${id}`, { headers });
   }
 
   getUserById(id: string): Observable<any> {
@@ -93,75 +108,25 @@ export class UserStorageService {
     return this.http.put(`${this.urlPath}/${id}`, user, { headers });
   }
 
-  updatePassword(id: string, newPassword: string): Observable<any> {
+  updatePassword(email: string, password: string): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.put(`${this.urlPath}/${id}/password`, { id, newPassword }, { headers });
+    const body = { email, password };
+    const url = `${this.urlPath}/email/${email}/redefinir-senha`;
+    console.log('URL:', url); // Log para depuração
+    console.log('Corpo da requisição:', body); // Log para depuração
+    return this.http.patch(`${this.urlPath}/email/${email}/redefinir-senha`, { password }, { headers });
   }
-  
-  // DEPRACATED
-  // updatePassword(email: string, newPassword: string): boolean {
-  //   let usersList = this.getUsers();
-  //   const user = usersList.find((user: any) => user.email === email);
-  //   if (user) {
-  //     user.password = newPassword;
-  //     localStorage.setItem('usersList', JSON.stringify(usersList));
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
-  // DEPRECATED 
-  // updateUser(id: string, user: any) {
-  //   const usersList: any[] = this.getUsers();
-  //   const index = usersList.findIndex((user) => user.id === id);
-  //   if (index !== -1) {
-  //     usersList[index] = { ...user, id: id };
-  //     localStorage.setItem('usersList', JSON.stringify(usersList));
-  //   } else {
-  //     console.error('Usuário não encontrado com o ID: ', id);
-  //   }
-  // }
+  setProfile(profile: string): void {
+    this.profile = profile;
+    localStorage.setItem('profile', profile);
+    console.log('Profile armazenado:', profile);
+}
 
-    // DEPRECATED > addUsers() via localStorage
-  // addUser(user: any): void {
-  //   let usersList: any[] = this.getUsers();
-  //   user.id = this.gerarIdSequencial(usersList.length + 1);
-  //   usersList.push(user);
-  //   localStorage.setItem('usersList', JSON.stringify(usersList));
-  // }
-
-  // DEPRECATED > getUsers() via localStorage
-  // getUsers(): any[] {
-  //   let usersList = localStorage.getItem('usersList');
-  //   if (!usersList) {
-  //     usersList = JSON.stringify([]);
-  //     localStorage.setItem('usersList', usersList);
-  //   }
-  //   return JSON.parse(usersList);
-  // }
-
-  // DEPRECATED > Id vai ser gerado no Back-End
-  // private gerarIdSequencial(numero: number): string {
-  //   return numero.toString().padStart(6, '0');
-  // }
-
-  // DEPRECATED
-  // getUserByEmailOrById(textoPesquisa: string): any[] {
-  //   let usersList = this.getUsers();
-  //   textoPesquisa = textoPesquisa.toLowerCase();
-  //   return usersList.filter(
-  //     (user: any) =>
-  //       user.email.toLowerCase().includes(textoPesquisa) ||
-  //       user.id.toString().includes(textoPesquisa)
-  //   );
-  // }
-
-  // DEPRECATED
-  // removeUser(userId: string): void {
-  //   let usersList: any[] = this.getUsers();
-  //   usersList = usersList.filter((user) => user.id !== userId);
-  //   localStorage.setItem('usersList', JSON.stringify(usersList));
-  // }
-
+  getProfile(): string {
+    if (!this.profile) {
+      this.profile = localStorage.getItem('profile') || '';
+    }
+    return this.profile;
+  }  
 }
