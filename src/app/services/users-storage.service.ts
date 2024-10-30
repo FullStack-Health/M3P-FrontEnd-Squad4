@@ -91,7 +91,7 @@ export class UserStorageService {
     return /^\d+$/.test(buscaInput);
   }
 
-  getUserById(id: string): Observable<User> {
+  searchUserById(id: string): Observable<User> {
     const headers = this.getAuthHeaders();
     return this.http.get<User>(`${this.urlPath}?id=${id}`, { headers });
   }
