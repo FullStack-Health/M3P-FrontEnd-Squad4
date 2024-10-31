@@ -1,11 +1,20 @@
 import { Injectable } from '@angular/core';
+import { AuthService } from './authservice.service';
+import { map, Observable } from 'rxjs';
+import { Paciente } from '../entities/paciente.model';
+import { HttpClient } from '@angular/common/http';
+import { apiUrl } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PacientesService {
+  urlPath: string = `${apiUrl}/pacientes`;
 
-  constructor() { }
+  constructor(
+    private readonly http: HttpClient,
+    private readonly authService: AuthService
+  ) { }
 
   atualizarPaciente(id: string, paciente: any) {
     const pacientes: any[] = this.obterPacientes();
@@ -39,6 +48,18 @@ export class PacientesService {
 
   private gerarIdSequencial(numero: number): string {
     return numero.toString().padStart(6, '0');
+  }
+
+  getPacientes(): Observable<Paciente[]> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get<{ pacientes: Paciente[] }>(this.urlPath, { headers }).pipe(
+      map(response => response.pacientes)
+    );
+  }
+
+  getPacientePorId(id: string): Observable<Paciente> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get<Paciente>(this.urlPath, { headers });
   }
 
   obterPacientes(): any[] {
