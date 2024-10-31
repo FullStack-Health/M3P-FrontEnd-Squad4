@@ -1,4 +1,3 @@
-
 <div class="container">
 
   <div class="buscar-paciente">
@@ -15,12 +14,12 @@
   <table mat-table [dataSource]="pacientes" class="mat-elevation-z2 tabela-pacientes">
 
     <ng-container matColumnDef="registro">
-      <th mat-header-cell *matHeaderCellDef> Registro </th>
+      <th mat-header-cell *matHeaderCellDef> Id paciente </th>
       <td mat-cell *matCellDef="let paciente"> {{ paciente.id }} </td>
     </ng-container>
   
     <ng-container matColumnDef="nomePaciente">
-      <th mat-header-cell *matHeaderCellDef> Nome do Paciente </th>
+      <th mat-header-cell *matHeaderCellDef> Nome do paciente </th>
       <td mat-cell *matCellDef="let paciente"> {{ paciente.nomeCompleto }} </td>
     </ng-container>
    
@@ -28,7 +27,7 @@
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let paciente" class="coluna-acao">
         <button mat-icon-button color="primary" aria-label="Acessar Prontuário" (click)="selecionarPaciente(paciente)">
-          <mat-icon>add circle icon</mat-icon>
+          <mat-icon>add_circle</mat-icon>
         </button>
       </td>
     </ng-container>
@@ -39,39 +38,71 @@
   
 </div>
 
-
 <form id="form-container" [formGroup]="exameForm" (ngSubmit)="cadastrarExame()">
 
   <h1 *ngIf="pacienteSelecionado">Exame de {{ pacienteSelecionado.nomeCompleto }}</h1>
 
   <mat-form-field class="form-group">
     <mat-label>Nome do Paciente</mat-label>
-    <input matInput id="nomeCompletoPaciente" formControlName="nomeCompletoPaciente" placeholder="Nome do Paciente" [disabled]="true">
+    <input readonly matInput id="nomeCompletoPaciente" formControlName="nomeCompletoPaciente" placeholder="Nome do Paciente" [disabled]="true">
   </mat-form-field>
 
   <mat-form-field class="form-group">
     <mat-label>Nome do Exame</mat-label>
     <input matInput id="nomeExame" formControlName="nomeExame" placeholder="Nome do Exame">
+    <mat-error *ngIf="exameForm.get('nomeExame')?.touched && exameForm.get('nomeExame')?.hasError('required')">
+      Nome do exame é obrigatório
+    </mat-error>
+    <mat-error *ngIf="exameForm.get('nomeExame')?.touched && exameForm.get('nomeExame')?.hasError('minlength')">
+      Nome do exame deve ter no mínimo 8 caracteres
+    </mat-error>
+    <mat-error *ngIf="exameForm.get('nomeExame')?.touched && exameForm.get('nomeExame')?.hasError('maxlength')">
+      Nome do exame deve ter no máximo 64 caracteres
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field class="form-group">
     <mat-label>Data do Exame</mat-label>
     <input matInput type="date" formControlName="dataExame" required>
+    <mat-error *ngIf="exameForm.get('dataExame')?.touched && exameForm.get('dataExame')?.hasError('required')">
+      Data do exame é obrigatória
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field class="form-group">
     <mat-label>Horário do Exame</mat-label>
     <input matInput type="time" formControlName="horarioExame" required>
+    <mat-error *ngIf="exameForm.get('horarioExame')?.touched && exameForm.get('horarioExame')?.hasError('required')">
+      Horário do exame é obrigatório
+    </mat-error>
   </mat-form-field>
   
   <mat-form-field class="form-group">
     <mat-label>Tipo do Exame</mat-label>
     <input matInput id="tipoExame" formControlName="tipoExame" placeholder="Tipo do Exame">
+    <mat-error *ngIf="exameForm.get('tipoExame')?.touched && exameForm.get('tipoExame')?.hasError('required')">
+      Tipo do exame é obrigatório
+    </mat-error>
+    <mat-error *ngIf="exameForm.get('tipoExame')?.touched && exameForm.get('tipoExame')?.hasError('minlength')">
+      Tipo do exame deve ter no mínimo 4 caracteres
+    </mat-error>
+    <mat-error *ngIf="exameForm.get('tipoExame')?.touched && exameForm.get('tipoExame')?.hasError('maxlength')">
+      Tipo do exame deve ter no máximo 32 caracteres
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field class="form-group">
     <mat-label>Laboratório</mat-label>
     <input matInput id="laboratorio" formControlName="laboratorio" placeholder="Laboratório">
+    <mat-error *ngIf="exameForm.get('laboratorio')?.touched && exameForm.get('laboratorio')?.hasError('required')">
+      Laboratório é obrigatório
+    </mat-error>
+    <mat-error *ngIf="exameForm.get('laboratorio')?.touched && exameForm.get('laboratorio')?.hasError('minlength')">
+      Laboratório deve ter no mínimo 4 caracteres
+    </mat-error>
+    <mat-error *ngIf="exameForm.get('laboratorio')?.touched && exameForm.get('laboratorio')?.hasError('maxlength')">
+      Laboratório deve ter no máximo 32 caracteres
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field class="form-group">
@@ -82,6 +113,15 @@
   <mat-form-field class="form-group textarea">
     <mat-label>Resultados</mat-label>
     <textarea matInput id="resultados" formControlName="resultados" placeholder="Resultados"></textarea>
+    <mat-error *ngIf="exameForm.get('resultados')?.touched && exameForm.get('resultados')?.hasError('required')">
+      Resultados são obrigatórios
+    </mat-error>
+    <mat-error *ngIf="exameForm.get('resultados')?.touched && exameForm.get('resultados')?.hasError('minlength')">
+      Resultados devem ter no mínimo 16 caracteres
+    </mat-error>
+    <mat-error *ngIf="exameForm.get('resultados')?.touched && exameForm.get('resultados')?.hasError('maxlength')">
+      Resultados devem ter no máximo 1024 caracteres
+    </mat-error>
   </mat-form-field>
 
   <div class="buttons-container">
@@ -90,4 +130,3 @@
     <button mat-raised-button type="submit" class="save-button" [disabled]="!exameForm.valid">Salvar</button>
   </div>
 </form>
-
