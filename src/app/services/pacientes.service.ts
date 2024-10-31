@@ -59,7 +59,7 @@ export class PacientesService {
 
   getPacientePorId(id: string): Observable<Paciente> {
     const headers = this.authService.getAuthHeaders();
-    return this.http.get<Paciente>(this.urlPath, { headers });
+    return this.http.get<Paciente>(`${this.urlPath}/${id}`, { headers });
   }
 
   obterPacientes(): any[] {
