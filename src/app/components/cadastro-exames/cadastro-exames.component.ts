@@ -87,7 +87,7 @@ export class CadastroExamesComponent implements OnInit {
   }
 
   carregarExame() {
-    const exame = this.examesService.obterExamePorId(this.exameId);
+    const exame = this.examesService.getExamePorId(this.exameId);
     if (exame) {
       this.exameForm.patchValue(exame);
       this.exameForm.get('nomeCompletoPaciente')?.disable();
