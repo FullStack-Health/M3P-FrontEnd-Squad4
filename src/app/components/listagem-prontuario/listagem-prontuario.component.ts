@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { PacientesService } from '../../services/pacientes.service';
 import { Router } from '@angular/router';
+import { Paciente } from '../../entities/paciente.model';
 
 
 @Component({
@@ -25,10 +26,10 @@ import { Router } from '@angular/router';
   templateUrl: './listagem-prontuario.component.html',
   styleUrl: './listagem-prontuario.component.scss'
 })
-export class ListagemProntuarioComponent {
+export class ListagemProntuarioComponent implements OnInit {
   
   displayedColumns: string[] = ['registro', 'nomePaciente', 'convenio', 'acao'];
-  pacientes: any[] = [];
+  pacientes: Paciente[] = [];
   textoPesquisa: any;
 
   constructor(
@@ -37,11 +38,17 @@ export class ListagemProntuarioComponent {
     private readonly router: Router
   ) {  
     this.pageTitleService.setPageTitle('LISTAGEM DE PRONTUÁRIO');
+  }
+
+  ngOnInit(): void {
     this.atualizarListaPacientes();
-}
+  }
 
 atualizarListaPacientes() {
-  this.pacientes = this.pacientesService.obterPacientes();
+  this.pacientesService.getPacientes().subscribe(pacientes => {
+    this.pacientes = pacientes;
+    // console.log("Lista de pacientes: " + pacientes);
+  });
 }
 
 pesquisarPacientes(textoPesquisa: string) {
