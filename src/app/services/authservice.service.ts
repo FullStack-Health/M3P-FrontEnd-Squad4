@@ -1,6 +1,5 @@
-// authservice.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { apiUrl } from '../environments/environment';
 import { LoginResponse } from '../entities/auth.models';
@@ -28,6 +27,21 @@ export class AuthService {
       this.token = localStorage.getItem('token');
     }
     return this.token;
+  }
+
+  getAuthHeaders(): HttpHeaders {
+    const token = this.getToken();
+    if(token) {
+      return new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      })
+    } else {
+      console.error('Nenhum token encontrado!');
+      return new HttpHeaders({
+        'Content-Type': 'application/json'
+      });
+    }
   }
 
   setProfiles(profiles: string[]): void {
