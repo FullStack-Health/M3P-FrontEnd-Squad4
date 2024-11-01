@@ -41,14 +41,29 @@ export class ListagemProntuarioComponent {
 }
 
 atualizarListaPacientes() {
-  this.pacientes = this.pacientesService.obterPacientes();
+  this.pacientesService.obterPacientes().subscribe({
+    next: (pacientes) => {
+      this.pacientes = pacientes; // Atribui a resposta à variável this.pacientes
+    },
+    error: (error) => {
+      console.error('Erro ao atualizar a lista de pacientes:', error); // Loga erros, se houver
+    }
+  });
 }
+
 
 pesquisarPacientes(textoPesquisa: string) {
   if (!textoPesquisa) {
     this.atualizarListaPacientes();
   } else {
-    this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
+    this.pacientesService.pesquisarPacientes(textoPesquisa).subscribe({
+      next: (pacientes) => {
+        this.pacientes = pacientes; // Atribui a resposta à variável this.pacientes
+      },
+      error: (error) => {
+        console.error('Erro ao pesquisar pacientes:', error); // Loga erros, se houver
+      }
+    });
   }
 }
 

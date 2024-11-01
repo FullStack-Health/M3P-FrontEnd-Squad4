@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { apiUrl } from '../environments/environment';
 import { User } from '../entities/user.model';
 
@@ -19,40 +20,53 @@ export class UserStorageService {
   setToken(token: string): void {
     this.token = token;
     localStorage.setItem('token', token);
+    console.log('Token armazenado:', token); // Log para depuração
   }
 
   getToken(): string | null {
-    if(!this.token) {
+    if (!this.token) {
       this.token = localStorage.getItem('token');
     }
-    // console.log('Token recuperado:', this.token);
+    console.log('Token recuperado:', this.token); // Log para verificar o token
     return this.token;
   }
 
   getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
-    if(token) {
+    if (token) {
+      console.log('Token válido encontrado. Configurando cabeçalhos.');
       return new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      })
+        Authorization: `Bearer ${token}`,
+      });
     } else {
-      console.error('Nenhum token encontrado!');
+      console.error('Nenhum token encontrado! Requisições podem falhar sem autenticação.');
       return new HttpHeaders({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       });
     }
   }
 
-  addUser(user: any): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.post(`${this.urlPath}/pre-registro`, user, { headers });
-  };
-
+  // `getAuthHeaders` em uma requisição com tratamento de erros
   getUsers(): Observable<User[]> {
     const headers = this.getAuthHeaders();
-    return this.http.get<User[]>(this.urlPath, { headers });
+    return this.http.get<User[]>(this.urlPath, { headers }).pipe(
+      catchError(this.handleError) // Adicionando tratamento de erro para depuração
+    );
   }
+
+  // Método para tratamento de erros
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    console.error('Erro na requisição:', error);
+    return throwError(() => new Error('Ocorreu um erro ao processar a requisição. Tente novamente mais tarde.'));
+  }
+
+  addUser(user: any): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.post(`${this.urlPath}/pre-registro`, user, { headers }).pipe(
+      catchError(this.handleError) // Tratamento de erros adicionado
+    );
+  }  
 
   setLoggedUser(user: any): void {
     localStorage.setItem('loggedUser', JSON.stringify(user));

@@ -61,9 +61,17 @@ export class HomeComponent implements OnInit {
       }
 
       atualizarListaPacientes() {
-        this.pacientes = this.pacientesService.obterPacientes();
-        this.quantidadePacientes = this.pacientes.length;
-    }
+        this.pacientesService.obterPacientes().subscribe({
+          next: (pacientes) => {
+            this.pacientes = pacientes; // Atribui a resposta à variável this.pacientes
+            this.quantidadePacientes = this.pacientes.length; // Atualiza a quantidade de pacientes
+          },
+          error: (error) => {
+            console.error('Erro ao atualizar lista de pacientes:', error); // Loga erros, se houver
+          }
+        });
+      }
+      
 
     
       carregarDadosDoDashboard(): void {
@@ -84,11 +92,18 @@ export class HomeComponent implements OnInit {
       pesquisarPacientes() {
         const textoPesquisa = this.textoPesquisa.trim();
         if (!textoPesquisa) {
-            this.atualizarListaPacientes();
+          this.atualizarListaPacientes();
         } else {
-            this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
+          this.pacientesService.pesquisarPacientes(textoPesquisa).subscribe({
+            next: (resultados) => {
+              this.pacientes = resultados; // Atribui os resultados da pesquisa à variável this.pacientes
+            },
+            error: (error) => {
+              console.error('Erro ao pesquisar pacientes:', error); // Loga qualquer erro que ocorrer
+            }
+          });
         }
         this.textoPesquisa = '';
-        }
-
+      }
+      
 }

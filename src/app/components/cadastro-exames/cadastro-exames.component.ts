@@ -96,18 +96,34 @@ export class CadastroExamesComponent {
   }
 
   atualizarListaPacientes() {
-    this.pacientes = this.pacientesService.obterPacientes();
+    this.pacientesService.obterPacientes().subscribe({
+      next: (resultados: any[]) => {
+        this.pacientes = resultados;
+      },
+      error: (error: any) => {
+        console.error('Erro ao atualizar lista de pacientes:', error);
+      }
+    });
   }
+  
 
   pesquisarPacientes() {
     const textoPesquisa = this.textoPesquisa.trim();
     if (!textoPesquisa) {
       this.atualizarListaPacientes();
     } else {
-      this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
-      this.pacienteSelecionado = null;  
+      this.pacientesService.pesquisarPacientes(textoPesquisa).subscribe({
+        next: (resultados: any[]) => {
+          this.pacientes = resultados;
+          this.pacienteSelecionado = null; // Limpa a seleção de paciente
+        },
+        error: (error: any) => {
+          console.error('Erro ao pesquisar pacientes:', error);
+        }
+      });
     }
   }
+  
 
   selecionarPaciente(paciente: any) {
     this.pacienteSelecionado = paciente;

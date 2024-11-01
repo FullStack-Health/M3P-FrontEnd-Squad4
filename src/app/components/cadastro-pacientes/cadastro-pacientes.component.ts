@@ -79,13 +79,22 @@ ngOnInit(): void {
   this.activatedRoute.params.subscribe(params => {
     this.pacienteId = params['id'];
     if (this.pacienteId) {
-      const paciente = this.pacientesService.obterPacientePorId(this.pacienteId);
-      if (paciente) {
-        this.pacienteForm.patchValue(paciente);
-      }
+      this.pacientesService.obterPacientePorId(this.pacienteId).subscribe({
+        next: (paciente) => {
+          if (paciente) {
+            this.pacienteForm.patchValue(paciente); // Popula o formulário com os dados do paciente
+          } else {
+            console.error('Paciente não encontrado');
+          }
+        },
+        error: (error) => {
+          console.error('Erro ao carregar paciente:', error);
+        }
+      });
     }
   });
 }
+
 
 
   consultaCEP() {

@@ -40,8 +40,16 @@ export class CardInfoPacientesComponent implements OnInit {
   constructor(private pacientesService: PacientesService, private router: Router) { }
 
   ngOnInit(): void {
-    this.pacientes = this.pacientesService.obterPacientes();
+    this.pacientesService.obterPacientes().subscribe({
+      next: (pacientes) => {
+        this.pacientes = pacientes; // Atribui os pacientes recebidos à variável
+      },
+      error: (error) => {
+        console.error('Erro ao carregar pacientes:', error); // Loga qualquer erro que ocorrer
+      }
+    });
   }
+  
 
   verMais(idPaciente: string) {
     this.router.navigate(['/cadastro-paciente', idPaciente]);
