@@ -78,29 +78,11 @@ constructor(private http: HttpClient,
     return this.http.post(this.urlPath, consulta, { headers });
   }
 
-  deletarConsulta(id: string) {
-    let consultas: any[] = this.obterConsultas();
-    const index = consultas.findIndex(consulta => consulta.idConsulta === id);
-    if (index !== -1) {
-      consultas.splice(index, 1); 
-      localStorage.setItem('consultas', JSON.stringify(consultas));
-    } else {
-      console.error('Consulta não encontrada para deletar.');
-    }
   obterConsultas(): Observable<Consulta[]> {
     const headers = this.authService.getAuthHeaders();
     return this.http.get<Consulta[]>(this.urlPath, { headers });
   }
 
-  atualizarConsulta(consultaAtualizada: any) {
-    let consultas: any[] = this.obterConsultas();
-    const index = consultas.findIndex(consulta => consulta.idConsulta === consultaAtualizada.idConsulta);
-    if (index !== -1) {
-      consultas[index] = consultaAtualizada;
-      localStorage.setItem('exames', JSON.stringify(consultas));
-    } else {
-      console.error('Exame não encontrado para atualizar.');
-    }
   obterConsultasPorId(idPaciente: string): Observable<any> {
     const headers = this.authService.getAuthHeaders();
     return this.http.get(`${this.urlPath}/${idPaciente}`, { headers });
@@ -119,7 +101,6 @@ constructor(private http: HttpClient,
     );
     return quantidadeConsultas;
   
-}
   }
 
   deletarConsulta(id: string): Observable<any> {

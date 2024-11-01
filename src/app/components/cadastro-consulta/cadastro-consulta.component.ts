@@ -58,21 +58,11 @@ export class CadastroConsultaComponent implements OnInit {
   pacientes: any[] = [];
   textoPesquisa: string = '';
   displayedColumns: string[] = ['registro', 'nomePaciente', 'acao'];
-  pacienteSelecionado: any | null = null;
-  today: any;
-  consultaEditando: any | null = null;
-  consulta: any;
-  consultaId!: string;
   pacienteSelecionado: { id: string; nomeCompleto: string } | null = null;
   consultaId: string | any;
   consultaForm: FormGroup;
 
   constructor(
-    private pageTitleService: PageTitleService,
-    private pacientesService: PacientesService,
-    private consultasService: ConsultasService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router
     private readonly pageTitleService: PageTitleService,
     private readonly pacientesService: PacientesService,
     private readonly consultasService: ConsultasService,
