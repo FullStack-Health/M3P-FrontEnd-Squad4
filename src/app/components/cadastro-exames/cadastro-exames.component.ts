@@ -24,6 +24,7 @@ import {
 } from '@angular/material/datepicker';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Paciente } from '../../entities/paciente.model';
 
 @Component({
   selector: 'app-cadastro-exames',
@@ -52,12 +53,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }],
 })
 export class CadastroExamesComponent implements OnInit {
-  pacientes: any[] = [];
-  textoPesquisa: string = '';
-  pacienteSelecionado: { id: string; nomeCompleto: string } | null = null;
+  pacientes: Paciente[] = [];
+  pacienteSelecionado: { id: string; nome: string } | null = null;
   displayedColumns: string[] = ['registro', 'nomePaciente', 'acao'];
   exameId: string | any;
   exameForm: FormGroup;
+  textoPesquisa: string = '';
 
   constructor(
     private readonly pageTitleService: PageTitleService,
@@ -70,7 +71,7 @@ export class CadastroExamesComponent implements OnInit {
     this.pageTitleService.setPageTitle('CADASTRO DE EXAMES');
 
     this.exameForm = new FormGroup({
-      nomeCompletoPaciente: new FormControl(''),
+      nome: new FormControl(''),
       idPaciente: new FormControl(''),
       nomeExame: new FormControl('', [
         Validators.required,
@@ -110,17 +111,19 @@ export class CadastroExamesComponent implements OnInit {
   }
 
   carregarExame() {
-    const exame = this.examesService.obterExamePorId(this.exameId);
+    const exame = this.examesService.getExamePorId(this.exameId);
     if (exame) {
       this.exameForm.patchValue(exame);
-      this.exameForm.get('nomeCompletoPaciente')?.disable();
+      this.exameForm.get('nome')?.disable();
     } else {
       console.error('Exame não encontrado');
     }
   }
 
   atualizarListaPacientes() {
-    this.pacientes = this.pacientesService.obterPacientes();
+    this.pacientesService.getPacientes().subscribe((pacientes: Paciente[]) => {
+      this.pacientes = pacientes;
+    });
   }
 
   pesquisarPacientes() {
@@ -131,13 +134,22 @@ export class CadastroExamesComponent implements OnInit {
       this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
       this.pacienteSelecionado = null;
     }
+  pesquisarPacientes(textoPesquisa: any) {
+    // console.log('pesquisarPacientes chamado com:', textoPesquisa);
+    const buscaInput = this.textoPesquisa;
+    // console.log('Texto de pesquisa:', buscaInput);
+    this.pacientesService.getPacientesPorEmailOuPorId(buscaInput).subscribe(pacientes => {
+      // console.log('Pacientes encontrados:', pacientes);
+      this.pacientes = Array.isArray(pacientes) ? pacientes : [pacientes];
+      // console.log('Pacientes atribuídos:', this.pacientes);
+    });
   }
 
   selecionarPaciente(paciente: any) {
     this.pacienteSelecionado = paciente;
     this.exameForm.patchValue({
-      nomeCompletoPaciente: paciente.nomeCompleto,
-      idPaciente: paciente.id,
+      nome: paciente.nome,
+      idPaciente: paciente.id
     });
   }
 
