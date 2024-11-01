@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { PacientesService } from '../../services/pacientes.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -40,6 +41,7 @@ export class CadastroPacientesComponent implements OnInit {
     private readonly pacientesService: PacientesService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
+    private snackBar: MatSnackBar // Adicionando MatSnackBar ao construtor
   ) {
 
     this.pageTitleService.setPageTitle('CADASTRO DE PACIENTE');
@@ -50,7 +52,7 @@ pacienteForm = new FormGroup ({
   nomeCompleto: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]),
   genero: new FormControl('', [Validators.required]),
   dataNascimento: new FormControl('', [Validators.required]),
-  cpf: new FormControl('', [Validators.required]),
+  cpf: new FormControl('', [Validators.required,Validators.pattern(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/)]), // Adicionado validação de CPF
   rg: new FormControl('', [Validators.required, Validators.maxLength(20)]),
   orgaoExpedidor: new FormControl('', Validators.required),
   estadoCivil: new FormControl('', [Validators.required]),
@@ -116,8 +118,10 @@ ngOnInit(): void {
     if (this.pacienteId) {
       if (confirm('Tem certeza que deseja deletar este paciente?')) {
         this.pacientesService.deletarPacientePorId(this.pacienteId);
-        alert('Paciente deletado com sucesso!');
-        this.router.navigate(['home'])
+
+        // Substituído o `alert` pelo `snackBar` para uma notificação menos intrusiva
+        this.snackBar.open('Paciente deletado com sucesso!', 'Fechar', { duration: 3000 });
+        this.router.navigate(['home']);
       }
     }
   }
@@ -127,10 +131,14 @@ ngOnInit(): void {
       const formData = this.pacienteForm.value;
       if (this.pacienteId) {
         this.pacientesService.atualizarPaciente(this.pacienteId, formData);
-        alert('Paciente atualizado com sucesso!');
+
+        // Usando o `snackBar` em vez de `alert` para uma notificação visual mais moderna
+        this.snackBar.open('Paciente atualizado com sucesso!', 'Fechar', { duration: 3000 });
       } else {
         this.pacientesService.salvarPaciente(formData);
-        alert('Paciente cadastrado com sucesso!');
+
+        // `snackBar` também aqui para manter consistência visual em toda a aplicação
+        this.snackBar.open('Paciente cadastrado com sucesso!', 'Fechar', { duration: 3000 });
         this.router.navigate(['home']);
       }
     }
@@ -140,11 +148,30 @@ ngOnInit(): void {
     if (this.pacienteForm.valid && this.pacienteId) {
       const pacienteFormPreenchido = this.pacienteForm.value;
       this.pacientesService.atualizarPaciente(this.pacienteId, pacienteFormPreenchido);
-      alert("Dados do paciente atualizados com sucesso!");
+
+      // Notificação usando `snackBar` ao invés de `alert`, garantindo uma experiência de usuário consistente
+      this.snackBar.open('Dados do paciente atualizados com sucesso!', 'Fechar', { duration: 3000 });
     } else {
-      alert('Formulário inválido ou nenhum paciente selecionado.');
+      // Mensagem de erro também usando `snackBar`
+      this.snackBar.open('Formulário inválido ou nenhum paciente selecionado.', 'Fechar', { duration: 3000 });
     }
   }
 
+  //Função auxiliar para verificar se o campo tem erro e exibir a mensagem adequada
+  getErrorMessage(controlName: string) {
+    const control = this.pacienteForm.get(controlName);
+    if (control?.hasError('required')) {
+      return 'Campo obrigatório';
+    } else if (control?.hasError('minlength')) {
+      return 'Mínimo de carecetes não atingido';
+    } else if (control?.hasError('maxlength')) {
+      return 'Máximo de caracteres excedido';
+    } else if (control?.hasError('pattern')) {
+      return 'Formato inválido';
+    } else if (control?.hasError('email')) {
+      return 'E-mail inválido';
+    }
+    return '';
+  }
 
 }

@@ -1,6 +1,8 @@
 #form-container {
   max-width: 800px;
-
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; // Adiciona um espaço entre os campos para melhorar a legibilidade
 }
 
 h3 {
@@ -11,30 +13,32 @@ h3 {
 }
 
 .form-group {
-  width: calc(50% - 10px);
-  margin-right: 10px; 
-  
-  .form-group:last-child {
-    margin-right: 0;
-  }
-  
+  width: calc(50% - 10px); // Configuração para que cada campo ocupe metade da largura do formulário
+  margin-right: 10px;
+
   mat-label {
     font-weight: bold;
   }
-  
+
   input.mat-input,
   mat-select,
   textarea.mat-input {
     width: 100%;
   }
 
-  button[type="submit"] {
-    width: 100%;
+  .mat-error {
+    font-size: 11px; // Reduz o tamanho do texto das mensagens de erro
+    margin-top: -5px;
+    color: #d9534f;
+  }
+
+  &:last-child {
+    margin-right: 0;
   }
 }
 
 .textarea {
-  width: calc(100% - 16px); // Calcula a largura para ocupar duas colunas com espaçamento
+  width: calc(100% - 16px); // Largura ajustada para ocupar duas colunas com espaçamento
   height: 120px;
 }
 
@@ -42,7 +46,6 @@ h3 {
   margin-right: 0;
 }
 
-// Adicionando um estilo para a largura do botão
 button[type="submit"] {
   width: 100%;
 }
