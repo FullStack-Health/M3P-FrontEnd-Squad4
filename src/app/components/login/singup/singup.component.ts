@@ -60,7 +60,7 @@ export class SingupComponent {
     ]),
     confirmPassword: new FormControl('', [
       Validators.required,
-      Validators.minLength(8),
+      Validators.minLength(8), //todo saame password
     ]),
   });
 

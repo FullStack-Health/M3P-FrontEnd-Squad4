@@ -17,7 +17,7 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'cadastro-paciente', component: CadastroPacientesComponent, canActivate: [AuthGuard] },
   { path: 'cadastro-paciente/:id', component: CadastroPacientesComponent, canActivate: [AuthGuard] },
-  { path: 'cadastro-consulta', component: CadastroConsultaComponent, canActivate: [AuthGuard] },
+  { path: 'cadastro-consulta', component: CadastroConsultaComponent/*, canActivate: [AuthGuard]*/ },
   { path: 'cadastro-consulta/:consultaId', component: CadastroConsultaComponent, canActivate: [AuthGuard] },
   { path: 'cadastro-exames', component: CadastroExamesComponent, canActivate: [AuthGuard] },
   { path: 'cadastro-exames/:exameId', component: CadastroExamesComponent, canActivate: [AuthGuard] },

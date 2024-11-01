@@ -1,39 +1,60 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AuthService } from './authservice.service';
+import { UserStorageService } from './users-storage.service';
+import { apiUrl } from '../environments/environment';
+import { Observable } from 'rxjs';
+import { Consulta } from '../entities/consulta.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConsultasService {
 
-  constructor() { }
+//  private apiUrl = 'http://localhost:8081/consultas'
+urlPath: string = `${apiUrl}/consultas`;
+  
+constructor(private http: HttpClient,
+              private authService: AuthService,
+              private userService: UserStorageService
+  ) { }
 
-  salvarConsulta(consulta: any, pacienteSelecionado: any) {
-    const idConsulta = this.gerarIdConsulta();
-    consulta.idConsulta = idConsulta; // Adiciona o idConsulta ao objeto de consulta
-    consulta.nomeCompletoPaciente = pacienteSelecionado.nomeCompleto; // Adiciona o nome do paciente
-    consulta.idPaciente = pacienteSelecionado.id; // Adiciona o id do paciente
-    let consultas: any[] = this.obterConsultas();
-    consultas.push(consulta);
-    localStorage.setItem('consultas', JSON.stringify(consultas));
+
+  cadastrarConsulta(consulta: Consulta): Observable<Consulta> {
+    // const consultas = this.obterConsultas();
+    const headers = this.userService.getAuthHeaders();
+    // console.log(this.http.post<Consulta>('${this.urlPath}', { headers }))
+    return this.http.post<Consulta>('${this.urlPath}', { headers });
+                    
   }
-  gerarIdConsulta(): string {
-    const consultas = this.obterConsultas();
-    const proximoId = consultas.length + 1;
-    return `C${proximoId.toString().padStart(6, '0')}`;
-  }
+
+  // salvarConsulta(consulta: any, pacienteSelecionado: any) {
+  //   consulta.nomeCompletoPaciente = pacienteSelecionado.nomeCompleto; // Adiciona o nome do paciente
+  //   consulta.idPaciente = pacienteSelecionado.id; // Adiciona o id do paciente
+  //   let consultas: any[] = this.obterConsultas();
+  //   consultas.push(consulta);
+  //   localStorage.setItem('consultas', JSON.stringify(consultas));
+  // }
+  // gerarIdConsulta(): string {
+  //   const consultas = this.obterConsultas();
+  //   const proximoId = consultas.length + 1;
+  //   return `C${proximoId.toString().padStart(6, '0')}`;
+  // }
   
   obterConsultas(): any[] {
     return JSON.parse(localStorage.getItem('consultas') || '[]');
   }
 
-  obterConsultasPorId(idPaciente: string): any[] {
-    const consultas = this.obterConsultas();
-    return consultas.filter(consulta => consulta.idPaciente === idPaciente);
-  }
+  // obterConsultasPorId(idPaciente: string): any[] {
+  //   const consultas = this.obterConsultas();
+  //   return consultas.filter(consulta => consulta.idPaciente === idPaciente);
+  // }
 
-  obterConsultaPorId(idConsulta: string): any {
-    const consultas = this.obterConsultas();
-    return consultas.find(consulta => consulta.idConsulta === idConsulta);
+  obterConsultaPorId(idConsulta: string): Observable<Consulta> {
+    // const consultas = this.obterConsultas();
+    const headers = this.userService.getAuthHeaders();
+    return this.http.get<Consulta>('${this.urlPath}/${id}', { headers });
+                    
   }
   
   obterQuantidadeConsultas(): number {
