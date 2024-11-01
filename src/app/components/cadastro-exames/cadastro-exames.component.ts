@@ -2,7 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { PageTitleService } from '../../services/title.service';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule, FormGroup, Validators, FormControl } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormsModule,
+  FormGroup,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -12,7 +18,10 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { CardInfoPacientesComponent } from '../home/card-info-pacientes/card-info-pacientes.component';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { ExamesService } from '../../services/exames.service';
-import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import {
+  MatDatepicker,
+  MatDatepickerModule,
+} from '@angular/material/datepicker';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -24,7 +33,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    MatNativeDateModule, 
+    MatNativeDateModule,
     ReactiveFormsModule,
     CommonModule,
     FormsModule,
@@ -36,13 +45,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatTableModule,
     MatDatepickerModule,
     MatDatepicker,
-    CommonModule
-   ],
+    CommonModule,
+  ],
   templateUrl: './cadastro-exames.component.html',
   styleUrls: ['./cadastro-exames.component.scss'],
-  providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
-  ]
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }],
 })
 export class CadastroExamesComponent implements OnInit {
   pacientes: any[] = [];
@@ -52,7 +59,7 @@ export class CadastroExamesComponent implements OnInit {
   exameId: string | any;
   exameForm: FormGroup;
 
-  constructor (
+  constructor(
     private readonly pageTitleService: PageTitleService,
     private readonly pacientesService: PacientesService,
     private readonly examesService: ExamesService,
@@ -65,19 +72,35 @@ export class CadastroExamesComponent implements OnInit {
     this.exameForm = new FormGroup({
       nomeCompletoPaciente: new FormControl(''),
       idPaciente: new FormControl(''),
-      nomeExame: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]),
+      nomeExame: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(64),
+      ]),
       dataExame: new FormControl('', [Validators.required]),
       horarioExame: new FormControl('', [Validators.required]),
-      tipoExame: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(32)]),
-      laboratorio: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(32)]),
+      tipoExame: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(32),
+      ]),
+      laboratorio: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(32),
+      ]),
       urlDocumento: new FormControl(''),
-      resultados: new FormControl('', [Validators.required, Validators.minLength(16), Validators.maxLength(1024)]),
+      resultados: new FormControl('', [
+        Validators.required,
+        Validators.minLength(16),
+        Validators.maxLength(1024),
+      ]),
     });
   }
-  
+
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params => {
-      this.exameId = params['exameId']; 
+    this.activatedRoute.params.subscribe((params) => {
+      this.exameId = params['exameId'];
       if (this.exameId) {
         this.carregarExame();
       }
@@ -106,7 +129,7 @@ export class CadastroExamesComponent implements OnInit {
       this.atualizarListaPacientes();
     } else {
       this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
-      this.pacienteSelecionado = null;  
+      this.pacienteSelecionado = null;
     }
   }
 
@@ -114,7 +137,7 @@ export class CadastroExamesComponent implements OnInit {
     this.pacienteSelecionado = paciente;
     this.exameForm.patchValue({
       nomeCompletoPaciente: paciente.nomeCompleto,
-      idPaciente: paciente.id
+      idPaciente: paciente.id,
     });
   }
 
@@ -134,33 +157,49 @@ export class CadastroExamesComponent implements OnInit {
       const formData = this.exameForm.value;
       this.examesService.addExame(formData).subscribe({
         next: () => {
-          this.snackBar.open('Exame cadastrado com sucesso!', 'OK', { duration: 3000 });
+          this.snackBar.open('Exame cadastrado com sucesso!', 'OK', {
+            duration: 3000,
+          });
           this.router.navigate(['home']);
         },
         error: (err) => {
           console.error('Erro ao cadastrar exame:', err);
-          this.snackBar.open('Erro ao cadastrar exame. Tente novamente.', 'OK', { duration: 3000 });
-        }
+          this.snackBar.open(
+            'Erro ao cadastrar exame. Tente novamente.',
+            'OK',
+            { duration: 3000 }
+          );
+        },
       });
     }
   }
 
   deletarExame() {
     if (this.exameId) {
-      const snackBarRef = this.snackBar.open('Tem certeza que deseja deletar esse exame?', 'CONFIRMAR', {
-        duration: 5000
-      });
+      const snackBarRef = this.snackBar.open(
+        'Tem certeza que deseja deletar esse exame?',
+        'CONFIRMAR',
+        {
+          duration: 5000,
+        }
+      );
 
       snackBarRef.onAction().subscribe(() => {
         this.examesService.deleteExame(this.exameId).subscribe({
           next: () => {
-            this.snackBar.open('Exame deletado com sucesso!', 'OK', { duration: 3000 });
+            this.snackBar.open('Exame deletado com sucesso!', 'OK', {
+              duration: 3000,
+            });
             this.router.navigate(['home']);
           },
           error: (err) => {
             console.error('Erro ao deletar exame:', err);
-            this.snackBar.open('Erro ao deletar exame. Tente novamente.', 'OK', { duration: 3000 });
-          }
+            this.snackBar.open(
+              'Erro ao deletar exame. Tente novamente.',
+              'OK',
+              { duration: 3000 }
+            );
+          },
         });
       });
     } else {
@@ -172,17 +211,29 @@ export class CadastroExamesComponent implements OnInit {
     if (this.exameForm.valid && this.pacienteSelecionado) {
       const exameFormPreenchido = this.exameForm.value;
       exameFormPreenchido.idExame = this.exameId;
-      this.examesService.updateExame(this.exameId, exameFormPreenchido).subscribe({
-        next: () => {
-          this.snackBar.open('Exame atualizado com sucesso!', 'OK', { duration: 3000 });
-        },
-        error: (err) => {
-          console.error('Erro ao atualizar exame:', err);
-          this.snackBar.open('Erro ao atualizar exame. Tente novamente.', 'OK', { duration: 3000 });
-        }
-      });
+      this.examesService
+        .updateExame(this.exameId, exameFormPreenchido)
+        .subscribe({
+          next: () => {
+            this.snackBar.open('Exame atualizado com sucesso!', 'OK', {
+              duration: 3000,
+            });
+          },
+          error: (err) => {
+            console.error('Erro ao atualizar exame:', err);
+            this.snackBar.open(
+              'Erro ao atualizar exame. Tente novamente.',
+              'OK',
+              { duration: 3000 }
+            );
+          },
+        });
     } else {
-      this.snackBar.open('Nenhum paciente selecionado. Selecione um paciente para atualizar o exame.', 'OK', { duration: 3000 });
+      this.snackBar.open(
+        'Nenhum paciente selecionado. Selecione um paciente para atualizar o exame.',
+        'OK',
+        { duration: 3000 }
+      );
     }
   }
 }

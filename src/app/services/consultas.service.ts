@@ -1,16 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+<<<<<<< Updated upstream
 import { AuthService } from './authservice.service';
 import { UserStorageService } from './users-storage.service';
 import { apiUrl } from '../environments/environment';
 import { Observable } from 'rxjs';
+=======
+import { apiUrl } from '../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from './authservice.service';
+import { map, Observable } from 'rxjs';
+>>>>>>> Stashed changes
 import { Consulta } from '../entities/consulta.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConsultasService {
+  urlPath: string = `${apiUrl}/consultas`;
+  constructor(
+    private readonly http: HttpClient,
+    private readonly authService: AuthService
+  ) {}
 
+<<<<<<< Updated upstream
 //  private apiUrl = 'http://localhost:8081/consultas'
 urlPath: string = `${apiUrl}/consultas`;
   
@@ -59,6 +72,10 @@ constructor(private http: HttpClient,
   
   obterQuantidadeConsultas(): number {
     return this.obterConsultas().length;
+=======
+  salvarConsulta(consulta: any): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.post(this.urlPath, consulta, { headers });
   }
 
   deletarConsulta(id: string) {
@@ -70,6 +87,9 @@ constructor(private http: HttpClient,
     } else {
       console.error('Consulta não encontrada para deletar.');
     }
+  obterConsultas(): Observable<Consulta[]> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get<Consulta[]>(this.urlPath, { headers });
   }
 
   atualizarConsulta(consultaAtualizada: any) {
@@ -81,7 +101,34 @@ constructor(private http: HttpClient,
     } else {
       console.error('Exame não encontrado para atualizar.');
     }
+  obterConsultasPorId(idPaciente: string): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get(`${this.urlPath}/${idPaciente}`, { headers });
   }
+
+  obterConsultaPorId(idConsulta: string): any {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get(`${this.urlPath}/${idConsulta}`, { headers });
+>>>>>>> Stashed changes
+  }
+
+  obterQuantidadeConsultas(): Observable<number> {
+    const headers = this.authService.getAuthHeaders();
+    const quantidadeConsultas = this.http.get<Consulta[]>(this.urlPath, { headers }).pipe(
+      map((listaConsultas: Consulta[]) => listaConsultas.length)
+    );
+    return quantidadeConsultas;
   
 }
+  }
 
+  deletarConsulta(id: string): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.delete(`${this.urlPath}/${id}`, { headers });
+    }
+
+  atualizarConsulta(id: string, consulta: any) {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.put(`${this.urlPath}/${id}`, consulta, { headers });
+  }
+}

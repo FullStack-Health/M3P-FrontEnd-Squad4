@@ -24,6 +24,10 @@ import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { ConsultasService } from '../../services/consultas.service';
 import { ActivatedRoute, Router } from '@angular/router';
+<<<<<<< Updated upstream
+=======
+import { MatSnackBar } from '@angular/material/snack-bar';
+>>>>>>> Stashed changes
 
 @Component({
   selector: 'app-cadastro-consulta',
@@ -59,6 +63,8 @@ export class CadastroConsultaComponent implements OnInit {
   consultaEditando: any | null = null;
   consulta: any;
   consultaId!: string;
+  pacienteSelecionado: { id: string; nomeCompleto: string } | null = null;
+  consultaId: string | any;
   consultaForm: FormGroup;
 
   constructor(
@@ -67,6 +73,12 @@ export class CadastroConsultaComponent implements OnInit {
     private consultasService: ConsultasService,
     private activatedRoute: ActivatedRoute,
     private router: Router
+    private readonly pageTitleService: PageTitleService,
+    private readonly pacientesService: PacientesService,
+    private readonly consultasService: ConsultasService,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
+    private readonly snackBar: MatSnackBar
   ) {
     this.pageTitleService.setPageTitle('CADASTRO DE CONSULTA');
     this.consultaForm = new FormGroup({
@@ -92,8 +104,13 @@ export class CadastroConsultaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+<<<<<<< Updated upstream
     this.activatedRoute.params.subscribe(params => {
       this.consultaId = params['consultaId']; 
+=======
+    this.activatedRoute.params.subscribe((params) => {
+      this.consultaId = params['consultaId'];
+>>>>>>> Stashed changes
       if (this.consultaId) {
         this.carregarConsulta();
       }
@@ -115,18 +132,66 @@ export class CadastroConsultaComponent implements OnInit {
     this.pacientes = this.pacientesService.obterPacientes();
   }
 
+<<<<<<< Updated upstream
   getCurrentDate(): string {
     const today = new Date();
     return today.toISOString().split('T')[0];
   }
 
+=======
+>>>>>>> Stashed changes
   pesquisarPacientes() {
     const textoPesquisa = this.textoPesquisa.trim();
     if (!textoPesquisa) {
       this.atualizarListaPacientes();
     } else {
       this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
+<<<<<<< Updated upstream
       // this.pacienteSelecionado = null;
+=======
+      this.pacienteSelecionado = null;
+    }
+  }
+
+  selecionarPaciente(paciente: any) {
+    this.pacienteSelecionado = paciente;
+    this.consultaForm.patchValue({
+      nomeCompletoPaciente: paciente.nomeCompleto,
+      idPaciente: paciente.id,
+    });
+  }
+
+  validarForm() {
+    if (this.consultaForm.valid) {
+      console.log('Formulário válido');
+      return true;
+    } else {
+      console.log('Formulário inválido');
+      this.consultaForm.markAllAsTouched();
+      return false;
+    }
+  }
+
+  cadastrarConsulta() {
+    if (this.validarForm()) {
+      const formData = this.consultaForm.value;
+      this.consultasService.salvarConsulta(formData).subscribe({
+        next: () => {
+          this.snackBar.open('Consulta cadastrada com sucesso!', 'OK', {
+            duration: 3000,
+          });
+          this.router.navigate(['home']);
+        },
+        error: (err: any) => {
+          console.error('Erro ao cadastrar consulta:', err);
+          this.snackBar.open(
+            'Erro ao cadastrar consulta. Tente novamente.',
+            'OK',
+            { duration: 3000 }
+          );
+        },
+      });
+>>>>>>> Stashed changes
     }
   }
 
@@ -168,6 +233,7 @@ export class CadastroConsultaComponent implements OnInit {
     }
   }
   deletarConsulta() {
+<<<<<<< Updated upstream
     console.log(this.consultaId);
     if (this.consultaId) {
       if (confirm('Tem certeza que deseja deletar essa consulta?')) {
@@ -175,6 +241,33 @@ export class CadastroConsultaComponent implements OnInit {
         alert('Consulta deletada com sucesso!');
         this.router.navigate(['home']);
       }
+=======
+    if (this.consultaId) {
+      const snackBarRef = this.snackBar.open(
+        'Tem certeza que deseja deletar essa consulta?',
+        'CONFIRMAR',
+        { duration: 5000 }
+      );
+
+      snackBarRef.onAction().subscribe(() => {
+        this.consultasService.deletarConsulta(this.consultaId).subscribe({
+          next: () => {
+            this.snackBar.open('Consulta deletada com sucesso!', 'OK', {
+              duration: 3000,
+            });
+            this.router.navigate(['home']);
+          },
+          error: (err: any) => {
+            console.error('Erro ao deletar consulta:', err);
+            this.snackBar.open(
+              'Erro ao deletar consulta. Tente novamente.',
+              'OK',
+              { duration: 3000 }
+            );
+          },
+        });
+      });
+>>>>>>> Stashed changes
     } else {
       console.error('ID da consulta não encontrado para exclusão.');
     }
@@ -184,11 +277,36 @@ export class CadastroConsultaComponent implements OnInit {
     if (this.consultaForm.valid && this.pacienteSelecionado) {
       const consultaFormPreenchido = this.consultaForm.value;
       consultaFormPreenchido.idConsulta = this.consultaId;
+<<<<<<< Updated upstream
       this.consultasService.atualizarConsulta(consultaFormPreenchido);
       alert('Consulta atualizada com sucesso!');
     } else {
       alert(
         'Nenhum paciente selecionado. Selecione um paciente na lista acima para atualizar a consulta.'
+=======
+      this.consultasService
+        .atualizarConsulta(this.consultaId, consultaFormPreenchido)
+        .subscribe({
+          next: () => {
+            this.snackBar.open('Consulta atualizada com sucesso', 'OK', {
+              duration: 3000,
+            });
+          },
+          error: (err: any) => {
+            console.error('Erro ao atualizar consulta: ', err);
+            this.snackBar.open(
+              'Erro ao atualizar consulta. Tente novamente',
+              'OK',
+              { duration: 3000 }
+            );
+          },
+        });
+    } else {
+      this.snackBar.open(
+        'Nenhum paciente selecionado. Selecione um paciente para atualizar a consulta.',
+        'OK',
+        { duration: 3000 }
+>>>>>>> Stashed changes
       );
     }
   }
