@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from './authservice.service';
 import { map, Observable } from 'rxjs';
 import { Paciente } from '../entities/paciente.model';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from './authservice.service';
 import { apiUrl } from '../environments/environment';
 
+ 
 @Injectable({
   providedIn: 'root'
 })
 export class PacientesService {
-  urlPath: string = `${apiUrl}/pacientes`;
+ urlPath: string = `${apiUrl}/pacientes`;
 
   constructor(
     private readonly http: HttpClient,
@@ -60,6 +61,29 @@ export class PacientesService {
   getPacientePorId(id: string): Observable<Paciente> {
     const headers = this.authService.getAuthHeaders();
     return this.http.get<Paciente>(`${this.urlPath}/${id}`, { headers });
+  }
+
+  getPacientesPorEmailOuPorId(buscaInput: string): Observable<Paciente[]> {
+    const headers = this.authService.getAuthHeaders();
+    // console.log('getPacientesPorEmailOuPorId chamado com:', buscaInput);
+
+    if (this.isNumeric(buscaInput)) {
+      const url = `${this.urlPath}?id=${buscaInput}`;
+      // console.log('URL para busca por ID:', url);
+      return this.http.get<{ pacientes: Paciente[] }>(url, { headers }).pipe(
+        map(response => response.pacientes)
+      );
+    } else {
+      const url = `${this.urlPath}?nome=${buscaInput}`;
+      // console.log('URL para busca por nome:', url);
+      return this.http.get<{ pacientes: Paciente[] }>(url, { headers }).pipe(
+        map(response => response.pacientes)
+      );
+    }
+  }
+
+  isNumeric(buscaInput: string) {
+    return /^\d+$/.test(buscaInput);
   }
 
   obterPacientes(): any[] {
