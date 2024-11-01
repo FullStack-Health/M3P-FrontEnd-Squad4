@@ -52,7 +52,7 @@ pacienteForm = new FormGroup ({
   nomeCompleto: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]),
   genero: new FormControl('', [Validators.required]),
   dataNascimento: new FormControl('', [Validators.required]),
-  cpf: new FormControl('', [Validators.required,Validators.pattern(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/)]), // Adicionado validação de CPF
+  cpf: new FormControl('', [Validators.required]),
   rg: new FormControl('', [Validators.required, Validators.maxLength(20)]),
   orgaoExpedidor: new FormControl('', Validators.required),
   estadoCivil: new FormControl('', [Validators.required]),
