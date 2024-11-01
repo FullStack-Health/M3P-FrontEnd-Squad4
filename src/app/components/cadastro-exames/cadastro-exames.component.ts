@@ -15,6 +15,9 @@ import { ExamesService } from '../../services/exames.service';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Paciente } from '../../entities/paciente.model';
+import { Exame } from '../../entities/exame.model';
+import { HorarioPipe } from '../../pipes/horario.pipe';
 
 @Component({
   selector: 'app-cadastro-exames',
@@ -36,7 +39,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatTableModule,
     MatDatepickerModule,
     MatDatepicker,
-    CommonModule
+    CommonModule,
+    HorarioPipe
    ],
   templateUrl: './cadastro-exames.component.html',
   styleUrls: ['./cadastro-exames.component.scss'],
@@ -45,12 +49,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   ]
 })
 export class CadastroExamesComponent implements OnInit {
-  pacientes: any[] = [];
-  textoPesquisa: string = '';
-  pacienteSelecionado: { id: string; nomeCompleto: string } | null = null;
+
+  pacientes: Paciente[] = [];
+  pacienteSelecionado: { id: string; nome: string } | null = null;
   displayedColumns: string[] = ['registro', 'nomePaciente', 'acao'];
-  exameId: string | any;
+  exameId: string | null = null;
   exameForm: FormGroup;
+  textoPesquisa: string = '';
+  mostrar: boolean = true;
 
   constructor (
     private readonly pageTitleService: PageTitleService,
@@ -63,7 +69,7 @@ export class CadastroExamesComponent implements OnInit {
     this.pageTitleService.setPageTitle('CADASTRO DE EXAMES');
 
     this.exameForm = new FormGroup({
-      nomeCompletoPaciente: new FormControl(''),
+      nome: new FormControl({ value: '', disabled: true }),
       idPaciente: new FormControl(''),
       nomeExame: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]),
       dataExame: new FormControl('', [Validators.required]),
@@ -76,25 +82,49 @@ export class CadastroExamesComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params => {
-      this.exameId = params['exameId']; 
+    this.activatedRoute.paramMap.subscribe(params => {
+      const exameId = params.get('exameId');
+      console.log('Rota com exameId:', exameId);
+      this.exameId = exameId;
+      this.mostrar = !exameId;
       if (this.exameId) {
-        this.carregarExame();
+        this.carregarExame(this.exameId);
       }
     });
 
     this.atualizarListaPacientes();
   }
 
-  carregarExame() {
-    const exame = this.examesService.getExamePorId(this.exameId);
-    if (exame) {
-      this.exameForm.patchValue(exame);
-      this.exameForm.get('nomeCompletoPaciente')?.disable();
-    } else {
-      console.error('Exame não encontrado');
-    }
+  // carregarDadosPaciente() {
+  //   this.examesService.getExamePorId(this.exameId).subscribe((exame: any) => {
+
+  //   })
+  // }
+
+  carregarExame(id: string): void {
+    this.examesService.getExamePorId(id).subscribe((exame: Exame) => {
+      console.log(exame);
+      // Converte a data para o formato yyyy-MM-dd para ser compatível com o input type="date"
+      const dataExame = new Date(exame.dataExame).toISOString().split('T')[0];
+      // Converte o horário para o formato HH:mm para ser compatível com o input type="time"
+      const horarioExame = `${exame.horarioExame[0].toString().padStart(2, '0')}:${exame.horarioExame[1].toString().padStart(2, '0')}`;
+      
+      if (exame.idPaciente) {
+      this.pacientesService.getPacientePorId(exame.idPaciente).subscribe((paciente: Paciente) => {
+        console.log("Paciente: " + JSON.stringify(paciente));     
+      this.exameForm.patchValue({
+        ...exame,
+        dataExame: dataExame,
+        horarioExame: horarioExame,
+        nome: paciente.nome
+      });
+      console.log('Formulário atualizado com exame e paciente:', this.exameForm.value);
+    });
+  } else {
+    console.error('ID do paciente não encontrado no exame.');
   }
+});
+}
 
   atualizarListaPacientes() {
     this.pacientes = this.pacientesService.obterPacientes();
@@ -134,12 +164,12 @@ export class CadastroExamesComponent implements OnInit {
       const formData = this.exameForm.value;
       this.examesService.addExame(formData).subscribe({
         next: () => {
-          this.snackBar.open('Exame cadastrado com sucesso!', 'OK', { duration: 3000 });
+          this.snackBar.open('Exame cadastrado com sucesso!', 'OK', { duration: 5000 });
           this.router.navigate(['home']);
         },
         error: (err) => {
           console.error('Erro ao cadastrar exame:', err);
-          this.snackBar.open('Erro ao cadastrar exame. Tente novamente.', 'OK', { duration: 3000 });
+          this.snackBar.open('Erro ao cadastrar exame. Tente novamente.', 'OK', { duration: 5000 });
         }
       });
     }
@@ -152,7 +182,7 @@ export class CadastroExamesComponent implements OnInit {
       });
 
       snackBarRef.onAction().subscribe(() => {
-        this.examesService.deleteExame(this.exameId).subscribe({
+        this.examesService.deleteExame(this.exameId!).subscribe({
           next: () => {
             this.snackBar.open('Exame deletado com sucesso!', 'OK', { duration: 3000 });
             this.router.navigate(['home']);
@@ -172,7 +202,7 @@ export class CadastroExamesComponent implements OnInit {
     if (this.exameForm.valid && this.pacienteSelecionado) {
       const exameFormPreenchido = this.exameForm.value;
       exameFormPreenchido.idExame = this.exameId;
-      this.examesService.updateExame(this.exameId, exameFormPreenchido).subscribe({
+      this.examesService.updateExame(this.exameId!, exameFormPreenchido).subscribe({
         next: () => {
           this.snackBar.open('Exame atualizado com sucesso!', 'OK', { duration: 3000 });
         },

@@ -64,17 +64,18 @@ ngOnInit(): void {
   colunasConsultas: string[] = ['data', 'hora', 'motivo', 'editar'];
   
   editarConsulta(consulta: any) {
-    const idConsulta = consulta.idConsulta;
+    // console.log('editarConsulta chamado com:', consulta);
+    const idConsulta = consulta.id;
+    // console.log('ID da Consulta:', idConsulta);
     this.router.navigate(['/cadastro-consulta', idConsulta]);
   }
-    
-    
-  colunasExames: string[] = ['data', 'hora', 'nome', 'laboratorio', 'editar'];
-  
-editarExame(exame: any) {
-  const idExame = exame.idExame;
-  this.router.navigate(['/cadastro-exames', idExame]);
-}
+         
+  editarExame(exame: any) {
+    // console.log('editarExame chamado com:', exame);
+    const idExame = exame.id;
+    // console.log('ID do Exame:', idExame);
+    this.router.navigate(['/cadastro-exames', idExame]);
+  }
 
   
 
