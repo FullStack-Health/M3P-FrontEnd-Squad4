@@ -51,9 +51,8 @@ export class EdicaoUsuariosComponent implements OnInit {
     private readonly router: Router,
     private readonly _snackBar: MatSnackBar
   ) {
-
     this.pageTitleService.setPageTitle('EDIÇÃO DE USUÁRIOS');
-    }
+  }
     
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -61,11 +60,26 @@ export class EdicaoUsuariosComponent implements OnInit {
       if (this.userId) {
         this.userService.getUserById(this.userId).subscribe(user => {
           if (user) {
-            this.userForm.patchValue({ email: user.email });
+            const formattedDate = user.dataNascimento ? this.formatDate(user.dataNascimento) : '';
+            this.userForm.patchValue({
+              nome: user.nome,
+              email: user.email,
+              cpf: user.cpf,
+              dataNascimento: formattedDate,
+              telefone: user.telefone,
+            });
           }
         });
       }
     });
+  }
+
+  private formatDate(date: string): string {
+    const parsedDate = new Date(date);
+    const day = parsedDate.getDate().toString().padStart(2, '0');
+    const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0');
+    const year = parsedDate.getFullYear();
+    return `${day}/${month}/${year}`;
   }
   
   deletarUsuario() {
@@ -113,22 +127,19 @@ export class EdicaoUsuariosComponent implements OnInit {
     if (formData?.telefone) {
       formData.telefone = formatTelefone(formData.telefone);
     }
-    console.log("FormData: " + formData);
+    console.log("FormData: " + JSON.stringify(formData));
     return formData;
   }
 
   private updateUser(userId: string, formData: any) {
     this.userService.updateUser(userId, formData).subscribe({
       next: () => {
-        this._snackBar.open('Usuário atualizado com sucesso!', 'OK', { duration: 3000 });
+        this._snackBar.open('Usuário atualizado com sucesso!', 'OK', { duration: 5000 });
+        this.router.navigate(['usuarios']);
       },
       error: (error) => {
-        // console.error('Erro ao atualizar usuário:', error.error);
-        // console.error('Status do erro:', error.status);
-        // console.error('Mensagem do erro:', error.message);
-        this._snackBar.open('Erro ao atualizar usuário. Tente novamente.', 'OK', { duration: 3000 });
+        this._snackBar.open('Erro ao atualizar usuário. Tente novamente.', 'OK', { duration: 5000 });
       }
     });
   }
-  
 }
