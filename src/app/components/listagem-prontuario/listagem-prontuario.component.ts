@@ -10,7 +10,6 @@ import { PacientesService } from '../../services/pacientes.service';
 import { Router } from '@angular/router';
 import { Paciente } from '../../entities/paciente.model';
 
-
 @Component({
   selector: 'app-listagem-prontuario',
   standalone: true,
@@ -21,13 +20,12 @@ import { Paciente } from '../../entities/paciente.model';
     MatIconModule,
     MatInputModule,
     MatTableModule,
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './listagem-prontuario.component.html',
-  styleUrl: './listagem-prontuario.component.scss'
+  styleUrl: './listagem-prontuario.component.scss',
 })
 export class ListagemProntuarioComponent implements OnInit {
-  
   displayedColumns: string[] = ['registro', 'nomePaciente', 'convenio', 'acao'];
   pacientes: Paciente[] = [];
   textoPesquisa: any;
@@ -36,7 +34,7 @@ export class ListagemProntuarioComponent implements OnInit {
     private readonly pageTitleService: PageTitleService,
     private readonly pacientesService: PacientesService,
     private readonly router: Router
-  ) {  
+  ) {
     this.pageTitleService.setPageTitle('LISTAGEM DE PRONTUÁRIO');
   }
 
@@ -44,20 +42,20 @@ export class ListagemProntuarioComponent implements OnInit {
     this.atualizarListaPacientes();
   }
 
-atualizarListaPacientes() {
-  this.pacientesService.getPacientes().subscribe(pacientes => {
-    this.pacientes = pacientes;
-    // console.log("Lista de pacientes: " + pacientes);
-  });
-}
-
-pesquisarPacientes(textoPesquisa: string) {
-  if (!textoPesquisa) {
-    this.atualizarListaPacientes();
-  } else {
-    this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
+  atualizarListaPacientes() {
+    this.pacientesService.getPacientes().subscribe((pacientes) => {
+      this.pacientes = pacientes;
+      // console.log("Lista de pacientes: " + pacientes);
+    });
   }
-}
+
+  pesquisarPacientes(textoPesquisa: string) {
+    if (!textoPesquisa) {
+      this.atualizarListaPacientes();
+    } else {
+      this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
+    }
+  }
 
   acessarProntuario(paciente: any) {
     this.router.navigate(['/prontuario-paciente', paciente.id]);
