@@ -127,7 +127,7 @@ export class CadastroExamesComponent implements OnInit {
 
       if (exame.idPaciente) {
         this.pacientesService
-          .getPacientePorId(exame.idPaciente)
+          .obterPacientePorId(exame.idPaciente)
           .subscribe((paciente: Paciente) => {
             // console.log('Paciente: ' + JSON.stringify(paciente));
             this.exameForm.patchValue({
@@ -148,7 +148,7 @@ export class CadastroExamesComponent implements OnInit {
   }
 
   atualizarListaPacientes() {
-    this.pacientesService.getPacientes().subscribe((pacientes) => {
+    this.pacientesService.obterPacientes().subscribe((pacientes) => {
       this.pacientes = pacientes;
       // console.log("Lista de pacientes: " + pacientes);
     });
@@ -156,7 +156,7 @@ export class CadastroExamesComponent implements OnInit {
 
   buscarPacientes(buscaInput: string): void {
     // console.log('Método buscarPacientes chamado com buscaInput:', buscaInput);
-    this.pacientesService.getPacientesPorNomeOuPorId(buscaInput).subscribe({
+    this.pacientesService.obterPacientesPorNomeOuPorId(buscaInput).subscribe({
       next: (pacientes) => {
         // console.log('Pacientes recebidos do serviço:', pacientes);
         this.pacientes = Array.isArray(pacientes) ? pacientes : [pacientes];

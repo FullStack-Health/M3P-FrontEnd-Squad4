@@ -2,6 +2,9 @@
   <mat-form-field class="form-group">
     <mat-label>Nome Completo</mat-label>
     <input matInput type="text" id="nomeCompleto" formControlName="nomeCompleto" required minlength="8" maxlength="64">
+    <mat-error *ngIf="pacienteForm.get('nomeCompleto')?.invalid && pacienteForm.get('nomeCompleto')?.touched">
+      Por favor, insira um nome válido.
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field class="form-group">
@@ -17,11 +20,17 @@
   <mat-form-field class="form-group">
     <mat-label>Data de Nascimento</mat-label>
     <input matInput type="date" id="dataNascimento" formControlName="dataNascimento" required>
+    <mat-error *ngIf="pacienteForm.get('dataNascimento')?.invalid && pacienteForm.get('dataNascimento')?.touched">
+      Por favor, insira uma data de nascimento válida.
+    </mat-error>
   </mat-form-field>
   
   <mat-form-field class="form-group">
     <mat-label>CPF</mat-label>
-    <input matInput type="text" id="cpf" formControlName="cpf" mask="000.000.000-00" placeholder="000.000.000-00" required>
+    <input matInput type="text" id="cpf" formControlName="cpf" [mask]="'000.000.000-00'" placeholder="000.000.000-00" required>
+    <mat-error *ngIf="pacienteForm.get('cpf')?.invalid && pacienteForm.get('cpf')?.touched">
+      CPF inválido. Utilize o formato 000.000.000-00.
+    </mat-error>
   </mat-form-field>
   
   <section class="infos-rg section-info">
@@ -29,11 +38,17 @@
     <mat-form-field class="form-group">
       <mat-label>Número de RG</mat-label>
       <input matInput type="text" id="rg" formControlName="rg" maxlength="20" mask="0000000||00000000||000000000" placeholder="digite apenas os números" required>
+      <mat-error *ngIf="pacienteForm.get('rg')?.invalid && pacienteForm.get('rg')?.touched">
+        Por favor, insira um número de RG válido.
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field class="form-group">
       <mat-label>Órgão Expedidor</mat-label>
       <input matInput type="text" id="orgaoExpedidor" formControlName="orgaoExpedidor" maxlength="20" required>
+      <mat-error *ngIf="pacienteForm.get('orgaoExpedidor')?.invalid && pacienteForm.get('orgaoExpedidor')?.touched">
+        Por favor, insira um órgão expedidor válido.
+      </mat-error>
     </mat-form-field>
   </section>
     
@@ -52,12 +67,18 @@
   
   <mat-form-field class="form-group">
     <mat-label>Telefone</mat-label>
-    <input matInput type="tel" mask="(00) 0 0000-0000" id="telefone" formControlName="telefone" placeholder="(99) 9 9999-9999" required>
+    <input matInput type="tel" id="telefone" formControlName="telefone" [mask]="'(00) 00000-0000'" placeholder="(99) 99999-9999" required>
+    <mat-error *ngIf="pacienteForm.get('telefone')?.invalid && pacienteForm.get('telefone')?.touched">
+      Telefone inválido. Utilize o formato (99) 99999-9999.
+    </mat-error>
   </mat-form-field>
   
   <mat-form-field class="form-group">
     <mat-label>E-mail</mat-label>
-    <input matInput type="email"  id="email" formControlName="email" autocomplete="nope">
+    <input matInput type="email" id="email" formControlName="email" autocomplete="nope" required>
+    <mat-error *ngIf="pacienteForm.get('email')?.invalid && pacienteForm.get('email')?.touched">
+      Por favor, insira um e-mail válido.
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field class="form-group">
@@ -67,7 +88,10 @@
   
   <mat-form-field class="form-group">
     <mat-label>Contato de Emergência</mat-label>
-    <input matInput type="tel" id="contatoEmergencia" formControlName="contatoEmergencia" type="tel" mask="(00) 0 0000-0000" placeholder="(99) 9 9999-99999" required>
+    <input matInput type="tel" id="contatoEmergencia" formControlName="contatoEmergencia" [mask]="'(00) 00000-0000'" placeholder="(99) 99999-9999" required>
+    <mat-error *ngIf="pacienteForm.get('telefone')?.invalid && pacienteForm.get('telefone')?.touched">
+      Telefone inválido. Utilize o formato (99) 99999-9999.
+    </mat-error>
   </mat-form-field>
   
   <mat-form-field class="form-group textarea">
@@ -152,4 +176,3 @@
   </div>
 
 </form>
-
