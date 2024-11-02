@@ -106,7 +106,9 @@ export class CadastroConsultaComponent implements OnInit {
   }
 
   atualizarListaPacientes() {
-    this.pacientes = this.pacientesService.obterPacientes();
+    this.pacientesService.obterPacientes().subscribe(pacientes => {
+      this.pacientes = pacientes;
+    });
   }
 
   getCurrentDate(): string {
@@ -120,7 +122,9 @@ export class CadastroConsultaComponent implements OnInit {
     if (!textoPesquisa) {
       this.atualizarListaPacientes();
     } else {
-      this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
+      this.pacientesService.pesquisarPacientes(textoPesquisa).subscribe(pacientes => {
+        this.pacientes = pacientes;
+      });
       // this.pacienteSelecionado = null;  
     }
   }
