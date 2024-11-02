@@ -17,29 +17,6 @@ export class PacientesService {
     private readonly authService: AuthService
   ) { }
 
-  atualizarPaciente(id: string, paciente: any) {
-    const pacientes: any[] = this.obterPacientes();
-    const indice = pacientes.findIndex(paciente => paciente.id === id);
-
-    if (indice !== -1) {
-      pacientes[indice] = { ...paciente, id: id };
-      localStorage.setItem('pacientes', JSON.stringify(pacientes));
-    } else {
-      console.error('Paciente não encontrado com o ID fornecido:', id);
-    }
-  }
-
-  // atualizarPaciente(pacienteAtualizado: any) {
-  //   let pacientes: any[] = this.obterPacientes();
-  //   const index = pacientes.findIndex(paciente => paciente.idPaciente === pacienteAtualizado.idPaciente);
-  //   if (index !== -1) {
-  //     pacientes[index] = pacienteAtualizado;
-  //     localStorage.setItem('pacientes', JSON.stringify(pacientes));
-  //   } else {
-  //     console.error('Paciente não encontrado para atualizar.');
-  //   }
-  // }
-
   salvarPaciente(paciente: any) {
     const pacientes: any[] = this.obterPacientes();
     paciente.id = this.gerarIdSequencial(pacientes.length + 1);
@@ -50,6 +27,11 @@ export class PacientesService {
   private gerarIdSequencial(numero: number): string {
     return numero.toString().padStart(6, '0');
   }
+
+  addPaciente(paciente: Paciente): Observable<Paciente> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.post<Paciente>(this.urlPath, paciente, { headers });
+  };
 
   getPacientes(): Observable<Paciente[]> {
     const headers = this.authService.getAuthHeaders();
@@ -62,7 +44,12 @@ export class PacientesService {
     const headers = this.authService.getAuthHeaders();
     return this.http.get<Paciente>(`${this.urlPath}/${id}`, { headers });
   }
-  
+
+  updatePaciente(id: string, paciente: Paciente): Observable<Paciente>{
+    // console.log("Paciente: " + paciente);
+    const headers = this.authService.getAuthHeaders();
+    return this.http.put<Paciente>(`${this.urlPath}/${id}`, paciente, { headers });
+  }
 
   getPacientesPorNomeOuPorId(buscaInput: string): Observable<Paciente[]> {
     const headers = this.authService.getAuthHeaders();
@@ -87,6 +74,11 @@ export class PacientesService {
     return /^\d+$/.test(buscaInput);
   }
 
+  deletarPacientes(id:string): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.delete(`${this.urlPath}/${id}`, { headers })
+  }
+
   obterPacientes(): any[] {
     return JSON.parse(localStorage.getItem('pacientes') ?? '[]');
   }
@@ -97,10 +89,6 @@ export class PacientesService {
     return pacienteEncontrado || null;
   }
   
-  deletarPacientes() {
-    localStorage.removeItem('pacientes');
-  }
-
   deletarPacientePorId(id: string) {
     let pacientes: any[] = this.obterPacientes();
     pacientes = pacientes.filter(paciente => paciente.id !== id);

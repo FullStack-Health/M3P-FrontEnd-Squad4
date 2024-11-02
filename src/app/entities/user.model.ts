@@ -1,12 +1,13 @@
 export class User {
   constructor(
     public id: number,
+    public nome: string,
     public email: string,
-    public profile: string,
+    public dataNascimento: string,
+    public cpf: string,
+    public telefone: string,
     public password: string,
-    public nomeCompleto?: string,
-    public dataNascimento?: Date,
-    public cpf?: string,
-    public telefone?: string
+    public listaNomesPerfis: string[],
+    public senhaComMascara: string
   ) {}
 }

@@ -1,7 +1,7 @@
 <form id="form-container" [formGroup]="pacienteForm" (ngSubmit)="cadastrarPaciente()" >
   <mat-form-field class="form-group">
     <mat-label>Nome Completo</mat-label>
-    <input matInput type="text" id="nomeCompleto" formControlName="nomeCompleto" required minlength="8" maxlength="64">
+    <input matInput type="text" id="nome" formControlName="nome" required minlength="8" maxlength="64">
   </mat-form-field>
 
   <mat-form-field class="form-group">
@@ -52,7 +52,7 @@
   
   <mat-form-field class="form-group">
     <mat-label>Telefone</mat-label>
-    <input matInput type="tel" mask="(00) 0 0000-0000" id="telefone" formControlName="telefone" placeholder="(99) 9 9999-9999" required>
+    <input matInput type="tel" mask="(00)00000-0000" id="telefone" formControlName="telefone" placeholder="(99) 9 9999-9999" required>
   </mat-form-field>
   
   <mat-form-field class="form-group">
@@ -72,12 +72,12 @@
   
   <mat-form-field class="form-group textarea">
     <mat-label>Lista de Alergias</mat-label>
-    <textarea matInput id="alergias" formControlName="alergias"></textarea>
+    <textarea matInput id="listaAlergias" formControlName="listaAlergias"></textarea>
   </mat-form-field>
   
   <mat-form-field class="form-group textarea">
     <mat-label>Lista de Cuidados Específicos</mat-label>
-    <textarea matInput id="cuidadosEspecificos" formControlName="cuidadosEspecificos"></textarea>
+    <textarea matInput id="listaCuidados" formControlName="listaCuidados"></textarea>
   </mat-form-field>
 
   
@@ -103,24 +103,33 @@
 
   <section class="infos-endereco section-info">
    <h3 class="section-title">ENDEREÇO</h3>
+   <div formGroupName="endereco">
+
     <mat-form-field class="form-group">
       <mat-label>CEP</mat-label>
-      <input matInput type="text" id="cep" formControlName="cep" (input)="consultaCEP()">
+      <input
+        matInput
+        mask="00000-000"
+        type="text"
+        id="cep"
+        formControlName="cep"
+        (input)="consultaCEP()"
+      />
     </mat-form-field>
     
     <mat-form-field class="form-group readonly">
       <mat-label>Cidade</mat-label>
-      <input matInput readonly type="text" id="cidade" formControlName="cidade" [value]="endereco ? endereco.localidade : ''">
+      <input matInput type="text" id="cidade" formControlName="cidade">
     </mat-form-field>
   
     <mat-form-field class="form-group readonly">
       <mat-label>Estado</mat-label>
-      <input matInput readonly type="text" id="estado" formControlName="estado" [value]="endereco ? endereco.uf : ''">
+      <input matInput type="text" id="estado" formControlName="estado">
     </mat-form-field>
   
     <mat-form-field class="form-group readonly">
       <mat-label>Rua</mat-label>
-      <input matInput readonly type="text" id="logradouro" formControlName="logradouro" [value]="endereco ? endereco.logradouro : ''">
+      <input matInput type="text" id="rua" formControlName="rua">
     </mat-form-field>
   
     <mat-form-field class="form-group">
@@ -135,20 +144,21 @@
   
     <mat-form-field class="form-group readonly">
       <mat-label>Bairro</mat-label>
-      <input matInput readonly type="text" id="bairro" formControlName="bairro" [value]="endereco ? endereco.bairro : ''">
+      <input matInput type="text" id="bairro" formControlName="bairro">
     </mat-form-field>
   
     <mat-form-field class="form-group">
       <mat-label>Ponto de Referência</mat-label>
-      <input matInput type="text" id="pontoReferencia" formControlName="pontoReferencia">
+      <input matInput type="text" id="ptoReferencia" formControlName="ptoReferencia">
     </mat-form-field>
+    </div>
   </section>
 
 
   <div class="buttons-container">
     <button mat-button type="button" class="edit-button" [disabled]="!pacienteId" (click)="editarPaciente()">Salvar edição</button>
     <button mat-button type="button" class="delete-button" [disabled]="!pacienteId" (click)="deletarPaciente()">Deletar</button>
-    <button mat-raised-button type="submit" class="save-button" [disabled]="!pacienteForm.valid">Salvar</button>
+    <button mat-raised-button type="submit" class="save-button" [disabled]="pacienteId">Salvar</button>
   </div>
 
 </form>

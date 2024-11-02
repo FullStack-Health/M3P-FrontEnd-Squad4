@@ -1,5 +1,3 @@
-import { Paciente } from './paciente.model';
-
 export class Exame {
   constructor(
     public id: number,
@@ -11,7 +9,5 @@ export class Exame {
     public urlDocumento: string,
     public resultados: string,
     public idPaciente: string
-  ) {}
-
-  
+  ) {} 
 }

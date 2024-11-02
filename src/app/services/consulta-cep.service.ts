@@ -10,7 +10,9 @@ export class ConsultaCepService {
   constructor ( private http: HttpClient ){}
 
   obterEndereco(cep: any): Observable<any>{
+    const url = `https://viacep.com.br/ws/${cep}/json/`;
     // const headers = new HttpHeaders({ 'Content-Type':  'application/json'});
-    return this.http.get(`https://viacep.com.br/ws/${cep}/json/`);
+    console.log(url);
+    return this.http.get(url);
   }
 }

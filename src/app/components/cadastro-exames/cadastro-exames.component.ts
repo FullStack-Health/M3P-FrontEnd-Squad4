@@ -102,12 +102,12 @@ export class CadastroExamesComponent implements OnInit {
       this.exameId = exameId;
       this.mostrar = !exameId;
       if (this.exameId) {
-        // this.pageTitleService.setPageTitle('EDIÇÃO DE EXAME');
-        // this.cdr.detectChanges(); // Marcar para verificação de mudanças
+        this.pageTitleService.setPageTitle('EDIÇÃO DE EXAME');
+        this.cdr.detectChanges(); // Marcar para verificação de mudanças
         this.carregarExame(this.exameId);
       } else {
-        // this.pageTitleService.setPageTitle('CADASTRO DE EXAME');
-        // this.cdr.detectChanges(); // Marcar para verificação de mudanças
+        this.pageTitleService.setPageTitle('CADASTRO DE EXAME');
+        this.cdr.detectChanges(); // Marcar para verificação de mudanças
         this.atualizarListaPacientes();
       }
     });
@@ -176,7 +176,7 @@ export class CadastroExamesComponent implements OnInit {
     });
   }
 
-   selecionarPaciente(paciente: any) {
+  selecionarPaciente(paciente: any) {
     this.pacienteSelecionado = paciente;
     this.exameForm.patchValue({
       nomeCompletoPaciente: paciente.nomeCompleto,
