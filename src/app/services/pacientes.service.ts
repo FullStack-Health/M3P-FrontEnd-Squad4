@@ -62,10 +62,11 @@ export class PacientesService {
     const headers = this.authService.getAuthHeaders();
     return this.http.get<Paciente>(`${this.urlPath}/${id}`, { headers });
   }
+  
 
-  getPacientesPorEmailOuPorId(buscaInput: string): Observable<Paciente[]> {
+  getPacientesPorNomeOuPorId(buscaInput: string): Observable<Paciente[]> {
     const headers = this.authService.getAuthHeaders();
-    // console.log('getPacientesPorEmailOuPorId chamado com:', buscaInput);
+    // console.log('getPacientesPorNomeOuPorId chamado com:', buscaInput);
 
     if (this.isNumeric(buscaInput)) {
       const url = `${this.urlPath}?id=${buscaInput}`;

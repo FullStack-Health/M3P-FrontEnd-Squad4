@@ -38,6 +38,7 @@ export class ProntuarioPacienteComponent {
   paciente: Paciente | undefined;
   consultas: Consulta[] = [];
   exames: Exame[] = [];
+  exame: Exame | undefined;
 
   colunasConsultas: string[] = ['data', 'hora', 'motivo', 'editar'];
   colunasExames: string[] = ['data', 'hora', 'nome', 'laboratorio', 'editar'];
@@ -82,13 +83,13 @@ export class ProntuarioPacienteComponent {
     });
   }
 
-  editarConsulta(consulta: any) {
-    const idConsulta = consulta.idConsulta;
+  editarConsulta(consulta: Consulta) {
+    const idConsulta = consulta.id;
     this.router.navigate(['/cadastro-consulta', idConsulta]);
   }
          
-  editarExame(exame: any) {
-    const idExame = exame.idExame;
+  editarExame(exame: Exame) {
+    const idExame = exame.id;
     this.router.navigate(['/cadastro-exames', idExame]);
   }
 

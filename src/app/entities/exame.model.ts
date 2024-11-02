@@ -10,6 +10,8 @@ export class Exame {
     public laboratorio: string,
     public urlDocumento: string,
     public resultados: string,
-    public paciente: Paciente
+    public idPaciente: string
   ) {}
+
+  
 }
