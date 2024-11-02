@@ -135,23 +135,66 @@ ngOnInit(): void {
     }
   }
 
+  removerMascara(valor: string): string {
+    return valor.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+  }
+  
+  formatarTelefone(valor: string): string {
+    // Formata o número de telefone no formato (XX)XXXXX-XXXX
+    return valor.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1)$2-$3');
+  }
+  
+  formatarCPF(valor: string): string {
+    // Formata o CPF no formato XXX.XXX.XXX-XX
+    return valor.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+  }
+  
   cadastrarPaciente() {
+    console.log('Iniciando o cadastro do paciente', this.pacienteForm.value);
+  
+    // Verificar o valor de 'nomeCompleto'
+    console.log('Valor de nomeCompleto:', this.pacienteForm.value.nomeCompleto);
+  
     if (this.pacienteForm.valid) {
-      const formData = this.pacienteForm.value;
+      // Crie uma cópia do formData com as máscaras removidas e depois formate para o backend
+      let formData = {
+        ...this.pacienteForm.value,
+        nome: this.pacienteForm.value.nomeCompleto, // Ajuste o nome se o backend espera um campo chamado 'nome'
+        cpf: this.formatarCPF(this.removerMascara(this.pacienteForm.value.cpf ?? '')),
+        telefone: this.formatarTelefone(this.removerMascara(this.pacienteForm.value.telefone ?? '')),
+        contatoEmergencia: this.formatarTelefone(this.removerMascara(this.pacienteForm.value.contatoEmergencia ?? ''))
+      };
+  
       if (this.pacienteId) {
-        this.pacientesService.atualizarPaciente(this.pacienteId, formData);
-
-        // Usando o `snackBar` em vez de `alert` para uma notificação visual mais moderna
-        this.snackBar.open('Paciente atualizado com sucesso!', 'Fechar', { duration: 3000 });
+        console.log(`Atualizando paciente com ID: ${this.pacienteId}`);
+        this.pacientesService.atualizarPaciente(this.pacienteId, formData).subscribe({
+          next: () => {
+            this.snackBar.open('Paciente atualizado com sucesso!', 'Fechar', { duration: 3000 });
+          },
+          error: (error) => {
+            console.error('Erro ao atualizar paciente:', error);
+            this.snackBar.open('Erro ao atualizar paciente.', 'Fechar', { duration: 3000 });
+          }
+        });
       } else {
-        this.pacientesService.salvarPaciente(formData);
-
-        // `snackBar` também aqui para manter consistência visual em toda a aplicação
-        this.snackBar.open('Paciente cadastrado com sucesso!', 'Fechar', { duration: 3000 });
-        this.router.navigate(['home']);
+        console.log('Salvando novo paciente', formData);
+        this.pacientesService.salvarPaciente(formData).subscribe({
+          next: () => {
+            this.snackBar.open('Paciente cadastrado com sucesso!', 'Fechar', { duration: 3000 });
+            this.router.navigate(['home']);
+          },
+          error: (error) => {
+            console.error('Erro ao cadastrar paciente:', error);
+            this.snackBar.open('Erro ao cadastrar paciente.', 'Fechar', { duration: 3000 });
+          }
+        });
       }
+    } else {
+      console.warn('Formulário inválido:', this.pacienteForm.errors);
     }
   }
+  
+  
 
   editarPaciente() {
     if (this.pacienteForm.valid && this.pacienteId) {
