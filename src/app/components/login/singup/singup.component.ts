@@ -42,7 +42,6 @@ export class SingupComponent {
   constructor(
     public dialogRef: MatDialogRef<SingupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly usersService: UserStorageService
     private readonly usersService: UserStorageService,
     private readonly snackBar: MatSnackBar
   ) {}
