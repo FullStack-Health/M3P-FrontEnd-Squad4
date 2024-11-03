@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Paciente } from '../entities/paciente.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from './authservice.service';
 import { apiUrl } from '../environments/environment';
-
+import { UserStorageService } from './users-storage.service';
+import { catchError, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
  
 @Injectable({
   providedIn: 'root'
@@ -14,19 +16,26 @@ export class PacientesService {
 
   constructor(
     private readonly http: HttpClient,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private userService: UserStorageService
   ) { }
 
-  atualizarPaciente(id: string, paciente: any) {
-    const pacientes: any[] = this.obterPacientes();
-    const indice = pacientes.findIndex(paciente => paciente.id === id);
+  // atualizarPaciente(id: string, paciente: any) {
+  //   const pacientes: any[] = this.obterPacientes();
+  //   const indice = pacientes.findIndex(paciente => paciente.id === id);
 
-    if (indice !== -1) {
-      pacientes[indice] = { ...paciente, id: id };
-      localStorage.setItem('pacientes', JSON.stringify(pacientes));
-    } else {
-      console.error('Paciente não encontrado com o ID fornecido:', id);
-    }
+  //   if (indice !== -1) {
+  //     pacientes[indice] = { ...paciente, id: id };
+  //     localStorage.setItem('pacientes', JSON.stringify(pacientes));
+  //   } else {
+  //     console.error('Paciente não encontrado com o ID fornecido:', id);
+  //   }
+  // }
+
+  // Alteração: Método atualizado para enviar a atualização ao backend
+  atualizarPaciente(id: string, paciente: any): Observable<any> {
+    const headers = this.userService.getAuthHeaders(); // Obtém os cabeçalhos de autenticação
+    return this.http.put(`${this.urlPath}/${id}`, paciente); // Envia a requisição PUT para atualizar um paciente no backend
   }
 
   // atualizarPaciente(pacienteAtualizado: any) {
@@ -40,31 +49,53 @@ export class PacientesService {
   //   }
   // }
 
-  salvarPaciente(paciente: any) {
-    const pacientes: any[] = this.obterPacientes();
-    paciente.id = this.gerarIdSequencial(pacientes.length + 1);
-    pacientes.push(paciente);
-    localStorage.setItem('pacientes', JSON.stringify(pacientes));
+  // salvarPaciente(paciente: any) {
+  //   const pacientes: any[] = this.obterPacientes();
+  //   paciente.id = this.gerarIdSequencial(pacientes.length + 1);
+  //   pacientes.push(paciente);
+  //   localStorage.setItem('pacientes', JSON.stringify(pacientes));
+  // }
+
+   // Alteração: Método atualizado para enviar uma requisição POST ao backend
+   salvarPaciente(paciente: any): Observable<any> {
+    const headers = this.userService.getAuthHeaders(); // Utilize o método para obter os headers
+    console.log('Paciente a ser enviado:', paciente);
+    console.log('Headers:', headers);
+    return this.http.post(this.urlPath, paciente, { headers }).pipe(
+      tap(response => console.log('Paciente salvo com sucesso:', response)),
+      catchError(this.handleError) // Tratamento de erros
+    );
   }
 
   private gerarIdSequencial(numero: number): string {
     return numero.toString().padStart(6, '0');
   }
 
-  getPacientes(): Observable<Paciente[]> {
+  obterPacientes(): Observable<Paciente[]> {
     const headers = this.authService.getAuthHeaders();
     return this.http.get<{ pacientes: Paciente[] }>(this.urlPath, { headers }).pipe(
       map(response => response.pacientes)
     );
   }
 
-  getPacientePorId(id: string): Observable<Paciente> {
-    const headers = this.authService.getAuthHeaders();
-    return this.http.get<Paciente>(`${this.urlPath}/${id}`, { headers });
+  // Alteração: Método atualizado para buscar os pacientes do backend
+  // obterPacientes(): Observable<any[]> {
+  //   const headers = this.userService.getAuthHeaders(); // Obtém os cabeçalhos de autenticação
+  //   return this.http.get<Paciente[]>(this.urlPath); // Envia a requisição GET para obter todos os pacientes
+  // }
+
+  // getPacientePorId(id: string): Observable<Paciente> {
+  //   const headers = this.authService.getAuthHeaders();
+  //   return this.http.get<Paciente>(`${this.urlPath}/${id}`, { headers });
+  // }
+  // Alteração: Método atualizado para buscar um paciente específico pelo ID no backend
+  obterPacientePorId(id: string): Observable<any> {
+    const headers = this.userService.getAuthHeaders(); // Obtém os cabeçalhos de autenticação
+    return this.http.get<any>(`${this.urlPath}/${id}`); // Envia a requisição GET para obter um paciente específico
   }
   
 
-  getPacientesPorNomeOuPorId(buscaInput: string): Observable<Paciente[]> {
+  obterPacientesPorNomeOuPorId(buscaInput: string): Observable<Paciente[]> {
     const headers = this.authService.getAuthHeaders();
     // console.log('getPacientesPorNomeOuPorId chamado com:', buscaInput);
 
@@ -82,40 +113,61 @@ export class PacientesService {
       );
     }
   }
+  
+  pesquisarPacientes(termo: string): Observable<any[]> {
+    const headers = this.userService.getAuthHeaders(); // Obtém os cabeçalhos de autenticação
+    return this.http.get<any[]>(`${this.urlPath}?search=${termo}`);
+  }
 
   isNumeric(buscaInput: string) {
     return /^\d+$/.test(buscaInput);
   }
 
-  obterPacientes(): any[] {
-    return JSON.parse(localStorage.getItem('pacientes') ?? '[]');
-  }
+  // obterPacientes(): any[] {
+  //   return JSON.parse(localStorage.getItem('pacientes') ?? '[]');
+  // }
 
-  obterPacientePorId(id: string): any {
-    const pacientes = this.obterPacientes();
-    const pacienteEncontrado = pacientes.find(paciente => paciente.id === id);
-    return pacienteEncontrado || null;
-  }
+  // obterPacientePorId(id: string): any {
+  //   const pacientes = this.obterPacientes();
+  //   const pacienteEncontrado = pacientes.find(paciente => paciente.id === id);
+  //   return pacienteEncontrado || null;
+  // }
   
-  deletarPacientes() {
-    localStorage.removeItem('pacientes');
+  
+  // deletarPacientePorId(id: string) {
+  //   let pacientes: any[] = this.obterPacientes();
+  //   pacientes = pacientes.filter(paciente => paciente.id !== id);
+  //   localStorage.setItem('pacientes', JSON.stringify(pacientes));
+  // }
+  // Alteração: Método atualizado para deletar um paciente específico pelo ID no backend
+  deletarPacientePorId(id: string): Observable<any> {
+    const headers = this.userService.getAuthHeaders(); // Obtém os cabeçalhos de autenticação
+    return this.http.delete(`${this.urlPath}/${id}`); // Envia a requisição DELETE para remover um paciente
   }
 
-  deletarPacientePorId(id: string) {
-    let pacientes: any[] = this.obterPacientes();
-    pacientes = pacientes.filter(paciente => paciente.id !== id);
-    localStorage.setItem('pacientes', JSON.stringify(pacientes));
-  }
+  // pesquisarPacientes(textoPesquisa: string): any[] {
+  //   const pacientes = this.obterPacientes();
+  //   return pacientes.filter(paciente =>
+  //     paciente.nomeCompleto.toLowerCase().includes(textoPesquisa.toLowerCase()) ||
+  //     paciente.telefone.includes(textoPesquisa) ||
+  //     paciente.email.includes(textoPesquisa) ||
+  //     paciente.id === textoPesquisa
+  //   );
+  // }
 
-  pesquisarPacientes(textoPesquisa: string): any[] {
-    const pacientes = this.obterPacientes();
-    return pacientes.filter(paciente =>
-      paciente.nomeCompleto.toLowerCase().includes(textoPesquisa.toLowerCase()) ||
-      paciente.telefone.includes(textoPesquisa) ||
-      paciente.email.includes(textoPesquisa) ||
-      paciente.id === textoPesquisa
-    );
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    console.error('Detalhes do erro:', error);
+    if (error.error instanceof ErrorEvent) {
+      // Erros do lado do cliente ou de rede
+      console.error('Erro do lado do cliente:', error.error.message);
+    } else {
+      // Erros retornados pelo backend
+      console.error(
+        `Backend retornou o código ${error.status}, ` +
+        `corpo do erro: ${JSON.stringify(error.error)}`
+      );
+    }
+    return throwError(() => new Error('Ocorreu um erro ao processar a requisição. Verifique os detalhes e tente novamente.'));
   }
-
 
 }

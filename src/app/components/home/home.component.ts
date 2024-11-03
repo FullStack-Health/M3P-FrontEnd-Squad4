@@ -61,8 +61,15 @@ export class HomeComponent implements OnInit {
       }
 
       atualizarListaPacientes() {
-        this.pacientes = this.pacientesService.obterPacientes();
-        this.quantidadePacientes = this.pacientes.length;
+        this.pacientesService.obterPacientes().subscribe(
+            (pacientes) => {
+                this.pacientes = pacientes;
+                this.quantidadePacientes = this.pacientes.length;
+            },
+            (error) => {
+                console.error('Erro ao obter pacientes', error);
+            }
+        );
     }
 
     
@@ -86,7 +93,14 @@ export class HomeComponent implements OnInit {
         if (!textoPesquisa) {
             this.atualizarListaPacientes();
         } else {
-            this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
+            this.pacientesService.pesquisarPacientes(textoPesquisa).subscribe(
+                (result) => {
+                    this.pacientes = result;
+                },
+                (error) => {
+                    console.error('Erro ao pesquisar pacientes', error);
+                }
+            );
         }
         this.textoPesquisa = '';
         }

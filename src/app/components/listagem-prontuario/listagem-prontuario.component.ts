@@ -43,17 +43,25 @@ export class ListagemProntuarioComponent implements OnInit {
   }
 
   atualizarListaPacientes() {
-    this.pacientesService.getPacientes().subscribe((pacientes) => {
-      this.pacientes = pacientes;
-      // console.log("Lista de pacientes: " + pacientes);
-    });
+    this.pacientesService.obterPacientes().subscribe(
+      (pacientes) => {
+        this.pacientes = pacientes;
+        console.log("Lista de pacientes:", this.pacientes); // Melhorar o log para ver a resposta completa
+      },
+      (error) => {
+        console.error("Erro ao obter pacientes:", error); // Log para capturar erros
+      }
+    );
   }
+  
 
   pesquisarPacientes(textoPesquisa: string) {
     if (!textoPesquisa) {
       this.atualizarListaPacientes();
     } else {
-      this.pacientes = this.pacientesService.pesquisarPacientes(textoPesquisa);
+      this.pacientesService.pesquisarPacientes(textoPesquisa).subscribe((pacientes) => {
+        this.pacientes = pacientes;
+      });
     }
   }
 

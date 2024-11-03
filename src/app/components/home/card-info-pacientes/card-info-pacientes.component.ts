@@ -7,16 +7,7 @@ import { PacientesService } from '../../../services/pacientes.service';
 import { IdadePipe } from '../../../pipes/idade.pipe';
 import { FormatarTelefonePipe } from '../../../pipes/formatar-telefone.pipe';
 import { Router } from '@angular/router';
-
-
-interface Paciente {
-  id: string;
-  imagem: string;
-  nomeCompleto: string;
-  dataNascimento: string;
-  telefone: string;
-  convenio: string;
-}
+import { Paciente } from '../../../entities/paciente.model';
 
 @Component({
   selector: 'app-card-info-pacientes',
@@ -40,7 +31,9 @@ export class CardInfoPacientesComponent implements OnInit {
   constructor(private pacientesService: PacientesService, private router: Router) { }
 
   ngOnInit(): void {
-    this.pacientes = this.pacientesService.obterPacientes();
+    this.pacientesService.obterPacientes().subscribe((data: Paciente[]) => {
+      this.pacientes = data;
+    });
   }
 
   verMais(idPaciente: string) {

@@ -63,8 +63,8 @@ export class ProntuarioPacienteComponent {
   }
 
   obterDadosPaciente(pacienteId: string): void {
-    this.pacientesService.getPacientePorId(pacienteId).subscribe((paciente: Paciente) => {
-      this.paciente = paciente;
+    this.pacientesService.obterPacientesPorNomeOuPorId(pacienteId).subscribe((pacientes: Paciente[]) => {
+      this.paciente = pacientes[0];
       // console.log('Paciente recebido:', this.paciente);
     });
   }
