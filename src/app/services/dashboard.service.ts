@@ -1,23 +1,21 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { apiUrl } from '../environments/environment';
+import { AuthService } from './authservice.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
-  
-  private apiUrl = 'http://localhost:8081/dashboard';
 
-  constructor(private http: HttpClient) {}
+  private urlPath: string = `${apiUrl}/dashboard`;
 
-  
+  constructor(private http: HttpClient, private authService: AuthService) {}
+
   getDashboardData(): Observable<any> {
-    const token = localStorage.getItem('token'); // Obtém o token do localStorage
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}` // Adiciona o token ao cabeçalho
-    });
+    const headers = this.authService.getAuthHeaders();
     
-    return this.http.get<any>(this.apiUrl, { headers }); // Passa os cabeçalhos na requisição
+    return this.http.get<any>(this.urlPath, { headers });
   }
 }
