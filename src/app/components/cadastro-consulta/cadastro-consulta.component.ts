@@ -67,7 +67,7 @@ export class CadastroConsultaComponent implements OnInit {
     
     this.pageTitleService.setPageTitle('CADASTRO DE CONSULTA');
     this.consultaForm = new FormGroup({      
-      nome: new FormControl({ value: '', disabled: true }),
+      nome: new FormControl(''),
       idPaciente: new FormControl(''),
       motivo: new FormControl('', [
         Validators.required,
@@ -83,8 +83,8 @@ export class CadastroConsultaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe((params) => {
-      const consultaId = params.get('consultaId');
+    this.activatedRoute.params.subscribe((params) => {
+      const consultaId = params['get']('consultaId');
       this.consultaId = consultaId,
       this.mostrar = !consultaId
       if (this.consultaId) {
@@ -116,7 +116,7 @@ export class CadastroConsultaComponent implements OnInit {
                 ...consulta,
                 dataConsulta: dataConsulta,
                 horarioConsulta: horarioConsulta,
-                nome: {value: paciente.nome},
+                nome: paciente.nome,
               });
             }) ;
         } else {
