@@ -19,6 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { UserStorageService } from '../../../services/users-storage.service';
 import { User } from '../../../entities/user.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-singup',
@@ -42,6 +43,8 @@ export class SingupComponent {
     public dialogRef: MatDialogRef<SingupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private readonly usersService: UserStorageService
+    private readonly usersService: UserStorageService,
+    private readonly snackBar: MatSnackBar
   ) {}
 
   user: User | undefined;
@@ -69,6 +72,13 @@ export class SingupComponent {
       const formData = this.signupForm.value;
       console.log('Dados do formulário:', formData);
       
+      // console.log('Dados do formulário:', formData);
+      this.usersService.getUsers().subscribe((user: any) => {
+        if (user[0].email === formData.email) {
+          this.snackBar.open('Email já cadastrado', 'Fechar', { duration: 5000 });
+        }
+      });  
+
       this.usersService.addUser(formData).subscribe({
         next: (response) => {
           alert("Usuário cadastrado com sucesso!");
@@ -84,5 +94,15 @@ export class SingupComponent {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  checarEmail(email: string) {
+    this.usersService.getUsers().subscribe((user: any) => {
+      const emailForm = this.signupForm.get(email)?.value
+      if (user[0].email === emailForm) {
+        console.log('entrou')
+        this.snackBar.open('Email já cadastrado', 'Fechar', { duration: 5000 });
+      }
+    });  
   }
 }

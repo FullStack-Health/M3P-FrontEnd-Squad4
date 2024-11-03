@@ -6,7 +6,7 @@
 <mat-dialog-content>
   <mat-form-field>
     <mat-label>Email</mat-label>
-    <input matInput formControlName="email" type="email">
+    <input matInput formControlName="email" type="email" (focusout)="checarEmail('email')">
   </mat-form-field>
   
   <br>

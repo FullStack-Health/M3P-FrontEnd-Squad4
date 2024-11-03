@@ -14,6 +14,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { UserStorageService } from '../../services/users-storage.service';
 import { DashboardService } from '../../services/dashboard.service';
 import { PacientesService } from '../../services/pacientes.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-home',
@@ -48,11 +49,20 @@ export class HomeComponent implements OnInit {
         private dashboardService: DashboardService,
         private userService: UserStorageService,
         private pageTitleService: PageTitleService,
+        private readonly snackBar: MatSnackBar,
         private pacientesService: PacientesService,
       ) {this.pageTitleService.setPageTitle('ESTATÍSTICAS E INFORMAÇÕES');}
     
       
       ngOnInit(): void {
+        this.userService.getUsers().subscribe(
+          (user: any) => {if(user[0].email === "admin@example.com"){
+          this.snackBar.open("eeepa", "Fechar", { duration: 5000})
+            
+        }
+            }
+        ) 
+    
         this.carregarDadosDoDashboard();
         this.profile = this.userService.getProfile();
         this.pacientesService.obterPacientes();
