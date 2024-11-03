@@ -127,7 +127,7 @@ export class CadastroExamesComponent implements OnInit {
 
       if (exame.idPaciente) {
         this.pacientesService
-          .obterPacientePorId(exame.idPaciente)
+          .getPacientePorId(exame.idPaciente)
           .subscribe((paciente: Paciente) => {
             // console.log('Paciente: ' + JSON.stringify(paciente));
             this.exameForm.patchValue({
@@ -136,10 +136,10 @@ export class CadastroExamesComponent implements OnInit {
               horarioExame: horarioExame,
               nome: paciente.nome,
             });
-            // console.log(
-            //   'Formulário atualizado com exame e paciente:',
-            //   this.exameForm.value
-            // );
+            console.log(
+              'Formulário atualizado com exame e paciente:',
+              this.exameForm.value
+            );
           });
       } else {
         console.error('ID do paciente não encontrado no exame.');
