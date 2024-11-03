@@ -16,6 +16,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Paciente } from '../../entities/paciente.model';
 import { Consulta } from '../../entities/consulta.model';
+import { duration } from 'moment';
 
 @Component({
   selector: 'app-cadastro-consulta',
@@ -53,7 +54,9 @@ export class CadastroConsultaComponent implements OnInit {
   consultaForm: FormGroup;
   consultaId: string | null = null;
   mostrar: boolean = true;
-  usersList: any[] = []
+  usersList: any[] = [];
+  camposDict: { [key: string]: string } ={"dosagemPrecaucoes":"Dosagem e precauções","descricaoProblema":"Descrição do Problema","horarioConsulta":"Horário da Consulta","dataConsulta":"Data da Consulta","motivo":"Motivo"};
+
 
   constructor(
     private readonly pageTitleService: PageTitleService,
@@ -67,7 +70,7 @@ export class CadastroConsultaComponent implements OnInit {
     
     this.pageTitleService.setPageTitle('CADASTRO DE CONSULTA');
     this.consultaForm = new FormGroup({      
-      nome: new FormControl(''),
+      nome: new FormControl({ value: '', disabled: true }),
       idPaciente: new FormControl(''),
       motivo: new FormControl('', [
         Validators.required,
@@ -83,8 +86,9 @@ export class CadastroConsultaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe((params) => {
-      const consultaId = params['get']('consultaId');
+    console.log(this.camposDict["motivo"])
+    this.activatedRoute.paramMap.subscribe((params) => {
+      const consultaId = params.get('consultaId');
       this.consultaId = consultaId,
       this.mostrar = !consultaId
       if (this.consultaId) {
@@ -116,7 +120,7 @@ export class CadastroConsultaComponent implements OnInit {
                 ...consulta,
                 dataConsulta: dataConsulta,
                 horarioConsulta: horarioConsulta,
-                nome: paciente.nome,
+                nome: {value: paciente.nome},
               });
             }) ;
         } else {
@@ -267,7 +271,26 @@ export class CadastroConsultaComponent implements OnInit {
               { duration: 5000 }
             );
           },
-        });
-    
+        });  
+  }
+
+  checarFormErros(nomeCampo: string) {
+    const campo = this.consultaForm.get(nomeCampo);
+    const campoNomeAjeitado = this.camposDict[nomeCampo] || nomeCampo;
+    let mensagem: string = campoNomeAjeitado;
+    if (campo && campo.touched && campo.errors) {
+      if (campo.errors['required']) {
+        mensagem += " é obrigatório \n"
+        // this.snackBar.open(`${campoNomeAjeitado} é obrigatório`, 'Fechar', {duration: 5000} )
+
+      } else if (campo.errors['minlength']) {
+        mensagem += " precisa ter no mínimo " + campo.errors['minlength']?.requiredLength + " caracteres";
+        // this.snackBar.open(`${campoNomeAjeitado} precisa ter de ${campo.errors['minLength']?.requiredLength} a ${campo.errors['maxLength']?.requiredLength} caracteres`)
+      } else if (campo.errors['maxlength']){
+        mensagem += " pode ter no máximo " + campo.errors['maxlength']?.requiredLength + " caracteres."
+      }
+      this.snackBar.open( mensagem, 'Fechar', {duration: 5000})
+    }
+
   }
 }
