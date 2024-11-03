@@ -1,5 +1,11 @@
 import { ChangeDetectorRef, Component, NgModule, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
@@ -8,7 +14,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { PageTitleService } from '../../services/title.service';
 import { MatList, MatListItem } from '@angular/material/list';
 import { PacientesService } from '../../services/pacientes.service';
-import { MAT_DATE_LOCALE, MatLine, MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
+import {
+  MAT_DATE_LOCALE,
+  MatLine,
+  MatNativeDateModule,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { ConsultasService } from '../../services/consultas.service';
@@ -37,16 +48,13 @@ import { duration } from 'moment';
     MatTableModule,
     FormsModule,
     CommonModule,
-    MatNativeDateModule
+    MatNativeDateModule,
   ],
   templateUrl: './cadastro-consulta.component.html',
   styleUrl: './cadastro-consulta.component.scss',
-  providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
-  ]
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }],
 })
 export class CadastroConsultaComponent implements OnInit {
-
   pacientes: Paciente[] = [];
   textoPesquisa: string = '';
   displayedColumns: string[] = ['registro', 'nomePaciente', 'acao'];
@@ -55,8 +63,13 @@ export class CadastroConsultaComponent implements OnInit {
   consultaId: string | null = null;
   mostrar: boolean = true;
   usersList: any[] = [];
-  camposDict: { [key: string]: string } ={"dosagemPrecaucoes":"Dosagem e precauções","descricaoProblema":"Descrição do Problema","horarioConsulta":"Horário da Consulta","dataConsulta":"Data da Consulta","motivo":"Motivo"};
-
+  camposDict: { [key: string]: string } = {
+    dosagemPrecaucoes: 'Dosagem e precauções',
+    descricaoProblema: 'Descrição do Problema',
+    horarioConsulta: 'Horário da Consulta',
+    dataConsulta: 'Data da Consulta',
+    motivo: 'Motivo',
+  };
 
   constructor(
     private readonly pageTitleService: PageTitleService,
@@ -67,10 +80,9 @@ export class CadastroConsultaComponent implements OnInit {
     private readonly snackBar: MatSnackBar,
     private readonly cdr: ChangeDetectorRef
   ) {
-    
     this.pageTitleService.setPageTitle('CADASTRO DE CONSULTA');
-    this.consultaForm = new FormGroup({      
-      nome: new FormControl({ value: '', disabled: true }),
+    this.consultaForm = new FormGroup({
+      nome: new FormControl({ value: '', disabled: true }, Validators.required),
       idPaciente: new FormControl(''),
       motivo: new FormControl('', [
         Validators.required,
@@ -79,20 +91,25 @@ export class CadastroConsultaComponent implements OnInit {
       ]),
       dataConsulta: new FormControl('', Validators.required),
       horarioConsulta: new FormControl('', Validators.required),
-      descricaoProblema: new FormControl('', [Validators.required, Validators.minLength(16), Validators.maxLength(1024)]),
+      descricaoProblema: new FormControl('', [
+        Validators.required,
+        Validators.minLength(16),
+        Validators.maxLength(1024),
+      ]),
       medicacaoReceitada: new FormControl(''),
-      dosagemPrecaucoes: new FormControl('', [Validators.required, Validators.minLength(16), Validators.maxLength(256)])
+      dosagemPrecaucoes: new FormControl('', [
+        Validators.required,
+        Validators.minLength(16),
+        Validators.maxLength(256),
+      ]),
     });
   }
 
   ngOnInit(): void {
-    console.log(this.camposDict["motivo"])
     this.activatedRoute.paramMap.subscribe((params) => {
       const consultaId = params.get('consultaId');
-      this.consultaId = consultaId,
-      this.mostrar = !consultaId
+      (this.consultaId = consultaId), (this.mostrar = !consultaId);
       if (this.consultaId) {
-        // this.consultaForm.patchValue(this.consultasService.obterConsultaPorId(this.consultaId)  );
         this.carregarConsulta(this.consultaId);
       } else {
         this.atualizarListaPacientes();
@@ -101,33 +118,42 @@ export class CadastroConsultaComponent implements OnInit {
 
     this.atualizarListaPacientes();
   }
-  
 
   carregarConsulta(id: string): void {
-    this.consultasService.obterConsultaPorId(id).subscribe((consulta: Consulta) => {
-      const dataConsulta = new Date(consulta.dataConsulta).toISOString().split('T')[0];
-      const horarioConsulta = `${consulta.horarioConsulta[0]
-        .toString()
-        .padStart(2, '0')}:${consulta.horarioConsulta[1]
-        .toString()
-        .padStart(2, '0')}`; 
+    this.consultasService
+      .obterConsultaPorId(id)
+      .subscribe((consulta: Consulta) => {
+        const dataConsulta = new Date(consulta.dataConsulta)
+          .toISOString()
+          .split('T')[0];
+        const horarioConsulta = `${consulta.horarioConsulta[0]
+          .toString()
+          .padStart(2, '0')}:${consulta.horarioConsulta[1]
+          .toString()
+          .padStart(2, '0')}`;
 
-        if(consulta.idPaciente) {
+        if (consulta.idPaciente) {
           this.pacientesService
-            .obterPacientePorId(consulta.idPaciente)
+            .getPacientePorId(consulta.idPaciente)
             .subscribe((paciente: Paciente) => {
               this.consultaForm.patchValue({
                 ...consulta,
                 dataConsulta: dataConsulta,
                 horarioConsulta: horarioConsulta,
-                nome: {value: paciente.nome},
+                nome: paciente.nome,
+                paciente: paciente 
               });
-            }) ;
+            });
         } else {
           console.error('ID do paciente não encontrado na consulta.');
         }
-  });
-
+        // this.consultaForm.patchValue({
+        //   ...consulta,
+        //   dataConsulta: dataConsulta,
+        //   horarioConsulta: horarioConsulta,
+        // });
+        // console.log(this.consultaForm)
+      });
 
     // const consulta = this.consultasService.obterConsultaPorId(this.consultaId);
     // console.log(consulta)
@@ -158,21 +184,32 @@ export class CadastroConsultaComponent implements OnInit {
   // }
 
   pesquisarPacientes(textoPesquisa: string): void {
-    this.pacientesService.obterPacientesPorNomeOuPorId(textoPesquisa).subscribe({
-      next: (pacientes) => {Array.isArray(pacientes) ? pacientes : [pacientes]
-        if (this.pacientes.length === 0) {
-          this.snackBar.open('Nenhum paciente encontrado com o valor: ' + textoPesquisa, 'OK', {
-            duration: 5000,
-          });
-        }
-      },
-      error: (error) => {
-        console.error('Erro ao buscar pacientes', error);
-        this.snackBar.open('Nenhum paciente encontrado com o valor: ' + textoPesquisa, 'OK', {
-          duration: 5000,
-        });
-      }
-    }); 
+    this.pacientesService
+      .obterPacientesPorNomeOuPorId(textoPesquisa)
+      .subscribe({
+        next: (pacientes) => {
+          this.pacientes = Array.isArray(pacientes) ? pacientes : [pacientes];
+          if (this.pacientes.length === 0) {
+            this.snackBar.open(
+              'Nenhum paciente encontrado com o valor: ' + textoPesquisa,
+              'OK',
+              {
+                duration: 5000,
+              }
+            );
+          }
+        },
+        error: (error) => {
+          console.error('Erro ao buscar pacientes', error);
+          this.snackBar.open(
+            'Nenhum paciente encontrado com o valor: ' + textoPesquisa,
+            'OK',
+            {
+              duration: 5000,
+            }
+          );
+        },
+      });
     // const buscaInput = this.textoPesquisa;
     // this.pacientesService.getPacientesPorEmailOuPorId(buscaInput).subscribe(pacientes => {
     //   this.pacientes = Array.isArray(pacientes) ? pacientes : [pacientes];
@@ -182,9 +219,10 @@ export class CadastroConsultaComponent implements OnInit {
   selecionarPaciente(paciente: any) {
     this.pacienteSelecionado = paciente;
     this.consultaForm.patchValue({
-      nomeCompletoPaciente: paciente.nomeCompleto,
-      idPaciente: paciente.id
+      nome: this.pacienteSelecionado?.nome,
+      idPaciente: this.pacienteSelecionado?.id,
     });
+    console.log(this.consultaForm)
   }
 
   validarForm() {
@@ -220,7 +258,6 @@ export class CadastroConsultaComponent implements OnInit {
     }
   }
 
-  
   deletarConsulta() {
     if (this.consultaId) {
       const snackBarRef = this.snackBar.open(
@@ -248,49 +285,52 @@ export class CadastroConsultaComponent implements OnInit {
         });
       });
     } else {
-        console.error('ID da consulta não encontrado para exclusão.');
-      }
-  }
-
- 
-  editarConsulta() {
-      const consultaFormPreenchido = this.consultaForm.value;
-      this.consultasService
-        .atualizarConsulta(this.consultaId!, consultaFormPreenchido)
-        .subscribe({
-          next: () => {
-            this.snackBar.open('Consulta atualizada com sucesso', 'OK', {
-              duration: 5000,
-            });
-          },
-          error: (err: any) => {
-            console.error('Erro ao atualizar consulta: ', err);
-            this.snackBar.open(
-              'Erro ao atualizar consulta. Tente novamente',
-              'OK',
-              { duration: 5000 }
-            );
-          },
-        });  
-  }
-
-  checarFormErros(nomeCampo: string) {
-    const campo = this.consultaForm.get(nomeCampo);
-    const campoNomeAjeitado = this.camposDict[nomeCampo] || nomeCampo;
-    let mensagem: string = campoNomeAjeitado;
-    if (campo && campo.touched && campo.errors) {
-      if (campo.errors['required']) {
-        mensagem += " é obrigatório \n"
-        // this.snackBar.open(`${campoNomeAjeitado} é obrigatório`, 'Fechar', {duration: 5000} )
-
-      } else if (campo.errors['minlength']) {
-        mensagem += " precisa ter no mínimo " + campo.errors['minlength']?.requiredLength + " caracteres";
-        // this.snackBar.open(`${campoNomeAjeitado} precisa ter de ${campo.errors['minLength']?.requiredLength} a ${campo.errors['maxLength']?.requiredLength} caracteres`)
-      } else if (campo.errors['maxlength']){
-        mensagem += " pode ter no máximo " + campo.errors['maxlength']?.requiredLength + " caracteres."
-      }
-      this.snackBar.open( mensagem, 'Fechar', {duration: 5000})
+      console.error('ID da consulta não encontrado para exclusão.');
     }
-
   }
+
+  editarConsulta() {
+    const consultaFormPreenchido = this.consultaForm.value;
+    this.consultasService
+      .atualizarConsulta(this.consultaId!, consultaFormPreenchido)
+      .subscribe({
+        next: () => {
+          this.snackBar.open('Consulta atualizada com sucesso', 'OK', {
+            duration: 5000,
+          });
+        },
+        error: (err: any) => {
+          console.error('Erro ao atualizar consulta: ', err);
+          this.snackBar.open(
+            'Erro ao atualizar consulta. Tente novamente',
+            'OK',
+            { duration: 5000 }
+          );
+        },
+      });
+  }
+
+  // checarFormErros(nomeCampo: string) {
+  //   const campo = this.consultaForm.get(nomeCampo);
+  //   const campoNomeAjeitado = this.camposDict[nomeCampo] || nomeCampo;
+  //   let mensagem: string = campoNomeAjeitado;
+  //   if (campo && campo.touched && campo.errors) {
+  //     if (campo.errors['required']) {
+  //       mensagem += ' é obrigatório \n';
+  //       // this.snackBar.open(`${campoNomeAjeitado} é obrigatório`, 'Fechar', {duration: 5000} )
+  //     } else if (campo.errors['minlength']) {
+  //       mensagem +=
+  //         ' precisa ter no mínimo ' +
+  //         campo.errors['minlength']?.requiredLength +
+  //         ' caracteres';
+  //       // this.snackBar.open(`${campoNomeAjeitado} precisa ter de ${campo.errors['minLength']?.requiredLength} a ${campo.errors['maxLength']?.requiredLength} caracteres`)
+  //     } else if (campo.errors['maxlength']) {
+  //       mensagem +=
+  //         ' pode ter no máximo ' +
+  //         campo.errors['maxlength']?.requiredLength +
+  //         ' caracteres.';
+  //     }
+  //     this.snackBar.open(mensagem, 'Fechar', { duration: 5000 });
+  //   }
+  // }
 }

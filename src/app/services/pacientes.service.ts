@@ -67,9 +67,9 @@ export class PacientesService {
     );
   }
 
-  private gerarIdSequencial(numero: number): string {
-    return numero.toString().padStart(6, '0');
-  }
+  // private gerarIdSequencial(numero: number): string {
+  //   return numero.toString().padStart(6, '0');
+  // }
 
   obterPacientes(): Observable<Paciente[]> {
     const headers = this.authService.getAuthHeaders();
@@ -84,14 +84,14 @@ export class PacientesService {
   //   return this.http.get<Paciente[]>(this.urlPath); // Envia a requisição GET para obter todos os pacientes
   // }
 
-  // getPacientePorId(id: string): Observable<Paciente> {
-  //   const headers = this.authService.getAuthHeaders();
-  //   return this.http.get<Paciente>(`${this.urlPath}/${id}`, { headers });
-  // }
+  getPacientePorId(id: string): Observable<Paciente> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get<Paciente>(`${this.urlPath}/${id}`, { headers });
+  }
   // Alteração: Método atualizado para buscar um paciente específico pelo ID no backend
   obterPacientePorId(id: string): Observable<any> {
     const headers = this.userService.getAuthHeaders(); // Obtém os cabeçalhos de autenticação
-    return this.http.get<any>(`${this.urlPath}/${id}`); // Envia a requisição GET para obter um paciente específico
+    return this.http.get<any>(`${this.urlPath}/${id}`, {headers}); // Envia a requisição GET para obter um paciente específico
   }
   
 
