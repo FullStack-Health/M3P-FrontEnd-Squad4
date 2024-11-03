@@ -1,5 +1,6 @@
 
 <div class="container">
+<div *ngIf="!consultaId" class="container">
 
   <div class="buscar-paciente">
     <mat-form-field appearance="fill" class="input-busca">
@@ -84,7 +85,7 @@
   <div class="buttons-container">
     <button mat-button type="button" class="edit-button" [disabled]="!consultaId" (click)="editarConsulta()">Salvar edição</button>
     <button mat-button type="button" class="delete-button" [disabled]="!consultaId" (click)="deletarConsulta()">Deletar</button>
-    <button mat-raised-button type="submit" class="save-button" [disabled]="!consultaForm.valid">Salvar</button>
+    <button mat-raised-button type="submit" class="save-button" [disabled]="!consultaForm.valid || consultaId">Salvar</button>
   </div>
 </form>
 

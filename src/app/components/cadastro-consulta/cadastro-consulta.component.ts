@@ -83,6 +83,7 @@ export class CadastroConsultaComponent implements OnInit {
     this.pageTitleService.setPageTitle('CADASTRO DE CONSULTA');
     this.consultaForm = new FormGroup({
       nome: new FormControl({ value: '', disabled: true }),
+      nome: new FormControl({ value: '', disabled: true }, Validators.required),
       idPaciente: new FormControl(''),
       motivo: new FormControl('', [
         Validators.required,
@@ -136,6 +137,7 @@ export class CadastroConsultaComponent implements OnInit {
         if (consulta.idPaciente) {
           this.pacientesService
             .obterPacientePorId(consulta.idPaciente)
+            .getPacientePorId(consulta.idPaciente)
             .subscribe((paciente: Paciente) => {
               this.consultaForm.patchValue({
 
@@ -144,6 +146,11 @@ export class CadastroConsultaComponent implements OnInit {
                 // dataConsulta: dataConsulta,
                 // horarioConsulta: horarioCo nsulta,
                 nome: {value: paciente.nome},
+                ...consulta,
+                dataConsulta: dataConsulta,
+                horarioConsulta: horarioConsulta,
+                nome: paciente.nome,
+                paciente: paciente
               });
 
             });
@@ -151,11 +158,6 @@ export class CadastroConsultaComponent implements OnInit {
           
           console.error('ID do paciente não encontrado na consulta.');
         }
-        this.consultaForm.patchValue({
-          ...consulta,
-          dataConsulta: dataConsulta,
-          horarioConsulta: horarioConsulta,
-        });
       });
 
     // const consulta = this.consultasService.obterConsultaPorId(this.consultaId);
