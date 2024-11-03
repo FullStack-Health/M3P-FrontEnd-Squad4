@@ -4,6 +4,7 @@ import { AuthService } from './authservice.service';
 import { map, Observable } from 'rxjs';
 import { Consulta } from '../entities/consulta.model';
 import { Paciente } from '../entities/paciente.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -19,14 +20,15 @@ export class ConsultasService {
     const headers = this.authService.getAuthHeaders();
     return this.http.post(this.urlPath, consulta, { headers });
   }
-  gerarIdConsulta(): string {
-    const consultas = this.obterConsultas();
-    const proximoId = consultas.length + 1;
-    return `C${proximoId.toString().padStart(6, '0')}`;
-  }
+  // gerarIdConsulta(): string {
+  //   const consultas = this.obterConsultas();
+  //   const proximoId = consultas.length + 1;
+  //   return `C${proximoId.toString().padStart(6, '0')}`;
+  // }
   
-  obterConsultas(): any[] {
-    return JSON.parse(localStorage.getItem('consultas') || '[]');
+  obterConsultas(): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get<Consulta[]>(this.urlPath, { headers });
   }
 
   // obterConsultasPorId(idPaciente: string): Observable<any> {
@@ -34,35 +36,45 @@ export class ConsultasService {
   //   return this.http.get(`${this.urlPath}/${idPaciente}`, { headers });
   // }
 
-  obterConsultaPorId(idConsulta: string): any {
-    const consultas = this.obterConsultas();
-    return consultas.find(consulta => consulta.idConsulta === idConsulta);
+  obterConsultaPorId(idConsulta: string): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get(`${this.urlPath}/${idConsulta}`, { headers });
   }
   
-  obterQuantidadeConsultas(): number {
-    return this.obterConsultas().length;
+  obterQuantidadeConsultas(): Observable<number> {
+    const headers = this.authService.getAuthHeaders();
+    const quantidadeConsultas = this.http.get<Consulta[]>(this.urlPath, { headers }).pipe(
+      map((listaConsultas: Consulta[]) => listaConsultas.length)
+    );
+    return quantidadeConsultas;
+    //return this.obterConsultas().length;
   }
 
   deletarConsulta(id: string) {
-    let consultas: any[] = this.obterConsultas();
-    const index = consultas.findIndex(consulta => consulta.idConsulta === id);
-    if (index !== -1) {
-      consultas.splice(index, 1); 
-      localStorage.setItem('consultas', JSON.stringify(consultas));
-    } else {
-      console.error('Consulta não encontrada para deletar.');
-    }
+    const headers = this.authService.getAuthHeaders();
+    return this.http.delete(`${this.urlPath}/${id}`, { headers });
+    // let consultas: any[] = this.obterConsultas();
+    // const index = consultas.findIndex(consulta => consulta.idConsulta === id);
+    // if (index !== -1) {
+    //   consultas.splice(index, 1); 
+    //   localStorage.setItem('consultas', JSON.stringify(consultas));
+    // } else {
+    //   console.error('Consulta não encontrada para deletar.');
+    // }
   }
 
-  atualizarConsulta(consultaAtualizada: any) {
-    let consultas: any[] = this.obterConsultas();
-    const index = consultas.findIndex(consulta => consulta.idConsulta === consultaAtualizada.idConsulta);
-    if (index !== -1) {
-      consultas[index] = consultaAtualizada;
-      localStorage.setItem('exames', JSON.stringify(consultas));
-    } else {
-      console.error('Exame não encontrado para atualizar.');
-    }
+  atualizarConsulta(id: string, consultaAtualizada: any): Observable<any> {
+    
+    const headers = this.authService.getAuthHeaders();
+    return this.http.put(`${this.urlPath}/${id}`, consultaAtualizada, { headers });
+    // let consultas: any[] = this.obterConsultas();
+    // const index = consultas.findIndex(consulta => consulta.idConsulta === consultaAtualizada.idConsulta);
+    // if (index !== -1) {
+    //   consultas[index] = consultaAtualizada;
+    //   localStorage.setItem('exames', JSON.stringify(consultas));
+    // } else {
+    //   console.error('Exame não encontrado para atualizar.');
+    // }
   }
   
 }

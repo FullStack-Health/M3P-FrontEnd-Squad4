@@ -9,6 +9,6 @@ export class Consulta {
     public descricaoProblema: string,
     public medicacaoReceitada: string,
     public dosagemPrecaucoes: string,
-    public paciente: Paciente
+    public idPaciente: string
   ) {}
 }

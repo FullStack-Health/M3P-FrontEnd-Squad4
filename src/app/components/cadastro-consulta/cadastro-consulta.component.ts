@@ -1,4 +1,4 @@
-import { Component, NgModule, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgModule, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -46,22 +46,23 @@ import { Consulta } from '../../entities/consulta.model';
 })
 export class CadastroConsultaComponent implements OnInit {
 
-  pacientes: any[] = [];
+  pacientes: Paciente[] = [];
   textoPesquisa: string = '';
   displayedColumns: string[] = ['registro', 'nomePaciente', 'acao'];
-  pacienteSelecionado: any | null = null;
-  today: any;
-  consultaEditando: any | null = null;
-  consulta: any;
-  consultaId!: string;
+  pacienteSelecionado: { id: string; nome: string } | null = null;
   consultaForm: FormGroup;
+  consultaId: string | null = null;
+  mostrar: boolean = true;
+  usersList: any[] = []
 
   constructor(
-    private pageTitleService: PageTitleService,
-    private pacientesService: PacientesService,
-    private consultasService: ConsultasService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router
+    private readonly pageTitleService: PageTitleService,
+    private readonly pacientesService: PacientesService,
+    private readonly consultasService: ConsultasService,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
+    private readonly snackBar: MatSnackBar,
+    private readonly cdr: ChangeDetectorRef
   ) {
     
     this.pageTitleService.setPageTitle('CADASTRO DE CONSULTA');
@@ -83,10 +84,14 @@ export class CadastroConsultaComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
-      this.consultaId = params['consultaId'];
+      const consultaId = params['get']('consultaId');
+      this.consultaId = consultaId,
+      this.mostrar = !consultaId
       if (this.consultaId) {
         // this.consultaForm.patchValue(this.consultasService.obterConsultaPorId(this.consultaId)  );
-        this.carregarConsulta();
+        this.carregarConsulta(this.consultaId);
+      } else {
+        this.atualizarListaPacientes();
       }
     });
 
@@ -94,21 +99,46 @@ export class CadastroConsultaComponent implements OnInit {
   }
   
 
-  carregarConsulta() {
-    const consulta = this.consultasService.obterConsultaPorId(this.consultaId);
-    console.log(consulta)
-    if (consulta) {
-      this.consultaForm.patchValue(consulta);
-      this.consultaForm.get('nome')?.disable();
-      // this.pacienteSelecionado.nomeCompleto = consulta.paciente.nome;
-      // this.consultaForm.get('nomeCompletoPaciente')?.disable();
-    } else {
-      console.error('Consulta não encontrada');
-    }
+  carregarConsulta(id: string): void {
+    this.consultasService.obterConsultaPorId(id).subscribe((consulta: Consulta) => {
+      const dataConsulta = new Date(consulta.dataConsulta).toISOString().split('T')[0];
+      const horarioConsulta = `${consulta.horarioConsulta[0]
+        .toString()
+        .padStart(2, '0')}:${consulta.horarioConsulta[1]
+        .toString()
+        .padStart(2, '0')}`; 
+
+        if(consulta.idPaciente) {
+          this.pacientesService
+            .obterPacientePorId(consulta.idPaciente)
+            .subscribe((paciente: Paciente) => {
+              this.consultaForm.patchValue({
+                ...consulta,
+                dataConsulta: dataConsulta,
+                horarioConsulta: horarioConsulta,
+                nome: paciente.nome,
+              });
+            }) ;
+        } else {
+          console.error('ID do paciente não encontrado na consulta.');
+        }
+  });
+
+
+    // const consulta = this.consultasService.obterConsultaPorId(this.consultaId);
+    // console.log(consulta)
+    // if (consulta) {
+    //   this.consultaForm.patchValue(consulta);
+    //   this.consultaForm.get('nome')?.disable();
+    //   // this.pacienteSelecionado.nomeCompleto = consulta.paciente.nome;
+    //   // this.consultaForm.get('nomeCompletoPaciente')?.disable();
+    // } else {
+    //   console.error('Consulta não encontrada');
+    // }
   }
 
   atualizarListaPacientes() {
-    this.pacientesService.obterPacientes().subscribe((pacientes: Paciente[]) => {
+    this.pacientesService.obterPacientes().subscribe((pacientes) => {
       this.pacientes = pacientes;
     });
   }
@@ -123,17 +153,32 @@ export class CadastroConsultaComponent implements OnInit {
   //   }
   // }
 
-  pesquisarPacientes(textoPesquisa: any) {
-    const buscaInput = this.textoPesquisa;
-    this.pacientesService.getPacientesPorEmailOuPorId(buscaInput).subscribe(pacientes => {
-      this.pacientes = Array.isArray(pacientes) ? pacientes : [pacientes];
-    });
+  pesquisarPacientes(textoPesquisa: string): void {
+    this.pacientesService.obterPacientesPorNomeOuPorId(textoPesquisa).subscribe({
+      next: (pacientes) => {Array.isArray(pacientes) ? pacientes : [pacientes]
+        if (this.pacientes.length === 0) {
+          this.snackBar.open('Nenhum paciente encontrado com o valor: ' + textoPesquisa, 'OK', {
+            duration: 5000,
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Erro ao buscar pacientes', error);
+        this.snackBar.open('Nenhum paciente encontrado com o valor: ' + textoPesquisa, 'OK', {
+          duration: 5000,
+        });
+      }
+    }); 
+    // const buscaInput = this.textoPesquisa;
+    // this.pacientesService.getPacientesPorEmailOuPorId(buscaInput).subscribe(pacientes => {
+    //   this.pacientes = Array.isArray(pacientes) ? pacientes : [pacientes];
+    // });
   }
 
   selecionarPaciente(paciente: any) {
     this.pacienteSelecionado = paciente;
     this.consultaForm.patchValue({
-      nome: paciente.nome,
+      nomeCompletoPaciente: paciente.nomeCompleto,
       idPaciente: paciente.id
     });
   }
@@ -155,7 +200,7 @@ export class CadastroConsultaComponent implements OnInit {
       this.consultasService.salvarConsulta(formData).subscribe({
         next: () => {
           this.snackBar.open('Consulta cadastrada com sucesso!', 'OK', {
-            duration: 3000,
+            duration: 5000,
           });
           this.router.navigate(['home']);
         },
@@ -164,7 +209,7 @@ export class CadastroConsultaComponent implements OnInit {
           this.snackBar.open(
             'Erro ao cadastrar consulta. Tente novamente.',
             'OK',
-            { duration: 3000 }
+            { duration: 5000 }
           );
         },
       });
@@ -181,7 +226,7 @@ export class CadastroConsultaComponent implements OnInit {
       );
 
       snackBarRef.onAction().subscribe(() => {
-        this.consultasService.deletarConsulta(this.consultaId).subscribe({
+        this.consultasService.deletarConsulta(this.consultaId!).subscribe({
           next: () => {
             this.snackBar.open('Consulta deletada com sucesso!', 'OK', {
               duration: 3000,
@@ -205,16 +250,13 @@ export class CadastroConsultaComponent implements OnInit {
 
  
   editarConsulta() {
-      this.activatedRoute.url.subscribe(console.log)
       const consultaFormPreenchido = this.consultaForm.value;
-      consultaFormPreenchido.idConsulta = this.consultaId;
-      console.log(consultaFormPreenchido)
       this.consultasService
-        .atualizarConsulta(this.consultaId, consultaFormPreenchido)
+        .atualizarConsulta(this.consultaId!, consultaFormPreenchido)
         .subscribe({
           next: () => {
             this.snackBar.open('Consulta atualizada com sucesso', 'OK', {
-              duration: 3000,
+              duration: 5000,
             });
           },
           error: (err: any) => {
@@ -222,7 +264,7 @@ export class CadastroConsultaComponent implements OnInit {
             this.snackBar.open(
               'Erro ao atualizar consulta. Tente novamente',
               'OK',
-              { duration: 3000 }
+              { duration: 5000 }
             );
           },
         });
