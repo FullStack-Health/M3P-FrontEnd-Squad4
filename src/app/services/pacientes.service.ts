@@ -70,6 +70,9 @@ export class PacientesService {
   private gerarIdSequencial(numero: number): string {
     return numero.toString().padStart(6, '0');
   }
+  // private gerarIdSequencial(numero: number): string {
+  //   return numero.toString().padStart(6, '0');
+  // }
 
   obterPacientes(): Observable<Paciente[]> {
     const headers = this.authService.getAuthHeaders();

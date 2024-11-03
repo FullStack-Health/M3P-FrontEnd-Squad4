@@ -136,6 +136,7 @@ export class CadastroConsultaComponent implements OnInit {
         if (consulta.idPaciente) {
           this.pacientesService
             .obterPacientePorId(consulta.idPaciente)
+            .getPacientePorId(consulta.idPaciente)
             .subscribe((paciente: Paciente) => {
               this.consultaForm.patchValue({
 
