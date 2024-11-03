@@ -123,7 +123,6 @@ export class CadastroConsultaComponent implements OnInit {
     this.consultasService
       .obterConsultaPorId(id)
       .subscribe((consulta: Consulta) => {
-        console.log(consulta.idPaciente)
         const dataConsulta = new Date(consulta.dataConsulta)
           .toISOString()
           .split('T')[0];
@@ -137,13 +136,12 @@ export class CadastroConsultaComponent implements OnInit {
           this.pacientesService
             .getPacientePorId(consulta.idPaciente)
             .subscribe((paciente: Paciente) => {
-              console.log(paciente)
               this.consultaForm.patchValue({
                 ...consulta,
                 dataConsulta: dataConsulta,
                 horarioConsulta: horarioConsulta,
                 nome: paciente.nome,
-                paciente: paciente
+                paciente: paciente 
               });
             });
         } else {
