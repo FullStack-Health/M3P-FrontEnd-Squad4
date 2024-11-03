@@ -84,10 +84,10 @@ export class PacientesService {
   //   return this.http.get<Paciente[]>(this.urlPath); // Envia a requisição GET para obter todos os pacientes
   // }
 
-  // getPacientePorId(id: string): Observable<Paciente> {
-  //   const headers = this.authService.getAuthHeaders();
-  //   return this.http.get<Paciente>(`${this.urlPath}/${id}`, { headers });
-  // }
+  getPacientePorId(id: string): Observable<Paciente> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get<Paciente>(`${this.urlPath}/${id}`, { headers });
+  }
   // Alteração: Método atualizado para buscar um paciente específico pelo ID no backend
   obterPacientePorId(id: string): Observable<any> {
     const headers = this.userService.getAuthHeaders(); // Obtém os cabeçalhos de autenticação
