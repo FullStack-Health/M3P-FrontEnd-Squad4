@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
+import { apiUrl } from '../environments/environment';
+import { AuthService } from './authservice.service';
+import { map, Observable } from 'rxjs';
+import { Consulta } from '../entities/consulta.model';
+import { Paciente } from '../entities/paciente.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConsultasService {
+  urlPath: string = `${apiUrl}/consultas`;
+  constructor(
+    private readonly http: HttpClient,
+    private readonly authService: AuthService
+  ) {}
 
-  constructor() { }
-
-  salvarConsulta(consulta: any, pacienteSelecionado: any) {
-    const idConsulta = this.gerarIdConsulta();
-    consulta.idConsulta = idConsulta; // Adiciona o idConsulta ao objeto de consulta
-    consulta.nomeCompletoPaciente = pacienteSelecionado.nomeCompleto; // Adiciona o nome do paciente
-    consulta.idPaciente = pacienteSelecionado.id; // Adiciona o id do paciente
-    let consultas: any[] = this.obterConsultas();
-    consultas.push(consulta);
-    localStorage.setItem('consultas', JSON.stringify(consultas));
+  salvarConsulta(consulta: Consulta): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.post(this.urlPath, consulta, { headers });
   }
   gerarIdConsulta(): string {
     const consultas = this.obterConsultas();
@@ -26,10 +29,10 @@ export class ConsultasService {
     return JSON.parse(localStorage.getItem('consultas') || '[]');
   }
 
-  obterConsultasPorId(idPaciente: string): any[] {
-    const consultas = this.obterConsultas();
-    return consultas.filter(consulta => consulta.idPaciente === idPaciente);
-  }
+  // obterConsultasPorId(idPaciente: string): Observable<any> {
+  //   const headers = this.authService.getAuthHeaders();
+  //   return this.http.get(`${this.urlPath}/${idPaciente}`, { headers });
+  // }
 
   obterConsultaPorId(idConsulta: string): any {
     const consultas = this.obterConsultas();

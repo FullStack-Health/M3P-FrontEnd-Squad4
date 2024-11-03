@@ -6,7 +6,7 @@
       <mat-label>Buscar paciente</mat-label>
         <input id="input-busca" matInput placeholder="Buscar por nome ou por registro" type="text" [(ngModel)]="textoPesquisa">
     </mat-form-field>
-    <button mat-flat-button color="primary" (click)="pesquisarPacientes()">
+    <button mat-flat-button color="primary" (click)="pesquisarPacientes(textoPesquisa)">
       <mat-icon matSuffix>search</mat-icon>
       Buscar
     </button>
@@ -41,13 +41,19 @@
 
 
 <form [formGroup]="consultaForm" (ngSubmit)="cadastrarConsulta()">
-  <div *ngIf="pacienteSelecionado">
+  <!-- <div *ngIf="pacienteSelecionado">
     <h1>Consulta de {{ pacienteSelecionado.nomeCompleto }}</h1>
   </div>
+   -->
+  <mat-form-field class="form-group">
+    <mat-label>Nome do Paciente</mat-label>
+    <input readonly matInput id="nomePaciente" matInput type="text" formControlName="nomePaciente" placeholder="Nome do Paciente">
+  </mat-form-field>
+
   
   <mat-form-field class="form-group">
     <mat-label>Motivo da Consulta</mat-label>
-    <input id="motivoConsulta" matInput type="text" formControlName="motivoConsulta" required minlength="8" maxlength="64">
+    <input id="motivo" matInput type="text" formControlName="motivo" required minlength="8" maxlength="64">
   </mat-form-field>
 
   <mat-form-field class="form-group">
