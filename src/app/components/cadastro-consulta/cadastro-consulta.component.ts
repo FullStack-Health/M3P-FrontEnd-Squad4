@@ -110,7 +110,6 @@ export class CadastroConsultaComponent implements OnInit {
       const consultaId = params.get('consultaId');
       (this.consultaId = consultaId), (this.mostrar = !consultaId);
       if (this.consultaId) {
-        // this.consultaForm.patchValue(this.consultasService.obterConsultaPorId(this.consultaId)  );
         this.carregarConsulta(this.consultaId);
       } else {
         this.atualizarListaPacientes();
@@ -124,6 +123,7 @@ export class CadastroConsultaComponent implements OnInit {
     this.consultasService
       .obterConsultaPorId(id)
       .subscribe((consulta: Consulta) => {
+        console.log(consulta.idPaciente)
         const dataConsulta = new Date(consulta.dataConsulta)
           .toISOString()
           .split('T')[0];
@@ -137,6 +137,7 @@ export class CadastroConsultaComponent implements OnInit {
           this.pacientesService
             .getPacientePorId(consulta.idPaciente)
             .subscribe((paciente: Paciente) => {
+              console.log(paciente)
               this.consultaForm.patchValue({
                 ...consulta,
                 dataConsulta: dataConsulta,
@@ -146,7 +147,6 @@ export class CadastroConsultaComponent implements OnInit {
               });
             });
         } else {
-          
           console.error('ID do paciente não encontrado na consulta.');
         }
         // this.consultaForm.patchValue({
@@ -221,9 +221,10 @@ export class CadastroConsultaComponent implements OnInit {
   selecionarPaciente(paciente: any) {
     this.pacienteSelecionado = paciente;
     this.consultaForm.patchValue({
-      nomeCompletoPaciente: paciente.nomeCompleto,
-      idPaciente: paciente.id,
+      nome: this.pacienteSelecionado?.nome,
+      idPaciente: this.pacienteSelecionado?.id,
     });
+    console.log(this.consultaForm)
   }
 
   validarForm() {
