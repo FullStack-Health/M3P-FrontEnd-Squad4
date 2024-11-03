@@ -310,27 +310,27 @@ export class CadastroConsultaComponent implements OnInit {
       });
   }
 
-  checarFormErros(nomeCampo: string) {
-    const campo = this.consultaForm.get(nomeCampo);
-    const campoNomeAjeitado = this.camposDict[nomeCampo] || nomeCampo;
-    let mensagem: string = campoNomeAjeitado;
-    if (campo && campo.touched && campo.errors) {
-      if (campo.errors['required']) {
-        mensagem += ' é obrigatório \n';
-        // this.snackBar.open(`${campoNomeAjeitado} é obrigatório`, 'Fechar', {duration: 5000} )
-      } else if (campo.errors['minlength']) {
-        mensagem +=
-          ' precisa ter no mínimo ' +
-          campo.errors['minlength']?.requiredLength +
-          ' caracteres';
-        // this.snackBar.open(`${campoNomeAjeitado} precisa ter de ${campo.errors['minLength']?.requiredLength} a ${campo.errors['maxLength']?.requiredLength} caracteres`)
-      } else if (campo.errors['maxlength']) {
-        mensagem +=
-          ' pode ter no máximo ' +
-          campo.errors['maxlength']?.requiredLength +
-          ' caracteres.';
-      }
-      this.snackBar.open(mensagem, 'Fechar', { duration: 5000 });
-    }
-  }
+  // checarFormErros(nomeCampo: string) {
+  //   const campo = this.consultaForm.get(nomeCampo);
+  //   const campoNomeAjeitado = this.camposDict[nomeCampo] || nomeCampo;
+  //   let mensagem: string = campoNomeAjeitado;
+  //   if (campo && campo.touched && campo.errors) {
+  //     if (campo.errors['required']) {
+  //       mensagem += ' é obrigatório \n';
+  //       // this.snackBar.open(`${campoNomeAjeitado} é obrigatório`, 'Fechar', {duration: 5000} )
+  //     } else if (campo.errors['minlength']) {
+  //       mensagem +=
+  //         ' precisa ter no mínimo ' +
+  //         campo.errors['minlength']?.requiredLength +
+  //         ' caracteres';
+  //       // this.snackBar.open(`${campoNomeAjeitado} precisa ter de ${campo.errors['minLength']?.requiredLength} a ${campo.errors['maxLength']?.requiredLength} caracteres`)
+  //     } else if (campo.errors['maxlength']) {
+  //       mensagem +=
+  //         ' pode ter no máximo ' +
+  //         campo.errors['maxlength']?.requiredLength +
+  //         ' caracteres.';
+  //     }
+  //     this.snackBar.open(mensagem, 'Fechar', { duration: 5000 });
+  //   }
+  // }
 }

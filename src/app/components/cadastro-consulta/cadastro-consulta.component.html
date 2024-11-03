@@ -53,22 +53,46 @@
   
   <mat-form-field class="form-group">
     <mat-label>Motivo da Consulta</mat-label>
-    <input id="motivo" matInput type="text" formControlName="motivo" required minlength="8" maxlength="64" (focusout)="checarFormErros('motivo')">
+    <input id="motivo" matInput type="text" formControlName="motivo" required minlength="8" maxlength="64" >
+    <mat-error *ngIf="consultaForm.get('motivo')?.touched && consultaForm.get('motivo')?.hasError('required')">
+      Nome da consulta é obrigatório
+    </mat-error>
+    <mat-error *ngIf="consultaForm.get('motivo')?.touched && consultaForm.get('motivo')?.hasError('minlength')">
+      Nome da consulta deve ter no mínimo 8 caracteres
+    </mat-error>
+    <mat-error *ngIf="consultaForm.get('motivo')?.touched && consultaForm.get('motivo')?.hasError('maxlength')">
+      Nome da consulta deve ter no máximo 64 caracteres
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field class="form-group">
     <mat-label>Data da Consulta</mat-label>
-    <input matInput type="date" formControlName="dataConsulta" required (focusout)="checarFormErros('dataConsulta')">
+    <input matInput type="date" formControlName="dataConsulta" required>
+    <mat-error *ngIf="consultaForm.get('dataConsulta')?.touched && consultaForm.get('dataConsulta')?.hasError('required')">
+      Data da Consulta é obrigatória.
+    </mat-error>
   </mat-form-field>
   
   <mat-form-field class="form-group">
     <mat-label>Horário da Consulta</mat-label>
-    <input matInput type="time" formControlName="horarioConsulta" required (focusout)="checarFormErros('horarioConsulta')">
+    <input matInput type="time" formControlName="horarioConsulta" required>
+    <mat-error *ngIf="consultaForm.get('horarioConsulta')?.touched && consultaForm.get('horarioConsulta')?.hasError('required')">
+      Hora da Consulta é obrigatória.
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field class="form-group textarea">
     <mat-label>Descrição do Problema</mat-label>
-    <textarea id="descricaoProblema" matInput formControlName="descricaoProblema" required minlength="16" maxlength="1024" (focusout)="checarFormErros('descricaoProblema')"></textarea>
+    <textarea id="descricaoProblema" matInput formControlName="descricaoProblema" required minlength="16" maxlength="1024" ></textarea>
+    <mat-error *ngIf="consultaForm.get('descricaoProblema')?.touched && consultaForm.get('descricaoProblema')?.hasError('required')">
+      Descrição do problema é obrigatório.
+    </mat-error>
+    <mat-error *ngIf="consultaForm.get('descricaoProblema')?.touched && consultaForm.get('descricaoProblema')?.hasError('minlength')">
+      Descrição do problema deve ter no mínimo 16 caracteres
+    </mat-error>
+    <mat-error *ngIf="consultaForm.get('descricaoProblema')?.touched && consultaForm.get('descricaoProblema')?.hasError('maxlength')">
+      Descrição do problema deve ter no máximo 1024 caracteres
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field class="form-group" >
@@ -78,7 +102,16 @@
 
   <mat-form-field class="form-group textarea">
     <mat-label>Dosagem e Precauções</mat-label>
-    <textarea id="dosagemPrecaucoes" matInput formControlName="dosagemPrecaucoes" required minlength="16" maxlength="256" (focusout)="checarFormErros('dosagemPrecaucoes')"></textarea>
+    <textarea id="dosagemPrecaucoes" matInput formControlName="dosagemPrecaucoes" required minlength="16" maxlength="256"></textarea>
+    <mat-error *ngIf="consultaForm.get('dosagemPrecaucoes')?.touched && consultaForm.get('dosagemPrecaucoes')?.hasError('required')">
+      Dosagem e Precauções é obrigatório.
+    </mat-error>
+    <mat-error *ngIf="consultaForm.get('dosagemPrecaucoes')?.touched && consultaForm.get('dosagemPrecaucoes')?.hasError('minlength')">
+      Dosagem e Precauções deve ter no mínimo 16 caracteres
+    </mat-error>
+    <mat-error *ngIf="consultaForm.get('dosagemPrecaucoes')?.touched && consultaForm.get('dosagemPrecaucoes')?.hasError('maxlength')">
+      Dosagem e Precauções deve ter no máximo 1024 caracteres
+    </mat-error>
   </mat-form-field>
 
   <div class="buttons-container">
