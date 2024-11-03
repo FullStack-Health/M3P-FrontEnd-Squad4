@@ -188,7 +188,7 @@ export class CadastroConsultaComponent implements OnInit {
       .obterPacientesPorNomeOuPorId(textoPesquisa)
       .subscribe({
         next: (pacientes) => {
-          Array.isArray(pacientes) ? pacientes : [pacientes];
+          this.pacientes = Array.isArray(pacientes) ? pacientes : [pacientes];
           if (this.pacientes.length === 0) {
             this.snackBar.open(
               'Nenhum paciente encontrado com o valor: ' + textoPesquisa,
