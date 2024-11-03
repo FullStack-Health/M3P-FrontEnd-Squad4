@@ -53,22 +53,22 @@
   
   <mat-form-field class="form-group">
     <mat-label>Motivo da Consulta</mat-label>
-    <input id="motivo" matInput type="text" formControlName="motivo" required minlength="8" maxlength="64">
+    <input id="motivo" matInput type="text" formControlName="motivo" required minlength="8" maxlength="64" (focusout)="checarFormErros('motivo')">
   </mat-form-field>
 
   <mat-form-field class="form-group">
     <mat-label>Data da Consulta</mat-label>
-    <input matInput type="date" formControlName="dataConsulta" required>
+    <input matInput type="date" formControlName="dataConsulta" required (focusout)="checarFormErros('dataConsulta')">
   </mat-form-field>
   
   <mat-form-field class="form-group">
     <mat-label>Horário da Consulta</mat-label>
-    <input matInput type="time" formControlName="horarioConsulta" required>
+    <input matInput type="time" formControlName="horarioConsulta" required (focusout)="checarFormErros('horarioConsulta')">
   </mat-form-field>
 
   <mat-form-field class="form-group textarea">
     <mat-label>Descrição do Problema</mat-label>
-    <textarea id="descricaoProblema" matInput formControlName="descricaoProblema" required minlength="16" maxlength="1024"></textarea>
+    <textarea id="descricaoProblema" matInput formControlName="descricaoProblema" required minlength="16" maxlength="1024" (focusout)="checarFormErros('descricaoProblema')"></textarea>
   </mat-form-field>
 
   <mat-form-field class="form-group" >
@@ -78,7 +78,7 @@
 
   <mat-form-field class="form-group textarea">
     <mat-label>Dosagem e Precauções</mat-label>
-    <textarea id="dosagemPrecaucoes" matInput formControlName="dosagemPrecaucoes" required minlength="16" maxlength="256"></textarea>
+    <textarea id="dosagemPrecaucoes" matInput formControlName="dosagemPrecaucoes" required minlength="16" maxlength="256" (focusout)="checarFormErros('dosagemPrecaucoes')"></textarea>
   </mat-form-field>
 
   <div class="buttons-container">

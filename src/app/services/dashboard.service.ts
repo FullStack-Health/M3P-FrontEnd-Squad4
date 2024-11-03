@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class DashboardService {
   
-  private apiUrl = 'http://localhost:8081/dashboard';
+  private apiUrl = 'http://localhost:8080/dashboard';
 
   constructor(private http: HttpClient) {}
 
