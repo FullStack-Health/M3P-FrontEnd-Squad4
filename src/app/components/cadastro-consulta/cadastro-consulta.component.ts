@@ -82,7 +82,7 @@ export class CadastroConsultaComponent implements OnInit {
   ) {
     this.pageTitleService.setPageTitle('CADASTRO DE CONSULTA');
     this.consultaForm = new FormGroup({
-      nome: new FormControl({ value: '', disabled: true }),
+      nome: new FormControl({ value: '', disabled: true }, Validators.required),
       idPaciente: new FormControl(''),
       motivo: new FormControl('', [
         Validators.required,
@@ -110,7 +110,6 @@ export class CadastroConsultaComponent implements OnInit {
       const consultaId = params.get('consultaId');
       (this.consultaId = consultaId), (this.mostrar = !consultaId);
       if (this.consultaId) {
-        // this.consultaForm.patchValue(this.consultasService.obterConsultaPorId(this.consultaId)  );
         this.carregarConsulta(this.consultaId);
       } else {
         this.atualizarListaPacientes();
@@ -135,28 +134,25 @@ export class CadastroConsultaComponent implements OnInit {
 
         if (consulta.idPaciente) {
           this.pacientesService
-            .obterPacientePorId(consulta.idPaciente)
             .getPacientePorId(consulta.idPaciente)
             .subscribe((paciente: Paciente) => {
               this.consultaForm.patchValue({
-
-                //qndo tiver funcionando os pacientes botar patchValue td junto
-                // ...consulta,
-                // dataConsulta: dataConsulta,
-                // horarioConsulta: horarioCo nsulta,
-                nome: {value: paciente.nome},
+                ...consulta,
+                dataConsulta: dataConsulta,
+                horarioConsulta: horarioConsulta,
+                nome: paciente.nome,
+                paciente: paciente 
               });
-
             });
         } else {
-          
           console.error('ID do paciente não encontrado na consulta.');
         }
-        this.consultaForm.patchValue({
-          ...consulta,
-          dataConsulta: dataConsulta,
-          horarioConsulta: horarioConsulta,
-        });
+        // this.consultaForm.patchValue({
+        //   ...consulta,
+        //   dataConsulta: dataConsulta,
+        //   horarioConsulta: horarioConsulta,
+        // });
+        // console.log(this.consultaForm)
       });
 
     // const consulta = this.consultasService.obterConsultaPorId(this.consultaId);
@@ -192,7 +188,7 @@ export class CadastroConsultaComponent implements OnInit {
       .obterPacientesPorNomeOuPorId(textoPesquisa)
       .subscribe({
         next: (pacientes) => {
-          Array.isArray(pacientes) ? pacientes : [pacientes];
+          this.pacientes = Array.isArray(pacientes) ? pacientes : [pacientes];
           if (this.pacientes.length === 0) {
             this.snackBar.open(
               'Nenhum paciente encontrado com o valor: ' + textoPesquisa,
@@ -223,9 +219,10 @@ export class CadastroConsultaComponent implements OnInit {
   selecionarPaciente(paciente: any) {
     this.pacienteSelecionado = paciente;
     this.consultaForm.patchValue({
-      nomeCompletoPaciente: paciente.nomeCompleto,
-      idPaciente: paciente.id,
+      nome: this.pacienteSelecionado?.nome,
+      idPaciente: this.pacienteSelecionado?.id,
     });
+    console.log(this.consultaForm)
   }
 
   validarForm() {
@@ -313,27 +310,27 @@ export class CadastroConsultaComponent implements OnInit {
       });
   }
 
-  checarFormErros(nomeCampo: string) {
-    const campo = this.consultaForm.get(nomeCampo);
-    const campoNomeAjeitado = this.camposDict[nomeCampo] || nomeCampo;
-    let mensagem: string = campoNomeAjeitado;
-    if (campo && campo.touched && campo.errors) {
-      if (campo.errors['required']) {
-        mensagem += ' é obrigatório \n';
-        // this.snackBar.open(`${campoNomeAjeitado} é obrigatório`, 'Fechar', {duration: 5000} )
-      } else if (campo.errors['minlength']) {
-        mensagem +=
-          ' precisa ter no mínimo ' +
-          campo.errors['minlength']?.requiredLength +
-          ' caracteres';
-        // this.snackBar.open(`${campoNomeAjeitado} precisa ter de ${campo.errors['minLength']?.requiredLength} a ${campo.errors['maxLength']?.requiredLength} caracteres`)
-      } else if (campo.errors['maxlength']) {
-        mensagem +=
-          ' pode ter no máximo ' +
-          campo.errors['maxlength']?.requiredLength +
-          ' caracteres.';
-      }
-      this.snackBar.open(mensagem, 'Fechar', { duration: 5000 });
-    }
-  }
+  // checarFormErros(nomeCampo: string) {
+  //   const campo = this.consultaForm.get(nomeCampo);
+  //   const campoNomeAjeitado = this.camposDict[nomeCampo] || nomeCampo;
+  //   let mensagem: string = campoNomeAjeitado;
+  //   if (campo && campo.touched && campo.errors) {
+  //     if (campo.errors['required']) {
+  //       mensagem += ' é obrigatório \n';
+  //       // this.snackBar.open(`${campoNomeAjeitado} é obrigatório`, 'Fechar', {duration: 5000} )
+  //     } else if (campo.errors['minlength']) {
+  //       mensagem +=
+  //         ' precisa ter no mínimo ' +
+  //         campo.errors['minlength']?.requiredLength +
+  //         ' caracteres';
+  //       // this.snackBar.open(`${campoNomeAjeitado} precisa ter de ${campo.errors['minLength']?.requiredLength} a ${campo.errors['maxLength']?.requiredLength} caracteres`)
+  //     } else if (campo.errors['maxlength']) {
+  //       mensagem +=
+  //         ' pode ter no máximo ' +
+  //         campo.errors['maxlength']?.requiredLength +
+  //         ' caracteres.';
+  //     }
+  //     this.snackBar.open(mensagem, 'Fechar', { duration: 5000 });
+  //   }
+  // }
 }

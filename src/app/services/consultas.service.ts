@@ -64,7 +64,6 @@ export class ConsultasService {
   }
 
   atualizarConsulta(id: string, consultaAtualizada: any): Observable<any> {
-    
     const headers = this.authService.getAuthHeaders();
     return this.http.put(`${this.urlPath}/${id}`, consultaAtualizada, { headers });
     // let consultas: any[] = this.obterConsultas();

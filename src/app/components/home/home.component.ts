@@ -14,105 +14,100 @@ import { MatDividerModule } from '@angular/material/divider';
 import { UserStorageService } from '../../services/users-storage.service';
 import { DashboardService } from '../../services/dashboard.service';
 import { PacientesService } from '../../services/pacientes.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-home',
-    standalone: true,
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.scss',
-    imports: [
-        MenuLateralComponent,
-        RouterOutlet,
-        CardInfoPacientesComponent,  
-        CardEstatisticasComponent,
-        CommonModule,
-        MatIcon,
-        MatLabel,
-        MatInputModule,
-        MatButtonModule,
-        FormsModule,
-        MatDividerModule   
-    ]
+  selector: 'app-home',
+  standalone: true,
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
+  imports: [
+    MenuLateralComponent,
+    RouterOutlet,
+    CardInfoPacientesComponent,  
+    CardEstatisticasComponent,
+    CommonModule,
+    MatIcon,
+    MatLabel,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule,
+    MatDividerModule   
+  ]
 })
 export class HomeComponent implements OnInit {
-    
-    pacientes: any[] = [];
-    quantidadePacientes: number = 0;
-    textoPesquisa: string = '';
-    quantidadeExames: number = 0;
-    quantidadeConsultas: number = 0;
-    quantidadeUsuarios: number = 0;
-    profile: string | undefined;
+  
+  pacientes: any[] = [];
+  quantidadePacientes: number = 0;
+  textoPesquisa: string = '';
+  quantidadeExames: number = 0;
+  quantidadeConsultas: number = 0;
+  quantidadeUsuarios: number = 0;
+  profile: string | undefined;
 
-    constructor(
-        private dashboardService: DashboardService,
-        private userService: UserStorageService,
-        private pageTitleService: PageTitleService,
-        private readonly snackBar: MatSnackBar,
-        private pacientesService: PacientesService,
-      ) {this.pageTitleService.setPageTitle('ESTATÍSTICAS E INFORMAÇÕES');}
-    
-      
-      ngOnInit(): void {
-        this.userService.getUsers().subscribe(
-          (user: any) => {if(user[0].email === "admin@example.com"){
-          this.snackBar.open("eeepa", "Fechar", { duration: 5000})
-            
-        }
-            }
-        ) 
-    
-        this.carregarDadosDoDashboard();
-        this.profile = this.userService.getProfile();
-        this.pacientesService.obterPacientes();
-        this.atualizarListaPacientes();
-        console.log('Perfil recuperado no HomeComponent:', this.profile);
-      }
+  constructor(
+    private dashboardService: DashboardService,
+    private userService: UserStorageService,
+    private pageTitleService: PageTitleService,
+    private pacientesService: PacientesService,
+    private router: Router // Injetando o Router
+  ) {
+    this.pageTitleService.setPageTitle('ESTATÍSTICAS E INFORMAÇÕES');
+  }
+  
+  ngOnInit(): void {
+    this.profile = this.userService.getProfile();
 
-      atualizarListaPacientes() {
-        this.pacientesService.obterPacientes().subscribe(
-            (pacientes) => {
-                this.pacientes = pacientes;
-                this.quantidadePacientes = this.pacientes.length;
-            },
-            (error) => {
-                console.error('Erro ao obter pacientes', error);
-            }
-        );
+    // Se o usuário for paciente, redirecionar para seu prontuário
+    if (this.profile === 'paciente') {
+      const userId = this.userService.getLoggedUser().id; // Presumindo que o ID do usuário esteja armazenado
+      this.router.navigate(['prontuario-paciente', userId]); // Ajuste a rota conforme necessário
+    } else {
+      this.carregarDadosDoDashboard();
+      this.atualizarListaPacientes();
     }
+  }
 
-    
-      carregarDadosDoDashboard(): void {
-        this.dashboardService.getDashboardData().subscribe(
-          (data) => {            
-            this.quantidadePacientes = data.numeroPacientes;
-            this.quantidadeConsultas = data.numeroConsultas;
-            this.quantidadeExames = data.numeroExames;
-            this.quantidadeUsuarios = data.numeroUsuarios;
-          },
-          (error) => {
-            console.error('Erro ao carregar dados do dashboard', error);
-          }
-        );
+  atualizarListaPacientes() {
+    this.pacientesService.obterPacientes().subscribe(
+      (pacientes) => {
+        this.pacientes = pacientes;
+        this.quantidadePacientes = this.pacientes.length;
+      },
+      (error) => {
+        console.error('Erro ao obter pacientes', error);
       }
-    
+    );
+  }
 
-      pesquisarPacientes() {
-        const textoPesquisa = this.textoPesquisa.trim();
-        if (!textoPesquisa) {
-            this.atualizarListaPacientes();
-        } else {
-            this.pacientesService.pesquisarPacientes(textoPesquisa).subscribe(
-                (result) => {
-                    this.pacientes = result;
-                },
-                (error) => {
-                    console.error('Erro ao pesquisar pacientes', error);
-                }
-            );
-        }
-        this.textoPesquisa = '';
-        }
+  carregarDadosDoDashboard(): void {
+    this.dashboardService.getDashboardData().subscribe(
+      (data) => {            
+        this.quantidadePacientes = data.numeroPacientes;
+        this.quantidadeConsultas = data.numeroConsultas;
+        this.quantidadeExames = data.numeroExames;
+        this.quantidadeUsuarios = data.numeroUsuarios;
+      },
+      (error) => {
+        console.error('Erro ao carregar dados do dashboard', error);
+      }
+    );
+  }
 
+  pesquisarPacientes() {
+    const textoPesquisa = this.textoPesquisa.trim();
+    if (!textoPesquisa) {
+      this.atualizarListaPacientes();
+    } else {
+      this.pacientesService.pesquisarPacientes(textoPesquisa).subscribe(
+        (result) => {
+          this.pacientes = result;
+        },
+        (error) => {
+          console.error('Erro ao pesquisar pacientes', error);
+        }
+      );
+    }
+    this.textoPesquisa = '';
+  }
 }

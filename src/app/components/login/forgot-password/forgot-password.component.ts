@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { UserStorageService } from '../../../services/users-storage.service';
 import { SingupComponent } from '../singup/singup.component';
 import { User } from '../../../entities/user.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-forgot-password',
@@ -32,7 +33,8 @@ export class ForgotPasswordComponent {
   constructor(
     public dialogRef: MatDialogRef<SingupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly usersService: UserStorageService
+    private readonly usersService: UserStorageService,
+    private snackBar: MatSnackBar
   ) {}
 
   users: User[] | undefined;
@@ -58,21 +60,37 @@ export class ForgotPasswordComponent {
     if (this.forgotPasswordForm.valid) {
       const email = this.forgotPasswordForm.get('email')?.value as string;
       const password = this.forgotPasswordForm.get('password')?.value as string;
-
+  
       this.usersService.getUsersByEmailOrById(email).subscribe((user: User) => {
         if (user) {
           this.usersService.updatePassword(email, password).subscribe({
             next: () => {
-              alert('Senha alterada com sucesso!');
+              // Substitui o alert por snackBar para sucesso
+              this.snackBar.open('Senha alterada com sucesso!', 'Fechar', {
+                duration: 3000,
+                verticalPosition: 'top',
+              });
               this.dialogRef.close();
             },
             error: () => {
-              alert('Usuário não encontrado com o email: ' + email);            }
+              // Substitui o alert por snackBar para erro
+              this.snackBar.open('Erro ao alterar senha. Tente novamente.', 'Fechar', {
+                duration: 3000,
+                verticalPosition: 'top',
+              });
+            }
           });
-        } 
+        } else {
+          // Substitui o alert por snackBar para usuário não encontrado
+          this.snackBar.open('Usuário não encontrado com o email: ' + email, 'Fechar', {
+            duration: 3000,
+            verticalPosition: 'top',
+          });
+        }
       });
     }
   }
+  
 
   onNoClick(): void {
     this.dialogRef.close();

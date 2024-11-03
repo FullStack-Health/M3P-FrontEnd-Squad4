@@ -30,6 +30,6 @@ export class CardInfoPacientesComponent {
   constructor(private router: Router) {}
 
   verMais(idPaciente: string): void {
-    this.router.navigate(['/cadastro-paciente', idPaciente]);
+    this.router.navigate(['prontuario-paciente', idPaciente]);
   }
 }
