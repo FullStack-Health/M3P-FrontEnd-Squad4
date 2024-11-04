@@ -78,7 +78,6 @@ export class CadastroPacientesComponent implements OnInit {
       validadeConvenio: new FormControl(''),
       cep: new FormControl('', [
         Validators.required,
-        Validators.minLength(8),
         Validators.maxLength(8),
       ]),
       cidade: new FormControl(''),
@@ -200,6 +199,12 @@ export class CadastroPacientesComponent implements OnInit {
     if (this.pacienteId) {
       if (confirm('Tem certeza que deseja deletar este paciente?')) {
         this.pacientesService.deletarPacientePorId(this.pacienteId);
+        if(this.pacientesService.getPacientePorId(this.pacienteId)) {
+          this.snackBar.open('Erro ao deletar paciente.', 'Fechar', { duration: 3000})
+        } else {
+          this.snackBar.open('Paciente deletado', 'Fechar', { duration: 3000})
+
+        }
 
         // Substituído o `alert` pelo `snackBar` para uma notificação menos intrusiva
         this.router.navigate(['home']);
@@ -253,7 +258,7 @@ export class CadastroPacientesComponent implements OnInit {
           cep: this.pacienteForm.value.cep,
           cidade: this.pacienteForm.value.cidade,
           estado: this.pacienteForm.value.estado,
-          logradouro: this.pacienteForm.value.logradouro,
+          rua: this.pacienteForm.value.logradouro,
           numero: this.pacienteForm.value.numero,
           complemeto: this.pacienteForm.value.complemento,
           bairro: this.pacienteForm.value.bairro,
@@ -276,6 +281,7 @@ export class CadastroPacientesComponent implements OnInit {
         console.log('Salvando novo paciente', formData);
         this.pacientesService.salvarPaciente(formData).subscribe({
           next: () => {
+            this.snackBar.open('Paciente salvo com sucesso', 'Fechar', { duration: 3000 })
             this.router.navigate(['home']);
           },
           error: (error: any) => {
@@ -294,7 +300,6 @@ export class CadastroPacientesComponent implements OnInit {
     if (this.pacienteForm.valid && this.pacienteId) {
       const pacienteFormPreenchido = this.pacienteForm.value;
       this.pacientesService.atualizarPaciente(this.pacienteId, pacienteFormPreenchido);
-      ;
 
       // Notificação usando `snackBar` ao invés de `alert`, garantindo uma experiência de usuário consistente
       this.snackBar.open('Dados do paciente atualizados com sucesso!', 'Fechar', { duration: 3000 });
@@ -304,7 +309,7 @@ export class CadastroPacientesComponent implements OnInit {
       this.snackBar.open(
         'Formulário inválido ou nenhum paciente selecionado.',
         'Fechar',
-        { duration: 300})
+        { duration: 3000})
     }
   }
 

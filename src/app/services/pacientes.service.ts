@@ -193,8 +193,9 @@ export class PacientesService {
 
   // Alteração: Método atualizado para deletar um paciente específico pelo ID no backend
   deletarPacientePorId(id: string): Observable<any> {
+    console.log(id)
     const headers = this.userService.getAuthHeaders(); // Obtém os cabeçalhos de autenticação
-    return this.http.delete(`${this.urlPath}/${id}`); // Envia a requisição DELETE para remover um paciente
+    return this.http.delete(`${this.urlPath}/${id}`, { headers }); // Envia a requisição DELETE para remover um paciente
   }
 
   // pesquisarPacientes(textoPesquisa: string): any[] {
