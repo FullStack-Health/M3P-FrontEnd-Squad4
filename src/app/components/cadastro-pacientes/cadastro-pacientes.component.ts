@@ -11,8 +11,8 @@ import { PacientesService } from '../../services/pacientes.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Paciente } from '../../entities/paciente.model';
-import { Endereco } from '../../entities/endereco.models'
-import { Endereco } from '../../entities/endereco.model';
+import { ReactiveFormsModule, FormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @Component({
   selector: 'app-cadastro-pacientes',
@@ -29,12 +29,16 @@ import { Endereco } from '../../entities/endereco.model';
     NgxMaskPipe,
   ],
   templateUrl: './cadastro-pacientes.component.html',
-  styleUrl: './cadastro-pacientes.component.scss'
   styleUrl: './cadastro-pacientes.component.scss',
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }],
+
 })
+
 export class CadastroPacientesComponent implements OnInit {
+  
   pacienteId: string | null = null;
   endereco: any | undefined = undefined;
+  pacienteForm: FormGroup;
 
   constructor(
     private readonly pageTitleService: PageTitleService,
@@ -44,76 +48,50 @@ export class CadastroPacientesComponent implements OnInit {
     private readonly router: Router,
     private snackBar: MatSnackBar // Adicionando MatSnackBar ao construtor
   ) {
+    
 
     this.pageTitleService.setPageTitle('CADASTRO DE PACIENTE');
+    this.pacienteForm = new FormGroup({
+      nomeCompleto: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(64),
+      ]),
+      genero: new FormControl('', [Validators.required]),
+      dataNascimento: new FormControl('', [Validators.required]),
+      cpf: new FormControl('', [Validators.required]),
+      rg: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+      orgaoExpedidor: new FormControl('', Validators.required),
+      estadoCivil: new FormControl('', [Validators.required]),
+      telefone: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.email]),
+      naturalidade: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(64),
+      ]),
+      contatoEmergencia: new FormControl('', [Validators.required]),
+      alergias: new FormControl(''),
+      cuidadosEspecificos: new FormControl(''),
+      convenio: new FormControl(''),
+      numeroConvenio: new FormControl(''),
+      validadeConvenio: new FormControl(''),
+      cep: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(8),
+      ]),
+      cidade: new FormControl(''),
+      estado: new FormControl(''),
+      logradouro: new FormControl(''),
+      numero: new FormControl(''),
+      complemento: new FormControl(''),
+      bairro: new FormControl(''),
+      pontoReferencia: new FormControl(''),})
    }
   
-  }
+  
 
-pacienteForm = new FormGroup ({
-  nomeCompleto: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]),
-  genero: new FormControl('', [Validators.required]),
-  dataNascimento: new FormControl('', [Validators.required]),
-  cpf: new FormControl('', [Validators.required]),
-  rg: new FormControl('', [Validators.required, Validators.maxLength(20)]),
-  orgaoExpedidor: new FormControl('', Validators.required),
-  estadoCivil: new FormControl('', [Validators.required]),
-  telefone: new FormControl('', [Validators.required]),
-  email: new FormControl('', [Validators.email]),
-  naturalidade: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(64)]),
-  contatoEmergencia: new FormControl('', [Validators.required]),
-  alergias: new FormControl(''),
-  cuidadosEspecificos: new FormControl(''),
-  convenio: new FormControl(''),
-  numeroConvenio: new FormControl(''),
-  validadeConvenio: new FormControl(''),
-  cep: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(8)]),
-  cidade: new FormControl(''),
-  estado: new FormControl(''),
-  logradouro: new FormControl(''),
-  numero: new FormControl(''),
-  complemento: new FormControl(''),
-  bairro: new FormControl(''),
-  pontoReferencia: new FormControl('')
-});
-  pacienteForm = new FormGroup({
-    nomeCompleto: new FormControl('', [
-      Validators.required,
-      Validators.minLength(8),
-      Validators.maxLength(64),
-    ]),
-    genero: new FormControl('', [Validators.required]),
-    dataNascimento: new FormControl('', [Validators.required]),
-    cpf: new FormControl('', [Validators.required]),
-    rg: new FormControl('', [Validators.required, Validators.maxLength(20)]),
-    orgaoExpedidor: new FormControl('', Validators.required),
-    estadoCivil: new FormControl('', [Validators.required]),
-    telefone: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.email]),
-    naturalidade: new FormControl('', [
-      Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(64),
-    ]),
-    contatoEmergencia: new FormControl('', [Validators.required]),
-    alergias: new FormControl(''),
-    cuidadosEspecificos: new FormControl(''),
-    convenio: new FormControl(''),
-    numeroConvenio: new FormControl(''),
-    validadeConvenio: new FormControl(''),
-    cep: new FormControl('', [
-      Validators.required,
-      Validators.minLength(8),
-      Validators.maxLength(8),
-    ]),
-    cidade: new FormControl(''),
-    estado: new FormControl(''),
-    logradouro: new FormControl(''),
-    numero: new FormControl(''),
-    complemento: new FormControl(''),
-    bairro: new FormControl(''),
-    pontoReferencia: new FormControl(''),
-  });
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
@@ -141,7 +119,6 @@ pacienteForm = new FormGroup ({
     this.pacientesService
       .obterPacientePorId(id)
       .subscribe((paciente: any) => {
-        console.log(paciente.endereco);
 
         const date = new Date(paciente.dataNascimento);
         const dataNascimento = `${date.getFullYear()}-${String(
@@ -154,7 +131,7 @@ pacienteForm = new FormGroup ({
         ).padStart(2, '0')}-${String(dateConvenio.getDate()).padStart(2, '0')}`;
 
         this.pacienteForm.patchValue({...paciente,
-          // nomeCompleto: paciente.nome,
+          nomeCompleto: paciente.nome,
           // genero: paciente.genero,
           dataNascimento: dataNascimento,
           // cpf: paciente.cpf,
@@ -203,26 +180,20 @@ pacienteForm = new FormGroup ({
           }
         }
       );
-    if (cepValue && cepValue.length === 8) {
-      this.consultaCepService.obterEndereco(cepValue).subscribe({
-        next: (response: any) => {
-          this.endereco = response;
-          this.preencherCamposEndereco(response);
-        },
-        error: (error: any) => {
-          ('');
-          console.error(error);
-        },
-      });
     }
   }
 
   preencherCamposEndereco(endereco: any) {
-    this.pacienteForm.patchValue({
-      cidade: endereco.localidade,
-      estado: endereco.uf,
-      logradouro: endereco.logradouro,
-    });
+    if(!this.pacienteId){
+      this.pacienteForm.patchValue({
+      
+        cidade: endereco.localidade,
+        estado: endereco.uf,
+        logradouro: endereco.rua,
+        bairro: endereco.bairro
+      });
+    }
+    
   }
 
   deletarPaciente() {
@@ -279,8 +250,7 @@ pacienteForm = new FormGroup ({
           this.removerMascara(this.pacienteForm.value.contatoEmergencia ?? '')
         ),
         endereco: {
-          cep: "88064-730",//this.pacienteForm.value.cep,
-          cep: this.pacienteForm.value.cep,//this.pacienteForm.value.cep,
+          cep: this.pacienteForm.value.cep,
           cidade: this.pacienteForm.value.cidade,
           estado: this.pacienteForm.value.estado,
           logradouro: this.pacienteForm.value.logradouro,
@@ -301,13 +271,7 @@ pacienteForm = new FormGroup ({
             console.error('Erro ao atualizar paciente:', error);
             this.snackBar.open('Erro ao atualizar paciente.', 'Fechar', { duration: 3000 });
           }
-        });
-              });
-            },
-            error: (error) => {
-              console.error('Erro ao atualizar paciente:', error);
-              this.snackBar.open('Erro ao atualizar paciente.', 'Fechar', {
-          });
+        })
       } else {
         console.log('Salvando novo paciente', formData);
         this.pacientesService.salvarPaciente(formData).subscribe({
@@ -316,10 +280,9 @@ pacienteForm = new FormGroup ({
           },
           error: (error: any) => {
             console.error('Erro ao cadastrar paciente:', error);
-            this.snackBar.open('Erro ao cadastrar paciente.', 'Fechar', {
-          },
-        });
-      }
+            this.snackBar.open('Erro ao cadastrar paciente.', 'Fechar', { duration: 3000});
+          }
+      })}
     } else {
       console.warn('Formulário inválido:', this.pacienteForm.errors);
     }
@@ -331,16 +294,17 @@ pacienteForm = new FormGroup ({
     if (this.pacienteForm.valid && this.pacienteId) {
       const pacienteFormPreenchido = this.pacienteForm.value;
       this.pacientesService.atualizarPaciente(this.pacienteId, pacienteFormPreenchido);
-      );
+      ;
 
       // Notificação usando `snackBar` ao invés de `alert`, garantindo uma experiência de usuário consistente
       this.snackBar.open('Dados do paciente atualizados com sucesso!', 'Fechar', { duration: 3000 });
-      );
+
     } else {
       // Mensagem de erro também usando `snackBar`
       this.snackBar.open(
         'Formulário inválido ou nenhum paciente selecionado.',
         'Fechar',
+        { duration: 300})
     }
   }
 

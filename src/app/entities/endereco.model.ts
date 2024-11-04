@@ -7,5 +7,6 @@ export class Endereco {
         public bairro: string,
         public cidade: string,
         public estado: string,
-        public ptoReferencia: string){}
+        public ptoReferencia: string)
+        {}
 }

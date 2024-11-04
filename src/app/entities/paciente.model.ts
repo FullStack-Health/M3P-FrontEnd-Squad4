@@ -29,7 +29,6 @@ export class Paciente {
     public numeroConvenio: string,
     public validadeConvenio: Date,
     public idade?: number
-    public idade?: number,
   ) {}
 }
-}
+

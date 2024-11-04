@@ -55,6 +55,7 @@ import { duration } from 'moment';
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }],
 })
 export class CadastroConsultaComponent implements OnInit {
+  
   pacientes: Paciente[] = [];
   textoPesquisa: string = '';
   displayedColumns: string[] = ['registro', 'nomePaciente', 'acao'];
