@@ -24,7 +24,7 @@ export class AuthService {
     return this.http.post<LoginResponse>(`${apiUrl}/login`, credentials).pipe(
       tap(response => {
         this.setToken(response.token); // Armazena o token
-        console.log('Resposta do login:', response); // Log da resposta do login para depuração
+        // console.log('Resposta do login:', response); // Log da resposta do login para depuração
         if (response.listaNomesPerfis && response.listaNomesPerfis.length > 0) {
           this.setProfiles(response.listaNomesPerfis); // Armazena os perfis
         } else {
@@ -41,9 +41,9 @@ export class AuthService {
         }
   
         // Logs para verificar o que está sendo armazenado
-        console.log('Token armazenado:', localStorage.getItem('token'));
-        console.log('Perfis armazenados:', this.getProfiles());
-        console.log('Usuário logado armazenado:', this.userService.getLoggedUser());
+        // console.log('Token armazenado:', localStorage.getItem('token'));
+        // console.log('Perfis armazenados:', this.getProfiles());
+        // console.log('Usuário logado armazenado:', this.userService.getLoggedUser());
       })
     );
   }

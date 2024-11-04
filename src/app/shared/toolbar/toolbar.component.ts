@@ -23,8 +23,8 @@ export class ToolbarComponent implements OnInit {
   private titleSubscription: Subscription | undefined;
 
   constructor(
-    private userService: UserStorageService,
-    private pageTitleService: PageTitleService
+    private readonly userService: UserStorageService,
+    private readonly pageTitleService: PageTitleService
   ) {
     this.pageTitleService.getPageTitle().subscribe((title) => {
       this.pageTitle = title;
@@ -33,8 +33,8 @@ export class ToolbarComponent implements OnInit {
 
   ngOnInit() {
     this.loggedUser = this.userService.getLoggedUser();
-    console.log('Usuário logado:', this.loggedUser); // Log para depuração
-    const nomeUsuario = this.loggedUser?.nome || this.loggedUser?.email;
+    // console.log('Usuário logado:', this.loggedUser); // Log para depuração
+    const nomeUsuario = this.loggedUser?.nome ?? this.loggedUser?.email;
     this.loggedUser = { ...this.loggedUser, nome: nomeUsuario };
   
     
