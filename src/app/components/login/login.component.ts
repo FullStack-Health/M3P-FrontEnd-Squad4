@@ -66,11 +66,11 @@ login() {
     next: (response) => {
       if (response?.token) {
         this.userService.setToken(response.token);
-        console.log('Resposta do login:', response);
+        // console.log('Resposta do login:', response);
 
         // Decodificar o token para obter informações do paciente
         const decodedToken = this.decodeToken(response.token);
-        console.log('Token decodificado:', decodedToken);
+        // console.log('Token decodificado:', decodedToken);
 
         const perfil = response.listaNomesPerfis && response.listaNomesPerfis.length > 0
           ? response.listaNomesPerfis[0]
@@ -81,10 +81,10 @@ login() {
         // Verificar se o perfil é "PACIENTE" e redirecionar usando o `pacienteId`
         if (perfil === 'PACIENTE' && decodedToken.pacienteId) {
           const idPaciente = decodedToken.pacienteId;
-          console.log('Redirecionando para o prontuário do paciente com ID:', idPaciente);
+          // console.log('Redirecionando para o prontuário do paciente com ID:', idPaciente);
           this.router.navigate(['prontuario-paciente', idPaciente]);
         } else if (perfil !== 'PACIENTE') {
-          console.log('Redirecionando para a home para o perfil:', perfil);
+          // console.log('Redirecionando para a home para o perfil:', perfil);
           this.router.navigate(['home']);
         } else {
           console.error('Erro: pacienteId não encontrado no token.');

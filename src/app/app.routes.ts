@@ -17,57 +17,57 @@ export const routes: Routes = [
   {
     path: 'cadastro-paciente',
     component: CadastroPacientesComponent,
-    // canMatch: [AuthGuard],
+    canMatch: [AuthGuard],
   },
   {
     path: 'cadastro-paciente/:id',
     component: CadastroPacientesComponent,
-    // canMatch: [AuthGuard],
+    canMatch: [AuthGuard],
   },
   {
     path: 'cadastro-consulta',
     component: CadastroConsultaComponent,
-    // canMatch: [AuthGuard],
+    canMatch: [AuthGuard],
   },
   {
     path: 'cadastro-consulta/:consultaId',
     component: CadastroConsultaComponent,
-    // canMatch: [AuthGuard],
+    canMatch: [AuthGuard],
   },
   {
     path: 'cadastro-exames',
     component: CadastroExamesComponent,
-    // canMatch: [AuthGuard],
+    canMatch: [AuthGuard],
   },
   {
     path: 'cadastro-exames/:exameId',
     component: CadastroExamesComponent,
-    // canMatch: [AuthGuard],
+    canMatch: [AuthGuard],
   },
   {
     path: 'prontuario-paciente',
     component: ProntuarioPacienteComponent,
-    // canMatch: [AuthGuard],
+    canMatch: [AuthGuard],
   },
   {
     path: 'prontuario-paciente/:id',
     component: ProntuarioPacienteComponent,
-    // canMatch: [AuthGuard],
+    canMatch: [AuthGuard],
   },
   {
     path: 'listagem-prontuario',
     component: ListagemProntuarioComponent,
-    // canMatch: [AuthGuard],
+    canMatch: [AuthGuard],
   },
   {
     path: 'usuarios',
     component: ListagemUsuariosComponent,
-    // canMatch: [AuthGuard],
+    canMatch: [AuthGuard],
   },
   {
     path: 'usuarios/:id',
     component: EdicaoUsuariosComponent,
-    // canMatch: [AuthGuard],
+    canMatch: [AuthGuard],
   },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
