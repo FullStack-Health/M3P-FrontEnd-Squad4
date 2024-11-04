@@ -9,6 +9,15 @@
           <p><strong>Nome do Paciente:</strong> {{ paciente.nome }}</p>
         </div>
         <div class="item-info">
+          <p><strong>Telefone:</strong> {{ paciente.telefone }}</p>
+        </div>
+        <div class="item-info">
+          <p><strong>CPF:</strong> {{ paciente.cpf }}</p>
+        </div>
+        <div class="item-info">
+          <p><strong>Data de Nascimento:</strong> {{ paciente.dataNascimento | date: 'dd/MM/yyyy' }}</p>
+        </div>
+        <div class="item-info">
           <p><strong>Convênio:</strong> {{ paciente.convenio }}</p>
         </div>
         <div class="item-info">

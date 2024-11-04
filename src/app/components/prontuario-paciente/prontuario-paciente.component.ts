@@ -63,9 +63,18 @@ export class ProntuarioPacienteComponent {
   }
 
   obterDadosPaciente(pacienteId: string): void {
-    this.pacientesService.obterPacientesPorNomeOuPorId(pacienteId).subscribe((pacientes: Paciente[]) => {
-      this.paciente = pacientes[0];
-      // console.log('Paciente recebido:', this.paciente);
+    this.pacientesService.obterPacientesPorNomeOuPorId(pacienteId).subscribe({
+      next: (pacientes: Paciente[]) => {
+        if (pacientes && pacientes.length > 0) {
+          this.paciente = pacientes[0];
+          console.log('Paciente recebido:', this.paciente);
+        } else {
+          console.warn('Nenhum paciente encontrado.');
+        }
+      },
+      error: (error) => {
+        console.error('Erro ao obter os dados do paciente:', error);
+      }
     });
   }
 
