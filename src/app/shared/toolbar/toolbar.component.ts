@@ -6,6 +6,7 @@ import { UserStorageService } from '../../services/users-storage.service';
 import { PageTitleService } from '../../services/title.service';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { LoginResponse } from '../../entities/auth.models';
 
 @Component({
   selector: 'app-toolbar',
@@ -15,9 +16,9 @@ import { Subscription } from 'rxjs';
   styleUrl: './toolbar.component.scss',
 })
 export class ToolbarComponent implements OnInit {
-  loggedUser: any;
 
   pageTitle: string = '';
+  loggedUser!: LoginResponse;
 
   private titleSubscription: Subscription | undefined;
 
@@ -32,6 +33,11 @@ export class ToolbarComponent implements OnInit {
 
   ngOnInit() {
     this.loggedUser = this.userService.getLoggedUser();
+    console.log('Usuário logado:', this.loggedUser); // Log para depuração
+    const nomeUsuario = this.loggedUser?.nome || this.loggedUser?.email;
+    this.loggedUser = { ...this.loggedUser, nome: nomeUsuario };
+  
+    
     // this.titleSubscription = this.pageTitleService.getPageTitle().subscribe(title => {
     //   this.pageTitle = title;
     // });
