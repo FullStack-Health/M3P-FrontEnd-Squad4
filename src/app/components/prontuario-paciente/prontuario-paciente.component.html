@@ -10,16 +10,22 @@
             <p><strong>Nome do Paciente:</strong> {{ paciente.nome }}</p>
           </div>
           <div class="item-info">
+            <p><strong>Convênio:</strong> {{ paciente.convenio }}</p>
+          </div>
+          <div class="item-info">
             <p><strong>Telefone:</strong> {{ paciente.telefone }}</p>
           </div>
           <div class="item-info">
-            <p><strong>Email:</strong> {{ paciente.email }}</p>
+            <p><strong>CPF:</strong> {{ paciente.cpf }}</p>
           </div>
           <div class="item-info">
-            <p><strong>Idade:</strong> {{ paciente.idade }}</p>
+            <p><strong>Data de nascimento:</strong> {{ paciente.dataNascimento | date: 'dd/MM/yyyy' }}</p>
           </div>
           <div class="item-info">
-            <p><strong>Convênio:</strong> {{ paciente.convenio }}</p>
+            <p><strong>Lista de alergias</strong> {{ paciente.listaAlergias }}</p>
+          </div>
+          <div class="item-info">
+            <p><strong>Cuidados específicos</strong> {{ paciente.listaCuidados }}</p>
           </div>
         </div>
       </section>
