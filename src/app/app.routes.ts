@@ -11,9 +11,19 @@ import { ListagemUsuariosComponent } from './components/listagem-usuarios/listag
 import { EdicaoUsuariosComponent } from './components/edicao-usuarios/edicao-usuarios.component';
 
 export const routes: Routes = [
-  { path: '', component: LoginComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent, canMatch: [AuthGuard] },
+  {
+    path: '',
+    component: LoginComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+    canMatch: [AuthGuard],
+  },
   {
     path: 'cadastro-paciente',
     component: CadastroPacientesComponent,
@@ -69,5 +79,10 @@ export const routes: Routes = [
     component: EdicaoUsuariosComponent,
     canMatch: [AuthGuard],
   },
-  { path: '**', redirectTo: 'home', pathMatch: 'full' },
+  { 
+    path: '**', 
+    redirectTo: 'home', 
+    pathMatch: 'full', 
+    canMatch: [AuthGuard],
+  },
 ];

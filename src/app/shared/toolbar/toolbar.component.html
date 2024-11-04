@@ -1,4 +1,4 @@
-<mat-toolbar class="mat-elevation-z3">
+<mat-toolbar *ngIf="loggedUser" class="mat-elevation-z3">
   <h1>{{ pageTitle }}</h1>
   <div class="profile-container">
     <h3>{{ loggedUser.nome || loggedUser.email }}</h3>
