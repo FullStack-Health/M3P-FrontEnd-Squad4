@@ -1,3 +1,5 @@
+import { Endereco } from "./endereco.model";
+
 export class Paciente {
   constructor(
     public id: number,
@@ -12,11 +14,22 @@ export class Paciente {
     public email: string,
     public naturalidade: string,
     public contatoEmergencia: string,
+    public endereco: Endereco, 
+    // public cep: string,
+    // public rua: string,
+    // public numero: string,
+    // public complemento: string,
+    // public bairro: string,
+    // public cidade: string,
+    // public estado: string,
+    // public ptoReferencia: string,
     public listaAlergias: string,
     public listaCuidados: string,
     public convenio: string,
     public numeroConvenio: string,
     public validadeConvenio: Date,
     public idade?: number
+    public idade?: number,
   ) {}
+}
 }
