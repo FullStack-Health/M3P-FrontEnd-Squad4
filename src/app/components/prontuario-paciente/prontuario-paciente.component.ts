@@ -15,6 +15,8 @@ import { Consulta } from '../../entities/consulta.model';
 import { ProntuarioService } from '../../services/prontuario.service';
 import { Paciente } from '../../entities/paciente.model';
 import { HorarioPipe } from '../../pipes/horario.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 @Component({
     selector: 'app-prontuario-paciente',
     standalone: true,
@@ -31,7 +33,8 @@ import { HorarioPipe } from '../../pipes/horario.pipe';
         MatIcon,
         CommonModule,
         FormatarTelefonePipe,
-        HorarioPipe
+        HorarioPipe,
+        MatTooltipModule
     ]
 })
 export class ProntuarioPacienteComponent {
@@ -39,6 +42,8 @@ export class ProntuarioPacienteComponent {
   consultas: Consulta[] = [];
   exames: Exame[] = [];
   exame: Exame | undefined;
+  loading: boolean = true;
+  error: string | null = null;
 
   colunasConsultas: string[] = ['data', 'hora', 'motivo', 'editar'];
   colunasExames: string[] = ['data', 'hora', 'nome', 'laboratorio', 'editar'];
@@ -52,7 +57,7 @@ export class ProntuarioPacienteComponent {
   ) {
     this.pageTitleService.setPageTitle('PRONTUÁRIO DE PACIENTE');
   }
-  
+
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       const pacienteId = params['id'];
@@ -63,35 +68,55 @@ export class ProntuarioPacienteComponent {
   }
 
   obterDadosPaciente(pacienteId: string): void {
-    this.pacientesService.obterPacientesPorNomeOuPorId(pacienteId).subscribe((pacientes: Paciente[]) => {
-      this.paciente = pacientes[0];
-      // console.log('Paciente recebido:', this.paciente);
+    this.pacientesService.obterPacientesPorNomeOuPorId(pacienteId).subscribe({
+      next: (pacientes: Paciente[]) => {
+        console.log('Resposta completa recebida do backend:', pacientes);
+        if (pacientes && pacientes.length > 0) {
+          this.paciente = pacientes[0];
+          console.log('Paciente processado:', this.paciente);
+        } else {
+          console.warn('Nenhum paciente encontrado.');
+        }
+      },
+      error: (error) => {
+        console.error('Erro ao obter os dados do paciente:', error);
+      }
     });
   }
 
   obterConsultas(pacienteId: string): void {
-    this.prontuarioService.getConsultasPaciente(pacienteId).subscribe((consultas: Consulta[]) => {
-      this.consultas = consultas;
-      // console.log('Consultas recebidos:', this.consultas);
+    this.prontuarioService.getConsultasPaciente(pacienteId).subscribe({
+      next: (consultas: Consulta[]) => {
+        this.consultas = consultas;
+        console.log('Consultas recebidas:', this.consultas);
+      },
+      error: (error) => {
+        console.error('Erro ao obter consultas:', error);
+        this.error = 'Erro ao carregar consultas';
+      }
     });
   }
 
   obterExames(pacienteId: string): void {
-    this.prontuarioService.getExamesPaciente(pacienteId).subscribe((exames: Exame[]) => {
-      this.exames = exames;
-      // console.log('Exames recebidos:', this.exames);
+    this.prontuarioService.getExamesPaciente(pacienteId).subscribe({
+      next: (exames: Exame[]) => {
+        this.exames = exames;
+        console.log('Exames recebidos:', this.exames);
+      },
+      error: (error) => {
+        console.error('Erro ao obter exames:', error);
+        this.error = 'Erro ao carregar exames';
+      }
     });
   }
 
-  editarConsulta(consulta: Consulta) {
+  editarConsulta(consulta: Consulta): void {
     const idConsulta = consulta.id;
     this.router.navigate(['/cadastro-consulta', idConsulta]);
   }
-         
-  editarExame(exame: Exame) {
+
+  editarExame(exame: Exame): void {
     const idExame = exame.id;
     this.router.navigate(['/cadastro-exames', idExame]);
   }
-
 }
-

@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { PacientesService } from '../../services/pacientes.service';
 import { Router } from '@angular/router';
 import { Paciente } from '../../entities/paciente.model';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-listagem-prontuario',
@@ -21,12 +22,13 @@ import { Paciente } from '../../entities/paciente.model';
     MatInputModule,
     MatTableModule,
     FormsModule,
+    MatTooltipModule
   ],
   templateUrl: './listagem-prontuario.component.html',
   styleUrl: './listagem-prontuario.component.scss',
 })
 export class ListagemProntuarioComponent implements OnInit {
-  displayedColumns: string[] = ['registro', 'nomePaciente', 'convenio', 'acao'];
+  displayedColumns: string[] = ['registro', 'nomePaciente', 'telefone', 'convenio', 'acao'];
   pacientes: Paciente[] = [];
   textoPesquisa: any;
 
@@ -43,15 +45,15 @@ export class ListagemProntuarioComponent implements OnInit {
   }
 
   atualizarListaPacientes() {
-    this.pacientesService.obterPacientes().subscribe(
-      (pacientes) => {
+    this.pacientesService.obterPacientes().subscribe({
+      next: (pacientes) => {
         this.pacientes = pacientes;
-        console.log("Lista de pacientes:", this.pacientes); // Melhorar o log para ver a resposta completa
+        console.log("Lista de pacientes:", this.pacientes); 
       },
-      (error) => {
-        console.error("Erro ao obter pacientes:", error); // Log para capturar erros
+      error: (error) => {
+        console.error("Erro ao obter pacientes:", error);
       }
-    );
+    });
   }
   
 
@@ -59,7 +61,7 @@ export class ListagemProntuarioComponent implements OnInit {
     if (!textoPesquisa) {
       this.atualizarListaPacientes();
     } else {
-      this.pacientesService.pesquisarPacientes(textoPesquisa).subscribe((pacientes) => {
+      this.pacientesService.obterPacientesPorNomeOuPorId(textoPesquisa).subscribe((pacientes) => {
         this.pacientes = pacientes;
       });
     }

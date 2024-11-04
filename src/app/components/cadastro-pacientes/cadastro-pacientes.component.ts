@@ -2,6 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+<<<<<<< HEAD
+=======
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+  FormsModule,
+} from '@angular/forms';
+>>>>>>> develop
 import { MatButtonModule } from '@angular/material/button';
 import { ConsultaCepService } from '../../services/consulta-cep.service';
 import { PageTitleService } from '../../services/title.service';
@@ -10,9 +20,12 @@ import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { PacientesService } from '../../services/pacientes.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+<<<<<<< HEAD
 import { Paciente } from '../../entities/paciente.model';
 import { Endereco } from '../../entities/endereco.models'
 import { Endereco } from '../../entities/endereco.model';
+=======
+>>>>>>> develop
 
 @Component({
   selector: 'app-cadastro-pacientes',
@@ -29,7 +42,10 @@ import { Endereco } from '../../entities/endereco.model';
     NgxMaskPipe,
   ],
   templateUrl: './cadastro-pacientes.component.html',
+<<<<<<< HEAD
   styleUrl: './cadastro-pacientes.component.scss'
+=======
+>>>>>>> develop
   styleUrl: './cadastro-pacientes.component.scss',
 })
 export class CadastroPacientesComponent implements OnInit {
@@ -42,10 +58,10 @@ export class CadastroPacientesComponent implements OnInit {
     private readonly pacientesService: PacientesService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
-    private snackBar: MatSnackBar // Adicionando MatSnackBar ao construtor
+    private readonly snackBar: MatSnackBar // Adicionando MatSnackBar ao construtor
   ) {
-
     this.pageTitleService.setPageTitle('CADASTRO DE PACIENTE');
+<<<<<<< HEAD
    }
   
   }
@@ -76,6 +92,10 @@ pacienteForm = new FormGroup ({
   bairro: new FormControl(''),
   pontoReferencia: new FormControl('')
 });
+=======
+  }
+
+>>>>>>> develop
   pacienteForm = new FormGroup({
     nomeCompleto: new FormControl('', [
       Validators.required,
@@ -89,14 +109,22 @@ pacienteForm = new FormGroup ({
     orgaoExpedidor: new FormControl('', Validators.required),
     estadoCivil: new FormControl('', [Validators.required]),
     telefone: new FormControl('', [Validators.required]),
+<<<<<<< HEAD
     email: new FormControl('', [Validators.email]),
+=======
+    email: new FormControl('', [Validators.required, Validators.email]),
+>>>>>>> develop
     naturalidade: new FormControl('', [
       Validators.required,
       Validators.minLength(3),
       Validators.maxLength(64),
     ]),
     contatoEmergencia: new FormControl('', [Validators.required]),
+<<<<<<< HEAD
     alergias: new FormControl(''),
+=======
+    alergias: new FormControl('', [Validators.required]),
+>>>>>>> develop
     cuidadosEspecificos: new FormControl(''),
     convenio: new FormControl(''),
     numeroConvenio: new FormControl(''),
@@ -114,6 +142,7 @@ pacienteForm = new FormGroup ({
     bairro: new FormControl(''),
     pontoReferencia: new FormControl(''),
   });
+<<<<<<< HEAD
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
@@ -187,10 +216,32 @@ pacienteForm = new FormGroup ({
         //   cep: paciente.
         // });
       });
+=======
+
+  ngOnInit(): void {
+    this.activatedRoute.params.subscribe((params) => {
+      this.pacienteId = params['id'];
+      if (this.pacienteId) {
+        this.pacientesService.obterPacientePorId(this.pacienteId).subscribe({
+          next: (paciente) => {
+            if (paciente) {
+              this.pacienteForm.patchValue(paciente); // Popula o formulário com os dados do paciente
+            } else {
+              console.error('Paciente não encontrado');
+            }
+          },
+          error: (error) => {
+            console.error('Erro ao carregar paciente:', error);
+          },
+        });
+      }
+    });
+>>>>>>> develop
   }
 
   consultaCEP() {
     const cepValue = this.pacienteForm.get('cep')?.value;
+<<<<<<< HEAD
     if (cepValue && cepValue.length === 8) { 
       this.consultaCepService.obterEndereco(cepValue).subscribe(
         {
@@ -203,6 +254,8 @@ pacienteForm = new FormGroup ({
           }
         }
       );
+=======
+>>>>>>> develop
     if (cepValue && cepValue.length === 8) {
       this.consultaCepService.obterEndereco(cepValue).subscribe({
         next: (response: any) => {
@@ -222,6 +275,10 @@ pacienteForm = new FormGroup ({
       cidade: endereco.localidade,
       estado: endereco.uf,
       logradouro: endereco.logradouro,
+<<<<<<< HEAD
+=======
+      bairro: endereco.bairro,
+>>>>>>> develop
     });
   }
 
@@ -231,6 +288,12 @@ pacienteForm = new FormGroup ({
         this.pacientesService.deletarPacientePorId(this.pacienteId);
 
         // Substituído o `alert` pelo `snackBar` para uma notificação menos intrusiva
+<<<<<<< HEAD
+=======
+        this.snackBar.open('Paciente deletado com sucesso!', 'Fechar', {
+          duration: 3000,
+        });
+>>>>>>> develop
         this.router.navigate(['home']);
       }
     }
@@ -239,19 +302,26 @@ pacienteForm = new FormGroup ({
   removerMascara(valor: string): string {
     return valor.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
   }
+<<<<<<< HEAD
   
+=======
+>>>>>>> develop
 
   formatarTelefone(valor: string): string {
     // Formata o número de telefone no formato (XX)XXXXX-XXXX
     return valor.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1)$2-$3');
   }
+<<<<<<< HEAD
   
+=======
+>>>>>>> develop
 
   formatarCPF(valor: string): string {
     // Formata o CPF no formato XXX.XXX.XXX-XX
     return valor.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
   }
 
+<<<<<<< HEAD
   // formatarCEP(valor: string): string {
   //   return valor.replace(/[0-9]+-[0-9]+/i);
   // }
@@ -263,6 +333,18 @@ pacienteForm = new FormGroup ({
     // Verificar o valor de 'nomeCompleto'
     console.log('Valor de nomeCompleto:', this.pacienteForm.value.nomeCompleto);
   
+=======
+  formatarCEP(valor: string): string {
+    // Formata o CEP no formato XXXXX-XXX
+    return valor.replace(/^(\d{5})(\d{3})$/, '$1-$2');
+  }
+
+  cadastrarPaciente() {
+    console.log('Iniciando o cadastro do paciente', this.pacienteForm.value);
+
+    // Verificar o valor de 'nomeCompleto'
+    console.log('Valor de nomeCompleto:', this.pacienteForm.value.nomeCompleto);
+>>>>>>> develop
 
     if (this.pacienteForm.valid) {
       // Crie uma cópia do formData com as máscaras removidas e depois formate para o backend
@@ -278,6 +360,7 @@ pacienteForm = new FormGroup ({
         contatoEmergencia: this.formatarTelefone(
           this.removerMascara(this.pacienteForm.value.contatoEmergencia ?? '')
         ),
+<<<<<<< HEAD
         endereco: {
           cep: "88064-730",//this.pacienteForm.value.cep,
           cep: this.pacienteForm.value.cep,//this.pacienteForm.value.cep,
@@ -289,10 +372,32 @@ pacienteForm = new FormGroup ({
           bairro: this.pacienteForm.value.bairro,
           pontoReferencia: this.pacienteForm.value.pontoReferencia
         }
+=======
+
+        // Mapeamento correto dos campos para o backend
+        listaAlergias: this.pacienteForm.value.alergias || '',
+        listaCuidados: this.pacienteForm.value.cuidadosEspecificos || '',
+
+        // Endereço estruturado de forma correta
+        endereco: {
+          id: 1, // Coloque aqui o ID adequado, se necessário
+          cep: this.formatarCEP(
+            this.removerMascara(this.pacienteForm.value.cep ?? '')
+          ),
+          cidade: this.pacienteForm.value.cidade || '',
+          estado: this.pacienteForm.value.estado || '',
+          rua: this.pacienteForm.value.logradouro || '',
+          numero: this.pacienteForm.value.numero || '',
+          complemento: this.pacienteForm.value.complemento || '',
+          bairro: this.pacienteForm.value.bairro || '',
+          ptoReferencia: this.pacienteForm.value.pontoReferencia || '',
+        },
+>>>>>>> develop
       };
 
       if (this.pacienteId) {
         console.log(`Atualizando paciente com ID: ${this.pacienteId}`);
+<<<<<<< HEAD
         this.pacientesService.atualizarPaciente(this.pacienteId, formData).subscribe({
           next: () => {
             this.snackBar.open('Paciente atualizado com sucesso!', 'Fechar', { duration: 3000 });
@@ -302,21 +407,46 @@ pacienteForm = new FormGroup ({
             this.snackBar.open('Erro ao atualizar paciente.', 'Fechar', { duration: 3000 });
           }
         });
+=======
+        this.pacientesService
+          .atualizarPaciente(this.pacienteId, formData)
+          .subscribe({
+            next: () => {
+              this.snackBar.open('Paciente atualizado com sucesso!', 'Fechar', {
+                duration: 3000,
+>>>>>>> develop
               });
             },
             error: (error) => {
               console.error('Erro ao atualizar paciente:', error);
               this.snackBar.open('Erro ao atualizar paciente.', 'Fechar', {
+<<<<<<< HEAD
+=======
+                duration: 3000,
+              });
+            },
+>>>>>>> develop
           });
       } else {
         console.log('Salvando novo paciente', formData);
         this.pacientesService.salvarPaciente(formData).subscribe({
           next: () => {
+<<<<<<< HEAD
+=======
+            this.snackBar.open('Paciente cadastrado com sucesso!', 'Fechar', {
+              duration: 3000,
+            });
+>>>>>>> develop
             this.router.navigate(['home']);
           },
           error: (error: any) => {
             console.error('Erro ao cadastrar paciente:', error);
             this.snackBar.open('Erro ao cadastrar paciente.', 'Fechar', {
+<<<<<<< HEAD
+=======
+              duration: 3000,
+            });
+>>>>>>> develop
           },
         });
       }
@@ -324,23 +454,39 @@ pacienteForm = new FormGroup ({
       console.warn('Formulário inválido:', this.pacienteForm.errors);
     }
   }
-  
-  
 
   editarPaciente() {
     if (this.pacienteForm.valid && this.pacienteId) {
       const pacienteFormPreenchido = this.pacienteForm.value;
+<<<<<<< HEAD
       this.pacientesService.atualizarPaciente(this.pacienteId, pacienteFormPreenchido);
       );
 
       // Notificação usando `snackBar` ao invés de `alert`, garantindo uma experiência de usuário consistente
       this.snackBar.open('Dados do paciente atualizados com sucesso!', 'Fechar', { duration: 3000 });
+=======
+      this.pacientesService.atualizarPaciente(
+        this.pacienteId,
+        pacienteFormPreenchido
+      );
+
+      // Notificação usando `snackBar` ao invés de `alert`, garantindo uma experiência de usuário consistente
+      this.snackBar.open(
+        'Dados do paciente atualizados com sucesso!',
+        'Fechar',
+        { duration: 3000 }
+>>>>>>> develop
       );
     } else {
       // Mensagem de erro também usando `snackBar`
       this.snackBar.open(
         'Formulário inválido ou nenhum paciente selecionado.',
         'Fechar',
+<<<<<<< HEAD
+=======
+        { duration: 3000 }
+      );
+>>>>>>> develop
     }
   }
 

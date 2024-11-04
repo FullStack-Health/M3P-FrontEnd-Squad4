@@ -18,6 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Paciente } from '../../entities/paciente.model';
 import { Exame } from '../../entities/exame.model';
 import { HorarioPipe } from '../../pipes/horario.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-cadastro-exames',
@@ -41,6 +42,7 @@ import { HorarioPipe } from '../../pipes/horario.pipe';
     MatDatepicker,
     CommonModule,
     HorarioPipe,
+    MatTooltipModule
   ],
   templateUrl: './cadastro-exames.component.html',
   styleUrls: ['./cadastro-exames.component.scss'],
@@ -102,12 +104,12 @@ export class CadastroExamesComponent implements OnInit {
       this.exameId = exameId;
       this.mostrar = !exameId;
       if (this.exameId) {
-        // this.pageTitleService.setPageTitle('EDIÇÃO DE EXAME');
-        // this.cdr.detectChanges(); // Marcar para verificação de mudanças
+        this.pageTitleService.setPageTitle('EDIÇÃO DE EXAME');
+        this.cdr.detectChanges(); // Marcar para verificação de mudanças
         this.carregarExame(this.exameId);
       } else {
-        // this.pageTitleService.setPageTitle('CADASTRO DE EXAME');
-        // this.cdr.detectChanges(); // Marcar para verificação de mudanças
+        this.pageTitleService.setPageTitle('CADASTRO DE EXAME');
+        this.cdr.detectChanges(); // Marcar para verificação de mudanças
         this.atualizarListaPacientes();
       }
     });
