@@ -34,9 +34,9 @@ export class AuthGuard {
     const allowedRoutes: { [key: string]: string[] } = {
       ADMIN: ['home', 'cadastro-paciente', 'cadastro-paciente/:id', 'cadastro-consulta',
         'cadastro-consulta/:consultaId', 'cadastro-exames', 'cadastro-exames/:exameId',
-        'prontuario-paciente', 'prontuario-paciente/:id', 'listagem-prontuario', 'usuarios'],
+        'prontuario-paciente', 'prontuario-paciente/:id', 'listagem-prontuario', 'usuarios', 'usuarios/:id'],
 
-      PACIENTE: ['prontuario-paciente/:id', 'cadastro-consulta/:consultaId', 'cadastro-exames/:exameId'],
+      PACIENTE: ['home', 'prontuario-paciente/:id', 'cadastro-consulta/:consultaId', 'cadastro-exames/:exameId'],
       
       MÉDICO: ['home', 'cadastro-paciente', 'cadastro-paciente/:id', 'cadastro-consulta',
         'cadastro-consulta/:consultaId', 'cadastro-exames', 'cadastro-exames/:exameId',

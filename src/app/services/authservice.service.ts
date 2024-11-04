@@ -23,16 +23,27 @@ export class AuthService {
   login(credentials: { email: string; password: string }): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${apiUrl}/login`, credentials).pipe(
       tap(response => {
-        this.setToken(response.token); // armazena o token
+        this.setToken(response.token); // Armazena o token
+        console.log('Resposta do login:', response); // Log da resposta do login para depuração
         if (response.listaNomesPerfis && response.listaNomesPerfis.length > 0) {
-          this.setProfile(response.listaNomesPerfis[0]); // armazena o perfil
+          this.setProfiles(response.listaNomesPerfis); // Armazena os perfis
+        } else {
+          console.error('Lista de perfis está vazia na resposta do login');
         }
         this.userService.setLoggedUser(response); // Armazena o usuário logado
-
-
+  
+        // Redirecionar com base no perfil do usuário
+        const userProfile = response.listaNomesPerfis ? response.listaNomesPerfis[0] : null;
+        if (userProfile === 'PACIENTE') {
+          this.router.navigate([`/prontuario-paciente/${response.pacienteId}`]);
+        } else {
+          this.router.navigate(['/home']);
+        }
+  
         // Logs para verificar o que está sendo armazenado
         console.log('Token armazenado:', localStorage.getItem('token'));
         console.log('Perfis armazenados:', this.getProfiles());
+        console.log('Usuário logado armazenado:', this.userService.getLoggedUser());
       })
     );
   }
