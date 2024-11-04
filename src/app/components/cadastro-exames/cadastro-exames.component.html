@@ -26,7 +26,16 @@
     <ng-container matColumnDef="acao">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let paciente" class="coluna-acao">
-        <button mat-icon-button color="primary" aria-label="Acessar Prontuário" (click)="selecionarPaciente(paciente)">
+        <button
+          mat-icon-button
+          color="primary"
+          aria-label="Selecionar paciente"
+          matTooltip="Selecionar paciente"
+          matTooltipPosition="above"
+          matTooltipShowDelay="500"
+          matTooltipHideDelay="100"
+          (click)="selecionarPaciente(paciente)"
+        >
           <mat-icon>add_circle</mat-icon>
         </button>
       </td>

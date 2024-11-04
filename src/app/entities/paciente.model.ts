@@ -16,7 +16,7 @@ export class Paciente {
     public listaCuidados: string,
     public convenio: string,
     public numeroConvenio: string,
-    public validadeConvenio: String | Date,
+    public validadeConvenio: string | Date,
     public idade?: number
   ) {}
 }

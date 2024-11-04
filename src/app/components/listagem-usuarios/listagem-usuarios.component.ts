@@ -10,6 +10,7 @@ import { PageTitleService } from '../../services/title.service';
 import { UserStorageService } from '../../services/users-storage.service';
 import { EsconderSenhaPipe } from '../../pipes/esconder-senha.pipe';
 import { User } from '../../entities/user.model';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-listagem-usuarios',
@@ -22,7 +23,8 @@ import { User } from '../../entities/user.model';
     MatInputModule,
     MatTableModule,
     FormsModule,
-    EsconderSenhaPipe
+    EsconderSenhaPipe,
+    MatTooltipModule
   ],
   templateUrl: './listagem-usuarios.component.html',
   styleUrl: './listagem-usuarios.component.scss'
