@@ -12,19 +12,78 @@ import { EdicaoUsuariosComponent } from './components/edicao-usuarios/edicao-usu
 
 
 export const routes: Routes = [
-  { path: '', component: LoginComponent},
-  { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent, canMatch: [AuthGuard] },
-  { path: 'cadastro-paciente', component: CadastroPacientesComponent, canMatch: [AuthGuard] },
-  { path: 'cadastro-paciente/:id', component: CadastroPacientesComponent, canMatch: [AuthGuard] },
-  { path: 'cadastro-consulta', component: CadastroConsultaComponent, canMatch: [AuthGuard] },
-  { path: 'cadastro-consulta/:consultaId', component: CadastroConsultaComponent, canMatch: [AuthGuard] },
-  { path: 'cadastro-exames', component: CadastroExamesComponent, canMatch: [AuthGuard] },
-  { path: 'cadastro-exames/:exameId', component: CadastroExamesComponent, canMatch: [AuthGuard] },
-  { path: 'prontuario-paciente', component: ProntuarioPacienteComponent, canMatch: [AuthGuard] },
-  { path: 'prontuario-paciente/:id', component: ProntuarioPacienteComponent, canMatch: [AuthGuard] },
-  { path: 'listagem-prontuario', component: ListagemProntuarioComponent, canMatch: [AuthGuard] },
-  { path: 'usuarios', component: ListagemUsuariosComponent, canMatch: [AuthGuard] },
-  { path: 'usuarios/:id', component: EdicaoUsuariosComponent, canMatch: [AuthGuard] },
-  { path: '**', redirectTo: 'home', pathMatch: 'full' },
+  {
+    path: '',
+    component: LoginComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+    canMatch: [AuthGuard],
+  },
+  {
+    path: 'cadastro-paciente',
+    component: CadastroPacientesComponent,
+    canMatch: [AuthGuard],
+  },
+  {
+    path: 'cadastro-paciente/:id',
+    component: CadastroPacientesComponent,
+    canMatch: [AuthGuard],
+  },
+  {
+    path: 'cadastro-consulta',
+    component: CadastroConsultaComponent,
+    canMatch: [AuthGuard],
+  },
+  {
+    path: 'cadastro-consulta/:consultaId',
+    component: CadastroConsultaComponent,
+    canMatch: [AuthGuard],
+  },
+  {
+    path: 'cadastro-exames',
+    component: CadastroExamesComponent,
+    canMatch: [AuthGuard],
+  },
+  {
+    path: 'cadastro-exames/:exameId',
+    component: CadastroExamesComponent,
+    canMatch: [AuthGuard],
+  },
+  {
+    path: 'prontuario-paciente',
+    component: ProntuarioPacienteComponent,
+    canMatch: [AuthGuard],
+  },
+  {
+    path: 'prontuario-paciente/:id',
+    component: ProntuarioPacienteComponent,
+    canMatch: [AuthGuard],
+  },
+  {
+    path: 'listagem-prontuario',
+    component: ListagemProntuarioComponent,
+    canMatch: [AuthGuard],
+  },
+  {
+    path: 'usuarios',
+    component: ListagemUsuariosComponent,
+    canMatch: [AuthGuard],
+  },
+  {
+    path: 'usuarios/:id',
+    component: EdicaoUsuariosComponent,
+    canMatch: [AuthGuard],
+  },
+  { 
+    path: '**', 
+    redirectTo: 'home', 
+    pathMatch: 'full', 
+    canMatch: [AuthGuard],
+  },
 ];

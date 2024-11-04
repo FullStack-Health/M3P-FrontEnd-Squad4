@@ -1,4 +1,4 @@
-<mat-sidenav-container>
+<mat-sidenav-container *ngIf="loggedUser">
   <mat-sidenav opened mode="side">
     <div class="sidenav-header">
       <div class="app-name">
@@ -34,7 +34,7 @@
       <mat-nav-list *ngIf="profile === 'médico' || profile === 'admin'" class="sidenav">
         <h3 matListItemTitle>Pacientes</h3>
         <mat-list>
-          <button mat-flat-button routerLink="/cadastro-paciente"><mat-icon matListItemIcon>add</mat-icon>Cadastrar</button><br>
+          <button mat-flat-button routerLink="/cadastro-paciente"><mat-icon matListItemIcon>add</mat-icon>Cadastrar paciente</button><br>
           <button mat-flat-button routerLink="/listagem-prontuario"><mat-icon matListItemIcon>list</mat-icon>Listar prontuário</button>
         </mat-list>
       </mat-nav-list>

@@ -7,12 +7,12 @@ import { apiUrl } from '../environments/environment';
 import { UserStorageService } from './users-storage.service';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
- 
+
 @Injectable({
   providedIn: 'root'
 })
 export class PacientesService {
- urlPath: string = `${apiUrl}/pacientes`;
+  urlPath: string = `${apiUrl}/pacientes`;
 
   constructor(
     private readonly http: HttpClient,
@@ -56,8 +56,8 @@ export class PacientesService {
   //   localStorage.setItem('pacientes', JSON.stringify(pacientes));
   // }
 
-   // Alteração: Método atualizado para enviar uma requisição POST ao backend
-   salvarPaciente(paciente: any): Observable<any> {
+  // Alteração: Método atualizado para enviar uma requisição POST ao backend
+  salvarPaciente(paciente: any): Observable<any> {
     const headers = this.userService.getAuthHeaders(); // Utilize o método para obter os headers
     console.log('Paciente a ser enviado:', paciente);
     // console.log('Headers:', headers);
@@ -93,7 +93,7 @@ export class PacientesService {
     const headers = this.userService.getAuthHeaders(); // Obtém os cabeçalhos de autenticação
     return this.http.get<any>(`${this.urlPath}/${id}`, {headers}); // Envia a requisição GET para obter um paciente específico
   }
-  
+
 
   obterPacientesPorNomeOuPorId(buscaInput: string): Observable<Paciente[]> {
     const headers = this.authService.getAuthHeaders();
@@ -101,19 +101,32 @@ export class PacientesService {
 
     if (this.isNumeric(buscaInput)) {
       const url = `${this.urlPath}?id=${buscaInput}`;
-      // console.log('URL para busca por ID:', url);
-      return this.http.get<{ pacientes: Paciente[] }>(url, { headers }).pipe(
-        map(response => response.pacientes)
+      console.log('URL para busca por ID:', url);
+
+      return this.http.get<{ pacientes: Paciente[] }>(url, { headers, observe: 'response' }).pipe(
+        tap(response => {
+          console.log('Status:', response.status);
+          console.log('Headers:', response.headers);
+          console.log('Body:', response.body);
+        }),
+        map(response => response.body?.pacientes || [])
       );
+
     } else {
       const url = `${this.urlPath}?nome=${buscaInput}`;
-      // console.log('URL para busca por nome:', url);
-      return this.http.get<{ pacientes: Paciente[] }>(url, { headers }).pipe(
-        map(response => response.pacientes)
+      console.log('URL para busca por nome:', url);
+
+      return this.http.get<{ pacientes: Paciente[] }>(url, { headers, observe: 'response' }).pipe(
+        tap(response => {
+          console.log('Status:', response.status);
+          console.log('Headers:', response.headers);
+          console.log('Body:', response.body);
+        }),
+        map(response => response.body?.pacientes || [])
       );
     }
   }
-  
+
   pesquisarPacientes(termo: string): Observable<any[]> {
     const headers = this.userService.getAuthHeaders(); // Obtém os cabeçalhos de autenticação
     return this.http.get<any[]>(`${this.urlPath}?search=${termo}`);
@@ -122,6 +135,44 @@ export class PacientesService {
   isNumeric(buscaInput: string) {
     return /^\d+$/.test(buscaInput);
   }
+
+  obterPacientesPorNomeEmailOuTelefone(buscaInput: string): Observable<Paciente[]> {
+    const headers = this.authService.getAuthHeaders();
+    console.log('obterPacientesPorNomeEmailOuTelefone chamado com:', buscaInput);
+
+    const buscaSemFormatacao = this.removerFormatacaoTelefone(buscaInput);
+
+    let params: any = {};
+
+    if (this.isNumeric(buscaSemFormatacao)) {
+      params.telefone = buscaSemFormatacao;
+    } else if (this.isEmail(buscaInput)) {
+      params.email = buscaInput;
+    } else {
+      params.nome = buscaInput;
+    }
+
+    console.log('Parâmetros para busca:', params);
+
+    return this.http.get<{ pacientes: Paciente[] }>(this.urlPath, { headers, params, observe: 'response' }).pipe(
+      tap(response => {
+        console.log('Status:', response.status);
+        console.log('Headers:', response.headers);
+        console.log('Body:', response.body);
+      }),
+      map(response => response.body?.pacientes || [])
+    );
+  }
+
+  private isEmail(value: string): boolean {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(value);
+  }
+
+  private removerFormatacaoTelefone(telefone: string): string {
+    return telefone.replace(/\D/g, '');
+  }
+
 
   // obterPacientes(): any[] {
   //   return JSON.parse(localStorage.getItem('pacientes') ?? '[]');
@@ -132,13 +183,14 @@ export class PacientesService {
   //   const pacienteEncontrado = pacientes.find(paciente => paciente.id === id);
   //   return pacienteEncontrado || null;
   // }
-  
-  
+
+
   // deletarPacientePorId(id: string) {
   //   let pacientes: any[] = this.obterPacientes();
   //   pacientes = pacientes.filter(paciente => paciente.id !== id);
   //   localStorage.setItem('pacientes', JSON.stringify(pacientes));
   // }
+
   // Alteração: Método atualizado para deletar um paciente específico pelo ID no backend
   deletarPacientePorId(id: string): Observable<any> {
     const headers = this.userService.getAuthHeaders(); // Obtém os cabeçalhos de autenticação
