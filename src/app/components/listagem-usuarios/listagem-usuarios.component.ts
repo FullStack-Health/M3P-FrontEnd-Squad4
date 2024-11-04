@@ -10,7 +10,6 @@ import { PageTitleService } from '../../services/title.service';
 import { UserStorageService } from '../../services/users-storage.service';
 import { EsconderSenhaPipe } from '../../pipes/esconder-senha.pipe';
 import { User } from '../../entities/user.model';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-listagem-usuarios',
@@ -23,8 +22,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatInputModule,
     MatTableModule,
     FormsModule,
-    EsconderSenhaPipe,
-    MatTooltipModule
+    EsconderSenhaPipe
   ],
   templateUrl: './listagem-usuarios.component.html',
   styleUrl: './listagem-usuarios.component.scss'
@@ -32,7 +30,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 export class ListagemUsuariosComponent implements OnInit {
 
   usersList: User[] = [];
-  displayedColumns: string[] = ['id', 'email', 'telefone', 'senhaComMascara', 'acao'];
+  displayedColumns: string[] = ['id', 'email', 'senhaComMascara', 'acao'];
   textoPesquisa: any;
 
   constructor(

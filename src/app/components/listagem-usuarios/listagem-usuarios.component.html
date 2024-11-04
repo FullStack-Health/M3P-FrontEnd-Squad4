@@ -22,11 +22,6 @@
       <th mat-header-cell *matHeaderCellDef> Email </th>
       <td mat-cell *matCellDef="let usuario"> {{ usuario.email }} </td>
     </ng-container>
-
-    <ng-container matColumnDef="telefone">
-      <th mat-header-cell *matHeaderCellDef>Telefone</th>
-      <td mat-cell *matCellDef="let usuario">{{ usuario.telefone }}</td>
-    </ng-container>
   
     <ng-container matColumnDef="senhaComMascara">
       <th mat-header-cell *matHeaderCellDef> Senha </th>
@@ -36,17 +31,8 @@
     <ng-container matColumnDef="acao">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let usuario" class="coluna-acao">
-        <button
-        mat-icon-button
-        color="primary"
-        aria-label="Editar usuário"
-        matTooltip="Editar usuário"
-        matTooltipPosition="above"
-        matTooltipShowDelay="500"
-        matTooltipHideDelay="100"
-        (click)="editarUsuario(usuario)"
-        >
-          <mat-icon>edit</mat-icon>
+        <button mat-icon-button color="primary" aria-label="Acessar Prontuário" (click)="editarUsuario(usuario)">
+          <mat-icon>assignment</mat-icon>
         </button>
       </td>
     </ng-container>

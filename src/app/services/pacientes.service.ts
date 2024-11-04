@@ -73,13 +73,8 @@ export class PacientesService {
 
   obterPacientes(): Observable<Paciente[]> {
     const headers = this.authService.getAuthHeaders();
-    return this.http.get<{ pacientes: Paciente[] }>(this.urlPath, { headers, observe: 'response' }).pipe(
-      tap(response => {
-        console.log('Backend response status:', response.status);
-        console.log('Backend response headers:', response.headers);
-        console.log('Backend response body:', response.body);
-      }),
-      map(response => response.body?.pacientes || [])
+    return this.http.get<{ pacientes: Paciente[] }>(this.urlPath, { headers }).pipe(
+      map(response => response.pacientes)
     );
   }
 
@@ -91,48 +86,30 @@ export class PacientesService {
 
   getPacientePorId(id: string): Observable<Paciente> {
     const headers = this.authService.getAuthHeaders();
-    return this.http.get<Paciente>(`${this.urlPath}/${id}`, { headers }).pipe(
-      tap(response => console.log('Backend response:', response))
-    );
+    return this.http.get<Paciente>(`${this.urlPath}/${id}`, { headers });
   }
   // Alteração: Método atualizado para buscar um paciente específico pelo ID no backend
   obterPacientePorId(id: string): Observable<any> {
     const headers = this.userService.getAuthHeaders(); // Obtém os cabeçalhos de autenticação
-    return this.http.get<any>(`${this.urlPath}/${id}`, { headers, observe: 'response' }).pipe(
-      tap(response => {
-        console.log('Backend response status:', response.status);
-        console.log('Backend response headers:', response.headers);
-        console.log('Backend response body:', response.body);
-      })
-    ); // Envia a requisição GET para obter um paciente específico
+    return this.http.get<any>(`${this.urlPath}/${id}`, {headers}); // Envia a requisição GET para obter um paciente específico
   }
   
 
   obterPacientesPorNomeOuPorId(buscaInput: string): Observable<Paciente[]> {
     const headers = this.authService.getAuthHeaders();
-    console.log('getPacientesPorNomeOuPorId chamado com:', buscaInput);
+    // console.log('getPacientesPorNomeOuPorId chamado com:', buscaInput);
 
     if (this.isNumeric(buscaInput)) {
       const url = `${this.urlPath}?id=${buscaInput}`;
-      console.log('URL para busca por ID:', url);
-      return this.http.get<{ pacientes: Paciente[] }>(url, { headers, observe: 'response' }).pipe(
-        tap(response => {
-          console.log('Status:', response.status);
-          console.log('Headers:', response.headers);
-          console.log('Body:', response.body);
-        }),
-        map(response => response.body?.pacientes || [])
+      // console.log('URL para busca por ID:', url);
+      return this.http.get<{ pacientes: Paciente[] }>(url, { headers }).pipe(
+        map(response => response.pacientes)
       );
     } else {
       const url = `${this.urlPath}?nome=${buscaInput}`;
-      console.log('URL para busca por nome:', url);
-      return this.http.get<{ pacientes: Paciente[] }>(url, { headers, observe: 'response' }).pipe(
-        tap(response => {
-          console.log('Status:', response.status);
-          console.log('Headers:', response.headers);
-          console.log('Body:', response.body);
-        }),
-        map(response => response.body?.pacientes || [])
+      // console.log('URL para busca por nome:', url);
+      return this.http.get<{ pacientes: Paciente[] }>(url, { headers }).pipe(
+        map(response => response.pacientes)
       );
     }
   }
