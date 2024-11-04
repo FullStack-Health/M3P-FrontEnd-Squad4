@@ -11,7 +11,8 @@ import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { PacientesService } from '../../services/pacientes.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { Paciente } from '../../entities/paciente.model';
+import { Endereco } from '../../entities/endereco.models'
 
 @Component({
   selector: 'app-cadastro-pacientes',
@@ -75,27 +76,79 @@ pacienteForm = new FormGroup ({
   pontoReferencia: new FormControl('')
 });
 
-ngOnInit(): void {
-  this.activatedRoute.params.subscribe(params => {
-    this.pacienteId = params['id'];
-    if (this.pacienteId) {
-      this.pacientesService.obterPacientePorId(this.pacienteId).subscribe({
-        next: (paciente) => {
-          if (paciente) {
-            this.pacienteForm.patchValue(paciente); // Popula o formulário com os dados do paciente
-          } else {
-            console.error('Paciente não encontrado');
-          }
-        },
-        error: (error) => {
-          console.error('Erro ao carregar paciente:', error);
-        }
+  ngOnInit(): void {
+    this.activatedRoute.params.subscribe((params) => {
+      this.pacienteId = params['id'];
+      if (this.pacienteId) {
+        this.pacientesService.obterPacientePorId(this.pacienteId).subscribe({
+          next: (paciente) => {
+            if (paciente) {
+              // console.log(paciente.dataNascimento);
+              this.carregarPaciente(paciente.id.toString());
+              //this.pacienteForm.patchValue(paciente); // Popula o formulário com os dados do paciente
+            } else {
+              console.error('Paciente não encontrado');
+            }
+          },
+          error: (error) => {
+            console.error('Erro ao carregar paciente:', error);
+          },
+        });
+      }
+    });
+  }
+
+  carregarPaciente(id: string): void {
+    this.pacientesService
+      .obterPacientePorId(id)
+      .subscribe((paciente: any) => {
+        console.log(paciente.endereco);
+
+        const date = new Date(paciente.dataNascimento);
+        const dataNascimento = `${date.getFullYear()}-${String(
+          date.getMonth() + 1
+        ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+        const dateConvenio = new Date(paciente.validadeConvenio);
+        const validadeConvenio = `${dateConvenio.getFullYear()}-${String(
+          dateConvenio.getMonth() + 1
+        ).padStart(2, '0')}-${String(dateConvenio.getDate()).padStart(2, '0')}`;
+
+        this.pacienteForm.patchValue({...paciente,
+          // nomeCompleto: paciente.nome,
+          // genero: paciente.genero,
+          dataNascimento: dataNascimento,
+          // cpf: paciente.cpf,
+          // rg: paciente.rg,
+          // orgaoExpedidor: paciente.orgaoExpedidor,
+          // estadoCivil: paciente.estadoCivil,
+          // telefone: paciente.telefone,
+          // email: paciente.email,
+          // naturalidade: paciente.naturalidade,
+          // contatoEmergencia: paciente.contatoEmergencia,
+          // alergias: paciente.listaAlergias || '',
+          // cuidadosEspecificos: paciente.listaCuidados || '',
+          // convenio: paciente.convenio || '',
+          // numeroConvenio: paciente.numeroConvenio || '',
+          validadeConvenio: validadeConvenio || '',
+          cep: paciente.endereco.cep,
+          cidade: paciente.endereco.cidade,
+          estado: paciente.endereco.estado,
+          logradouro: paciente.endereco.rua,
+          numero: paciente.endereco.numero,
+          complemento: paciente.endereco.complemento || '',
+          bairro: paciente.endereco.bairro,
+          pontoReferencia: paciente.endereco.ptoReferencia || '',
+        });
+
+        // const date = new Date(paciente.dataNascimento);
+        // const dataNascimento = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+        // this.pacienteForm.patchValue({
+        //   dataNascimento: dataNascimento,
+        //   cep: paciente.
+        // });
       });
-    }
-  });
-}
-
-
+  }
 
   consultaCEP() {
     const cepValue = this.pacienteForm.get('cep')?.value;
@@ -148,7 +201,11 @@ ngOnInit(): void {
     // Formata o CPF no formato XXX.XXX.XXX-XX
     return valor.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
   }
-  
+
+  // formatarCEP(valor: string): string {
+  //   return valor.replace(/[0-9]+-[0-9]+/i);
+  // }
+
   cadastrarPaciente() {
     console.log('Iniciando o cadastro do paciente', this.pacienteForm.value);
   
@@ -160,11 +217,28 @@ ngOnInit(): void {
       let formData = {
         ...this.pacienteForm.value,
         nome: this.pacienteForm.value.nomeCompleto, // Ajuste o nome se o backend espera um campo chamado 'nome'
-        cpf: this.formatarCPF(this.removerMascara(this.pacienteForm.value.cpf ?? '')),
-        telefone: this.formatarTelefone(this.removerMascara(this.pacienteForm.value.telefone ?? '')),
-        contatoEmergencia: this.formatarTelefone(this.removerMascara(this.pacienteForm.value.contatoEmergencia ?? ''))
+        cpf: this.formatarCPF(
+          this.removerMascara(this.pacienteForm.value.cpf ?? '')
+        ),
+        telefone: this.formatarTelefone(
+          this.removerMascara(this.pacienteForm.value.telefone ?? '')
+        ),
+        contatoEmergencia: this.formatarTelefone(
+          this.removerMascara(this.pacienteForm.value.contatoEmergencia ?? '')
+        ),
+        endereco: {
+          cep: "88064-730",//this.pacienteForm.value.cep,
+          cidade: this.pacienteForm.value.cidade,
+          estado: this.pacienteForm.value.estado,
+          logradouro: this.pacienteForm.value.logradouro,
+          numero: this.pacienteForm.value.numero,
+          complemeto: this.pacienteForm.value.complemento,
+          bairro: this.pacienteForm.value.bairro,
+          pontoReferencia: this.pacienteForm.value.pontoReferencia
+        }
       };
   
+
       if (this.pacienteId) {
         console.log(`Atualizando paciente com ID: ${this.pacienteId}`);
         this.pacientesService.atualizarPaciente(this.pacienteId, formData).subscribe({
@@ -183,7 +257,7 @@ ngOnInit(): void {
             this.snackBar.open('Paciente cadastrado com sucesso!', 'Fechar', { duration: 3000 });
             this.router.navigate(['home']);
           },
-          error: (error) => {
+          error: (error: any) => {
             console.error('Erro ao cadastrar paciente:', error);
             this.snackBar.open('Erro ao cadastrar paciente.', 'Fechar', { duration: 3000 });
           }

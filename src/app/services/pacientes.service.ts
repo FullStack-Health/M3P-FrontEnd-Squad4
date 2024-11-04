@@ -60,7 +60,7 @@ export class PacientesService {
    salvarPaciente(paciente: any): Observable<any> {
     const headers = this.userService.getAuthHeaders(); // Utilize o método para obter os headers
     console.log('Paciente a ser enviado:', paciente);
-    console.log('Headers:', headers);
+    // console.log('Headers:', headers);
     return this.http.post(this.urlPath, paciente, { headers }).pipe(
       tap(response => console.log('Paciente salvo com sucesso:', response)),
       catchError(this.handleError) // Tratamento de erros
