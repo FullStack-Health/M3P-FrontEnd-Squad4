@@ -30,7 +30,7 @@ import { User } from '../../entities/user.model';
 export class ListagemUsuariosComponent implements OnInit {
 
   usersList: User[] = [];
-  displayedColumns: string[] = ['id', 'email', 'senhaComMascara', 'acao'];
+  displayedColumns: string[] = ['id', 'email', 'telefone', 'senhaComMascara', 'acao'];
   textoPesquisa: any;
 
   constructor(
