@@ -15,6 +15,7 @@ import { UserStorageService } from '../../services/users-storage.service';
 import { DashboardService } from '../../services/dashboard.service';
 import { PacientesService } from '../../services/pacientes.service';
 import { Router } from '@angular/router';
+import { Paciente } from '../../entities/paciente.model';
 
 @Component({
   selector: 'app-home',
@@ -37,7 +38,7 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   
-  pacientes: any[] = [];
+  pacientes: Paciente[] = [];
   quantidadePacientes: number = 0;
   textoPesquisa: string = '';
   quantidadeExames: number = 0;
@@ -59,7 +60,7 @@ export class HomeComponent implements OnInit {
     this.profile = this.userService.getProfile();
 
     // Se o usuário for paciente, redirecionar para seu prontuário
-    if (this.profile === 'paciente') {
+    if (this.profile === 'PACIENTE') {
       const userId = this.userService.getLoggedUser().id; // Presumindo que o ID do usuário esteja armazenado
       this.router.navigate(['prontuario-paciente', userId]); // Ajuste a rota conforme necessário
     } else {
@@ -69,15 +70,15 @@ export class HomeComponent implements OnInit {
   }
 
   atualizarListaPacientes() {
-    this.pacientesService.obterPacientes().subscribe(
-      (pacientes) => {
+    this.pacientesService.obterPacientes().subscribe({
+      next: (pacientes) => {
         this.pacientes = pacientes;
         this.quantidadePacientes = this.pacientes.length;
       },
-      (error) => {
+      error: (error) => {
         console.error('Erro ao obter pacientes', error);
       }
-    );
+    });
   }
 
   carregarDadosDoDashboard(): void {
@@ -94,20 +95,13 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  pesquisarPacientes() {
-    const textoPesquisa = this.textoPesquisa.trim();
+  pesquisarPacientes(textoPesquisa: string) {
     if (!textoPesquisa) {
       this.atualizarListaPacientes();
     } else {
-      this.pacientesService.pesquisarPacientes(textoPesquisa).subscribe(
-        (result) => {
-          this.pacientes = result;
-        },
-        (error) => {
-          console.error('Erro ao pesquisar pacientes', error);
-        }
-      );
+      this.pacientesService.obterPacientesPorNomeEmailOuTelefone(textoPesquisa).subscribe((pacientes) => {
+        this.pacientes = pacientes;
+      });
     }
-    this.textoPesquisa = '';
   }
 }

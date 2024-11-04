@@ -111,8 +111,12 @@ export class CadastroConsultaComponent implements OnInit {
       this.consultaId = consultaId;
       this.mostrar = !consultaId;
       if (this.consultaId) {
+        this.pageTitleService.setPageTitle('EDIÇÃO DE CONSULTA');
+        this.cdr.detectChanges();
         this.carregarConsulta(this.consultaId);
       } else {
+        this.pageTitleService.setPageTitle('CADASTRO DE CONSULTA');
+        this.cdr.detectChanges();
         this.atualizarListaPacientes();
       }
     });
