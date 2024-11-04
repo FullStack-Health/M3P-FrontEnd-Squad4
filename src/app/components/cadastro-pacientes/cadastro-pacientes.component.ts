@@ -57,10 +57,10 @@ pacienteForm = new FormGroup ({
   orgaoExpedidor: new FormControl('', Validators.required),
   estadoCivil: new FormControl('', [Validators.required]),
   telefone: new FormControl('', [Validators.required]),
-  email: new FormControl('', [Validators.email]),
+  email: new FormControl('', [Validators.required, Validators.email]),
   naturalidade: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(64)]),
   contatoEmergencia: new FormControl('', [Validators.required]),
-  alergias: new FormControl(''),
+  alergias: new FormControl('', [Validators.required]),
   cuidadosEspecificos: new FormControl(''),
   convenio: new FormControl(''),
   numeroConvenio: new FormControl(''),
@@ -145,8 +145,13 @@ ngOnInit(): void {
   }
   
   formatarCPF(valor: string): string {
-    // Formata o CPF no formato XXX.XXX.XXX-XX
-    return valor.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+      // Formata o CPF no formato XXX.XXX.XXX-XX
+      return valor.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+  }
+  
+  formatarCEP(valor: string): string {
+      // Formata o CEP no formato XXXXX-XXX
+      return valor.replace(/^(\d{5})(\d{3})$/, '$1-$2');
   }
   
   cadastrarPaciente() {
@@ -162,7 +167,24 @@ ngOnInit(): void {
         nome: this.pacienteForm.value.nomeCompleto, // Ajuste o nome se o backend espera um campo chamado 'nome'
         cpf: this.formatarCPF(this.removerMascara(this.pacienteForm.value.cpf ?? '')),
         telefone: this.formatarTelefone(this.removerMascara(this.pacienteForm.value.telefone ?? '')),
-        contatoEmergencia: this.formatarTelefone(this.removerMascara(this.pacienteForm.value.contatoEmergencia ?? ''))
+        contatoEmergencia: this.formatarTelefone(this.removerMascara(this.pacienteForm.value.contatoEmergencia ?? '')),
+
+        // Mapeamento correto dos campos para o backend
+        listaAlergias: this.pacienteForm.value.alergias || '',
+        listaCuidados: this.pacienteForm.value.cuidadosEspecificos || '',
+
+        // Endereço estruturado de forma correta
+        endereco: {
+          id: 1, // Coloque aqui o ID adequado, se necessário
+          cep: this.formatarCEP(this.removerMascara(this.pacienteForm.value.cep ?? '')),
+          cidade: this.pacienteForm.value.cidade || '',
+          estado: this.pacienteForm.value.estado || '',
+          rua: this.pacienteForm.value.logradouro || '',
+          numero: this.pacienteForm.value.numero || '',
+          complemento: this.pacienteForm.value.complemento || '',
+          bairro: this.pacienteForm.value.bairro || '',
+          ptoReferencia: this.pacienteForm.value.pontoReferencia || ''
+        }
       };
   
       if (this.pacienteId) {

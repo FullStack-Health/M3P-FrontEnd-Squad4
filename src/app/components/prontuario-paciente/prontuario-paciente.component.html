@@ -2,27 +2,28 @@
 <h1>Prontuário de {{ paciente?.nome }}</h1>  <div class="container">
     <!-- Informações do Paciente -->
     <div *ngIf="paciente">
-      <section class="info-paciente-container" class="mat-elevation-z2">
-      <div class="info-paciente">
-        <h2>Informações de Paciente</h2>
-        <div class="item-info">
-          <p><strong>Nome do Paciente:</strong> {{ paciente.nome }}</p>
+      <section class="info-paciente-container mat-elevation-z2">
+        <div class="info-paciente">
+          <h2>Informações de Paciente</h2>
+          <div class="item-info">
+            <p><strong>Nome do Paciente:</strong> {{ paciente.nome }}</p>
+          </div>
+          <div class="item-info">
+            <p><strong>Telefone:</strong> {{ paciente.telefone }}</p>
+          </div>
+          <div class="item-info">
+            <p><strong>Email:</strong> {{ paciente.email }}</p>
+          </div>
+          <div class="item-info">
+            <p><strong>Idade:</strong> {{ paciente.idade }}</p>
+          </div>
+          <div class="item-info">
+            <p><strong>Convênio:</strong> {{ paciente.convenio }}</p>
+          </div>
         </div>
-        <div class="item-info">
-          <p><strong>Convênio:</strong> {{ paciente.convenio }}</p>
-        </div>
-        <div class="item-info">
-          <p><strong>Contato de Emergência:</strong> {{ paciente.contatoEmergencia | formatarTelefone }}</p>
-        </div>
-        <div class="item-info">
-          <p><strong>Alergias:</strong> {{ paciente.listaAlergias }}</p>
-        </div>
-        <div class="item-info">
-          <p><strong>Cuidados Específicos:</strong> {{ paciente.listaCuidados }}</p>
-        </div>
-      </div>
-    </section>
-  </div>
+      </section>
+    </div>
+    
   
   <!-- Histórico de Consultas -->
   <section class="historico-consultas" class="mat-elevation-z2">
