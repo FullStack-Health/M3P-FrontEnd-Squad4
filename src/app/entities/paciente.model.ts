@@ -3,7 +3,7 @@ export class Paciente {
     public id: number,
     public nome: string,
     public genero: string,
-    public dataNascimento: Date,
+    public dataNascimento: string, // Alterado para string para refletir o retorno do backend
     public cpf: string,
     public rg: string,
     public orgaoExpedidor: string,
@@ -16,7 +16,7 @@ export class Paciente {
     public listaCuidados: string,
     public convenio: string,
     public numeroConvenio: string,
-    public validadeConvenio: Date,
+    public validadeConvenio: String | Date,
     public idade?: number
   ) {}
 }
