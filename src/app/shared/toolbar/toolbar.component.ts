@@ -41,7 +41,11 @@ export class ToolbarComponent implements OnInit {
 
   ngOnInit() {
     this.loggedUser = this.userService.getLoggedUser();
-    // console.log('Usuário logado:', this.loggedUser); // Log para depuração
+    console.log('Usuário logado:', this.loggedUser); // Log para depuração
+    if (!this.loggedUser || Array.isArray(this.loggedUser) && this.loggedUser.length === 0) {
+      this.router.navigate(['/login']);
+      return;
+    }
     const nomeUsuario = this.loggedUser?.nome ?? this.loggedUser?.email;
     this.loggedUser = { ...this.loggedUser, nome: nomeUsuario };
   
