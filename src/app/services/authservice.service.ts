@@ -1,20 +1,40 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { apiUrl } from '../environments/environment';
 import { LoginResponse } from '../entities/auth.models';
+import { Router } from '@angular/router';
+import { UserStorageService } from './users-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+
   private token: string | null = null;
   private profiles: string[] = [];
 
-  constructor(private readonly http: HttpClient) {}
-  
+  constructor(
+    private readonly http: HttpClient,
+    private readonly router: Router,
+    private readonly userService: UserStorageService
+  ) { }
+
   login(credentials: { email: string; password: string }): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${apiUrl}/login`, credentials);
+    return this.http.post<LoginResponse>(`${apiUrl}/login`, credentials).pipe(
+      tap(response => {
+        this.setToken(response.token); // armazena o token
+        if (response.listaNomesPerfis && response.listaNomesPerfis.length > 0) {
+          this.setProfile(response.listaNomesPerfis[0]); // armazena o perfil
+        }
+        this.userService.setLoggedUser(response); // Armazena o usuário logado
+
+
+        // Logs para verificar o que está sendo armazenado
+        console.log('Token armazenado:', localStorage.getItem('token'));
+        console.log('Perfis armazenados:', this.getProfiles());
+      })
+    );
   }
 
   setToken(token: string): void {
@@ -31,7 +51,7 @@ export class AuthService {
 
   getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
-    if(token) {
+    if (token) {
       return new HttpHeaders({
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
@@ -61,9 +81,15 @@ export class AuthService {
     this.profiles = [];
     localStorage.removeItem('token');
     localStorage.removeItem('profile');
+    this.userService.setLoggedUser([]); // Limpar o usuário logado
+    this.router.navigate(['/login']);
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    const token = this.getToken();
+    if (!token) {
+      return false;
+    }
+    return true;
   }
 }
