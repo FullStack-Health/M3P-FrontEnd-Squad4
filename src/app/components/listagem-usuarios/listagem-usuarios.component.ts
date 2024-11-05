@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { PageTitleService } from '../../services/title.service';
 import { UserStorageService } from '../../services/users-storage.service';
 import { EsconderSenhaPipe } from '../../pipes/esconder-senha.pipe';
-import { User } from '../entities/user.model';
+import { User } from '../../entities/user.model';
 
 @Component({
   selector: 'app-listagem-usuarios',
@@ -52,14 +52,10 @@ export class ListagemUsuariosComponent implements OnInit {
     });
   }
 
-  pesquisarUsuarios(textoPesquisa: string) {
-    if (!this.textoPesquisa) {
-      this.atualizarListaUsuarios();
-    } else {
-      this.userStorageService.getUserByEmailOrById(textoPesquisa).subscribe(users => {
-        this.usersList = users;
-      });
-    }
+  buscarUsuario(buscaInput: string) {
+    this.userStorageService.getUsersByEmailOrById(buscaInput).subscribe(users => {
+      this.usersList = Array.isArray(users) ? users : [users];
+    });
   }
 
   editarUsuario(usuario: any) {

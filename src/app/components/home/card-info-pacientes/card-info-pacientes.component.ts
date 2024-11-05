@@ -1,22 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { PacientesService } from '../../../services/pacientes.service';
-import { IdadePipe } from '../../../pipes/idade.pipe';
-import { FormatarTelefonePipe } from '../../../pipes/formatar-telefone.pipe';
-import { Router } from '@angular/router';
-
-
-interface Paciente {
-  id: string;
-  imagem: string;
-  nomeCompleto: string;
-  dataNascimento: string;
-  telefone: string;
-  convenio: string;
-}
+import { Component, Input } from "@angular/core";
+import { Paciente } from "../../../entities/paciente.model";
+import { Router } from "@angular/router";
+import { MatCardModule } from "@angular/material/card";
+import { MatIconModule } from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
+import { MatInputModule } from "@angular/material/input";
+import { IdadePipe } from "../../../pipes/idade.pipe";
+import { FormatarTelefonePipe } from "../../../pipes/formatar-telefone.pipe";
+import { CommonModule } from "@angular/common";
 
 @Component({
   selector: 'app-card-info-pacientes',
@@ -27,25 +18,18 @@ interface Paciente {
     MatButtonModule,
     MatInputModule,
     IdadePipe,
-    FormatarTelefonePipe
+    FormatarTelefonePipe,
+    CommonModule
   ],
   templateUrl: './card-info-pacientes.component.html',
-  styleUrl: './card-info-pacientes.component.scss'
+  styleUrls: ['./card-info-pacientes.component.scss']
 })
+export class CardInfoPacientesComponent {
+  @Input() paciente: Paciente | null = null;
 
-export class CardInfoPacientesComponent implements OnInit {
-  pacientes: Paciente[] = [];
-  @Input() paciente: any;
+  constructor(private router: Router) {}
 
-  constructor(private pacientesService: PacientesService, private router: Router) { }
-
-  ngOnInit(): void {
-    this.pacientes = this.pacientesService.obterPacientes();
+  verMais(idPaciente: string): void {
+    this.router.navigate(['prontuario-paciente', idPaciente]);
   }
-
-  verMais(idPaciente: string) {
-    this.router.navigate(['/cadastro-paciente', idPaciente]);
-  }
-
-  
 }

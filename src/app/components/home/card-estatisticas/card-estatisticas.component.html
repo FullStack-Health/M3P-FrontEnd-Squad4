@@ -28,4 +28,12 @@
     <mat-card-subtitle>exames</mat-card-subtitle>
   </mat-card>
 
+  <mat-card *ngIf="profile === 'admin'" class="example-card" >
+    <div class="title-icon-container">
+      <mat-icon class="profile-icon">account_circle</mat-icon>
+      <mat-card-title>{{ quantidadeUsuarios }}</mat-card-title>
+    </div>
+    <mat-card-subtitle>usuários</mat-card-subtitle>
+  </mat-card>
+
 </div>  

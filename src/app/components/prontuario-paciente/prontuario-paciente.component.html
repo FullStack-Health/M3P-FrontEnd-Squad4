@@ -1,12 +1,12 @@
 <div class="container">
-<h1>Prontuário de {{ paciente.nomeCompleto }}</h1>  <div class="container">
+<h1>Prontuário de {{ paciente?.nome }}</h1>  <div class="container">
     <!-- Informações do Paciente -->
     <div *ngIf="paciente">
       <section class="info-paciente-container" class="mat-elevation-z2">
       <div class="info-paciente">
         <h2>Informações de Paciente</h2>
         <div class="item-info">
-          <p><strong>Nome do Paciente:</strong> {{ paciente.nomeCompleto }}</p>
+          <p><strong>Nome do Paciente:</strong> {{ paciente.nome }}</p>
         </div>
         <div class="item-info">
           <p><strong>Convênio:</strong> {{ paciente.convenio }}</p>
@@ -15,10 +15,10 @@
           <p><strong>Contato de Emergência:</strong> {{ paciente.contatoEmergencia | formatarTelefone }}</p>
         </div>
         <div class="item-info">
-          <p><strong>Alergias:</strong> {{ paciente.alergias }}</p>
+          <p><strong>Alergias:</strong> {{ paciente.listaAlergias }}</p>
         </div>
         <div class="item-info">
-          <p><strong>Cuidados Específicos:</strong> {{ paciente.cuidadosEspecificos }}</p>
+          <p><strong>Cuidados Específicos:</strong> {{ paciente.listaCuidados }}</p>
         </div>
       </div>
     </section>
@@ -31,15 +31,21 @@
       <!-- Colunas da Tabela -->
       <ng-container matColumnDef="data">
         <th mat-header-cell *matHeaderCellDef>Data</th>
-        <td mat-cell *matCellDef="let consulta">{{ consulta.dataConsulta }}</td>
+        <td mat-cell *matCellDef="let consulta">
+          {{ consulta.dataConsulta | date: 'dd/MM/yyyy' }}
+        </td>
       </ng-container>
       <ng-container matColumnDef="hora">
         <th mat-header-cell *matHeaderCellDef>Hora</th>
-        <td mat-cell *matCellDef="let consulta">{{ consulta.horarioConsulta }}</td>
+        <td mat-cell *matCellDef="let consulta">
+          {{ consulta.horarioConsulta | horario }}
+        </td>
       </ng-container>
       <ng-container matColumnDef="motivo">
         <th mat-header-cell *matHeaderCellDef>Motivo</th>
-        <td mat-cell *matCellDef="let consulta">{{ consulta.motivoConsulta }}</td>
+        <td mat-cell *matCellDef="let consulta">
+          {{ consulta.motivo }}
+        </td>
       </ng-container>
       <!-- Botão de Edição -->
       <ng-container matColumnDef="editar" >
@@ -62,11 +68,15 @@
     <!-- Colunas da Tabela -->
 <ng-container matColumnDef="data">
   <th mat-header-cell *matHeaderCellDef>Data</th>
-  <td mat-cell *matCellDef="let exame">{{ exame.dataExame }}</td>
+  <td mat-cell *matCellDef="let exame">
+    {{ exame.dataExame | date: 'dd/MM/yyyy' }}
+  </td>
 </ng-container>
 <ng-container matColumnDef="hora">
   <th mat-header-cell *matHeaderCellDef>Hora</th>
-  <td mat-cell *matCellDef="let exame">{{ exame.horarioExame }}</td>
+  <td mat-cell *matCellDef="let exame">
+    {{ exame.horarioExame | horario }}
+  </td>
 </ng-container>
 <ng-container matColumnDef="nome">
   <th mat-header-cell *matHeaderCellDef>Nome</th>

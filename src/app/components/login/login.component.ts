@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/authservice.service';
-import { LoginResponse } from '../../entities/auth.models';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -23,19 +23,19 @@ import { LoginResponse } from '../../entities/auth.models';
     CommonModule
   ],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'], // Corrigido para styleUrls
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  loginForm: FormGroup; // Declarando o formulário de login
-  loginFailed: boolean = false; // Para controlar se o login falhou
+  loginForm: FormGroup; 
+  loginFailed: boolean = false;
 
   constructor(
     public dialog: MatDialog,
     private readonly userService: UserStorageService,
     private readonly router: Router,
-    private readonly authService: AuthService // Usando AuthService
+    private readonly authService: AuthService,
+    private snackBar: MatSnackBar
   ) {
-    // Inicializando o formulário de login
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
@@ -44,51 +44,83 @@ export class LoginComponent {
 
   openDialog(): void {
     this.dialog.open(SingupComponent, {
-      width: '400px', // Ajuste a largura conforme necessário
+      width: '260px', 
     });
   }
 
-  login() {
-    if (this.loginForm.invalid) {
-        return;
-    }
-
-    const email = this.loginForm.value.email as string;
-    const password = this.loginForm.value.password as string;
-
-    this.authService.login({ email, password }).subscribe({
-        next: (response) => {
-            if (response && response.token) {
-                this.userService.setToken(response.token);
-
-                // Verifique a resposta do servidor
-                console.log('Resposta do login:', response);
-
-                // Definindo o perfil a partir do listaNomesPerfis, se existir
-                const perfil = response.listaNomesPerfis && response.listaNomesPerfis.length > 0
-                    ? response.listaNomesPerfis[0] // Pega o primeiro perfil da lista
-                    : ''; // Se não houver perfis, define como string vazia
-
-                this.userService.setProfile(perfil); // Armazenando o perfil
-
-                this.router.navigate(["home"]);
-            } else {
-                console.error("Resposta de login inválida: ", response);
-                this.loginFailed = true;
-            }
-        },
-        error: (error) => {
-            alert("Usuário ou senha inválidos");
-            console.error("Erro ao fazer o login", error);
-            this.loginFailed = true;
-        }
-    });
+  private decodeToken(token: string): any {
+    const payload = token.split('.')[1];
+    return JSON.parse(atob(payload));
 }
 
+
+login() {
+  if (this.loginForm.invalid) {
+    return;
+  }
+
+  const email = this.loginForm.value.email as string;
+  const password = this.loginForm.value.password as string;
+
+  this.authService.login({ email, password }).subscribe({
+    next: (response) => {
+      if (response?.token) {
+        this.userService.setToken(response.token);
+        // console.log('Resposta do login:', response);
+
+        // Decodificar o token para obter informações do paciente
+        const decodedToken = this.decodeToken(response.token);
+        // console.log('Token decodificado:', decodedToken);
+
+        const perfil = response.listaNomesPerfis && response.listaNomesPerfis.length > 0
+          ? response.listaNomesPerfis[0]
+          : '';
+
+        this.userService.setProfile(perfil);
+
+        // Verificar se o perfil é "PACIENTE" e redirecionar usando o `pacienteId`
+        if (perfil === 'PACIENTE' && decodedToken.pacienteId) {
+          const idPaciente = decodedToken.pacienteId;
+          // console.log('Redirecionando para o prontuário do paciente com ID:', idPaciente);
+          this.router.navigate(['prontuario-paciente', idPaciente]);
+        } else if (perfil !== 'PACIENTE') {
+          // console.log('Redirecionando para a home para o perfil:', perfil);
+          this.router.navigate(['home']);
+        } else {
+          console.error('Erro: pacienteId não encontrado no token.');
+          this.snackBar.open("Erro ao redirecionar. ID do paciente não encontrado.", 'Fechar', {
+            duration: 3000,
+            verticalPosition: 'top',
+          });
+        }
+      } else {
+        console.error("Resposta de login inválida: ", response);
+        this.loginFailed = true;
+        this.snackBar.open("Erro ao fazer login. Tente novamente.", 'Fechar', {
+          duration: 3000,
+          verticalPosition: 'top',
+        });
+      }
+    },
+    error: (error) => {
+      this.snackBar.open("Usuário ou senha inválidos", 'Fechar', {
+        duration: 3000,
+        verticalPosition: 'top',
+      });
+      console.error("Erro ao fazer o login", error);
+      this.loginFailed = true;
+    }
+  });
+}
+
+
+
+
+  
   
   forgotPassword() {
     this.dialog.open(ForgotPasswordComponent, {
-      width: '400px', // Ajuste a largura conforme necessário
+      width: '260px', 
     });
   }
 }
