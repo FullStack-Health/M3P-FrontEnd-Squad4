@@ -19,12 +19,17 @@ O objetivo deste sistema é proporcionar uma ferramenta eficiente para a gestão
 2. Instale as dependências do projeto utilizando o comando `npm install`.
 3. Execute o projeto utilizando o comando `ng serve`.
 4. Acesse o sistema através do navegador utilizando o endereço [http://localhost:4200]
-- Também disponível através do navegador no endereço [https://lab-medical-sepia.vercel.app/]
 
 ## Melhorias Futuras
-- Acesso a edição pela página de Prontuário de Paciente: edições para paciente, exames e consultas 
 - Adição de mais estatísticas e informações relevantes na página inicial.
 - Implementação de responsividade, respeitando os conceitos de mobiles-first.
 - Implementação de menu-lateral que se esconde e se mostra.
 - Implementar @mixins nos scss que se repetem.
+- Acesso a edição pela página de Prontuário de Paciente: edições para paciente
 - Deleção de pacientes que estão vinculados a um perfil de usuário.
+
+## Equipe de Desenvolvimento do Sistema
+- André Junckes da Silva Mattos
+- Felipe Augusto Antunes Da Crus
+- Heloise Adriano Pereira
+- Marcos Grechi Anastacio
