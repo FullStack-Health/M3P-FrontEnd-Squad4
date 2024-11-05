@@ -1,9 +1,12 @@
+import { Endereco } from "./endereco.model";
+import { User } from "./user.model";
+
 export class Paciente {
   constructor(
     public id: number,
     public nome: string,
     public genero: string,
-    public dataNascimento: string, // Alterado para string para refletir o retorno do backend
+    public dataNascimento: string | Date,
     public cpf: string,
     public rg: string,
     public orgaoExpedidor: string,
@@ -17,6 +20,8 @@ export class Paciente {
     public convenio: string,
     public numeroConvenio: string,
     public validadeConvenio: string | Date,
-    public idade?: number
+    public endereco: Endereco,
+    public usuario: User,
+    public idade?: string
   ) {}
 }

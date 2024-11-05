@@ -48,7 +48,7 @@ export class ListagemProntuarioComponent implements OnInit {
     this.pacientesService.obterPacientes().subscribe({
       next: (pacientes) => {
         this.pacientes = pacientes;
-        console.log("Lista de pacientes:", this.pacientes); 
+        // console.log("Lista de pacientes:", this.pacientes); 
       },
       error: (error) => {
         console.error("Erro ao obter pacientes:", error);
