@@ -14,7 +14,9 @@ import { EdicaoUsuariosComponent } from './components/edicao-usuarios/edicao-usu
 export const routes: Routes = [
   {
     path: '',
-    component: LoginComponent,
+    redirectTo: '/home',
+    pathMatch: 'full'
+    // component: LoginComponent,
   },
   {
     path: 'login',

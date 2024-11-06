@@ -179,7 +179,7 @@ export class CadastroExamesComponent implements OnInit {
    selecionarPaciente(paciente: any) {
     this.pacienteSelecionado = paciente;
     this.exameForm.patchValue({
-      nomeCompletoPaciente: paciente.nomeCompleto,
+      nome: paciente.nomeCompleto,
       idPaciente: paciente.id,
     });
   }

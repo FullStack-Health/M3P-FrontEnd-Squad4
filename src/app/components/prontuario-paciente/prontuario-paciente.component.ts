@@ -55,10 +55,13 @@ export class ProntuarioPacienteComponent {
   
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
-      const pacienteId = params['id'];
-      this.obterDadosPaciente(pacienteId);
-      this.obterConsultas(pacienteId);
-      this.obterExames(pacienteId);
+      const pacienteId: string = params['id'];
+      if (pacienteId) {
+        console.log(
+        this.obterDadosPaciente(pacienteId),
+        this.obterConsultas(pacienteId),
+        this.obterExames(pacienteId))  
+      }
     });
   }
 

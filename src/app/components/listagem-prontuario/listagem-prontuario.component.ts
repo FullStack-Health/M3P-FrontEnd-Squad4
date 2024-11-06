@@ -28,6 +28,7 @@ import { Paciente } from '../../entities/paciente.model';
 export class ListagemProntuarioComponent implements OnInit {
   displayedColumns: string[] = ['registro', 'nomePaciente', 'convenio', 'acao'];
   pacientes: Paciente[] = [];
+  pacienteSelecionado: Paciente | any;
   textoPesquisa: any;
 
   constructor(
@@ -59,8 +60,8 @@ export class ListagemProntuarioComponent implements OnInit {
     if (!textoPesquisa) {
       this.atualizarListaPacientes();
     } else {
-      this.pacientesService.pesquisarPacientes(textoPesquisa).subscribe((pacientes) => {
-        this.pacientes = pacientes;
+      this.pacientesService.getPacientePorId(textoPesquisa).subscribe((pacientes) => {
+        this.pacienteSelecionado = pacientes;
       });
     }
   }
