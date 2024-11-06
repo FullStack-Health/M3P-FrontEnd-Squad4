@@ -71,7 +71,7 @@ export class CadastroExamesComponent implements OnInit {
       idPaciente: new FormControl(''),
       nomeExame: new FormControl('', [
         Validators.required,
-        Validators.minLength(8),
+        Validators.minLength(4),
         Validators.maxLength(64),
       ]),
       dataExame: new FormControl('', [Validators.required]),
@@ -102,12 +102,12 @@ export class CadastroExamesComponent implements OnInit {
       this.exameId = exameId;
       this.mostrar = !exameId;
       if (this.exameId) {
-        // this.pageTitleService.setPageTitle('EDIÇÃO DE EXAME');
-        // this.cdr.detectChanges(); // Marcar para verificação de mudanças
+        this.pageTitleService.setPageTitle('EDIÇÃO DE EXAME');
+        this.cdr.detectChanges(); // Marcar para verificação de mudanças
         this.carregarExame(this.exameId);
       } else {
-        // this.pageTitleService.setPageTitle('CADASTRO DE EXAME');
-        // this.cdr.detectChanges(); // Marcar para verificação de mudanças
+        this.pageTitleService.setPageTitle('CADASTRO DE EXAME');
+        this.cdr.detectChanges(); // Marcar para verificação de mudanças
         this.atualizarListaPacientes();
       }
     });

@@ -14,6 +14,7 @@ import { cpfValidator } from '../../shared/validators/cpfValidator.validator';
 import { formatCPF } from '../../shared/formatters/formatCpf.format';
 import { formatDataNascimento } from '../../shared/formatters/formatDataNascimento.format';
 import { formatTelefone } from '../../shared/formatters/formatTelefone.format';
+import { User } from '../../entities/user.model';
 
 @Component({
   selector: 'app-edicao-usuarios',
@@ -35,6 +36,7 @@ import { formatTelefone } from '../../shared/formatters/formatTelefone.format';
 export class EdicaoUsuariosComponent implements OnInit {
 
   userId: string | null = null;
+  user: User | undefined;
 
   userForm = new FormGroup({
     nome: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]),
@@ -60,13 +62,13 @@ export class EdicaoUsuariosComponent implements OnInit {
       if (this.userId) {
         this.userService.getUserById(this.userId).subscribe(user => {
           if (user) {
-            const formattedDate = user.dataNascimento ? this.formatDate(user.dataNascimento) : '';
+            const formattedDate = user?.dataNascimento ? this.formatDate(new Date(user.dataNascimento)) : '';
             this.userForm.patchValue({
-              nome: user.nome,
+              nome: user?.nome,
               email: user.email,
-              cpf: user.cpf,
+              cpf: user?.cpf,
               dataNascimento: formattedDate,
-              telefone: user.telefone,
+              telefone: user?.telefone,
             });
           }
         });
@@ -74,7 +76,7 @@ export class EdicaoUsuariosComponent implements OnInit {
     });
   }
 
-  private formatDate(date: string): string {
+  private formatDate(date: string | Date): string {
     const parsedDate = new Date(date);
     const day = parsedDate.getDate().toString().padStart(2, '0');
     const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0');

@@ -11,6 +11,7 @@ import { UserStorageService } from '../../services/users-storage.service';
 import { EsconderSenhaPipe } from '../../pipes/esconder-senha.pipe';
 import { User } from '../../entities/user.model';
 import { PerfilPipe } from '../../pipes/perfil.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-listagem-usuarios',
@@ -24,7 +25,8 @@ import { PerfilPipe } from '../../pipes/perfil.pipe';
     MatTableModule,
     FormsModule,
     EsconderSenhaPipe,
-    PerfilPipe
+    PerfilPipe,
+    MatTooltipModule
   ],
   templateUrl: './listagem-usuarios.component.html',
   styleUrl: './listagem-usuarios.component.scss'

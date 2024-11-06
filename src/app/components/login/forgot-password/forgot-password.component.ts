@@ -56,35 +56,35 @@ export class ForgotPasswordComponent {
     ]),
   });
 
-  submit() {
+  submit(): void {
     if (this.forgotPasswordForm.valid) {
       const email = this.forgotPasswordForm.get('email')?.value as string;
       const password = this.forgotPasswordForm.get('password')?.value as string;
-  
-      this.usersService.getUsersByEmailOrById(email).subscribe((user: User) => {
-        if (user) {
-          this.usersService.updatePassword(email, password).subscribe({
-            next: () => {
-              // Substitui o alert por snackBar para sucesso
-              this.snackBar.open('Senha alterada com sucesso!', 'Fechar', {
-                duration: 3000,
-                verticalPosition: 'top',
-              });
-              this.dialogRef.close();
-            },
-            error: () => {
-              // Substitui o alert por snackBar para erro
-              this.snackBar.open('Erro ao alterar senha. Tente novamente.', 'Fechar', {
-                duration: 3000,
-                verticalPosition: 'top',
-              });
-            }
-          });
-        } else {
-          // Substitui o alert por snackBar para usuário não encontrado
-          this.snackBar.open('Usuário não encontrado com o email: ' + email, 'Fechar', {
-            duration: 3000,
-            verticalPosition: 'top',
+
+      this.usersService.searchUserByEmail(email).subscribe({
+        next: (user) => {
+          if (user) {
+            this.usersService.updatePassword(email, password).subscribe({
+              next: () => {
+                this.snackBar.open('Senha alterada com sucesso!', 'Fechar', {
+                  duration: 3000,
+                  verticalPosition: 'top',
+                });
+                // Fechar o diálogo ou redirecionar conforme necessário
+              },
+              error: () => {
+                this.snackBar.open('Erro ao alterar senha. Tente novamente.', 'Fechar', {
+                  duration: 3000,
+                  verticalPosition: 'top',
+                });
+              }
+            });
+          }
+        },
+        error: (error: any) => {
+          console.error('Erro ao buscar usuário:', error);
+          this.snackBar.open('Erro ao enviar email. Tente novamente.', 'Fechar', {
+            duration: 5000,
           });
         }
       });

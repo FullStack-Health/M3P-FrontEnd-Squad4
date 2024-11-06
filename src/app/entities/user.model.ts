@@ -4,8 +4,8 @@ export class User {
     public email: string,
     public profile: string[],
     public password: string,
-    public nomeCompleto?: string,
-    public dataNascimento?: Date,
+    public nome?: string,
+    public dataNascimento?: Date | string,
     public cpf?: string,
     public telefone?: string
   ) {}

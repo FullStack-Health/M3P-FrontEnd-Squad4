@@ -6,19 +6,27 @@
       <div class="info-paciente">
         <h2>Informações de Paciente</h2>
         <div class="item-info">
-          <p><strong>Nome do Paciente:</strong> {{ paciente.nome }}</p>
+          <p><strong>Nome do Paciente: </strong> {{ paciente.nome }}</p>
         </div>
         <div class="item-info">
-          <p><strong>Convênio:</strong> {{ paciente.convenio }}</p>
+          <p><strong>Convênio: </strong> {{ paciente.convenio }}</p>
         </div>
         <div class="item-info">
-          <p><strong>Contato de Emergência:</strong> {{ paciente.contatoEmergencia | formatarTelefone }}</p>
+          <p><strong>Telefone: </strong> {{ paciente.telefone | formatarTelefone }}</p>
         </div>
         <div class="item-info">
-          <p><strong>Alergias:</strong> {{ paciente.listaAlergias }}</p>
+          <p><strong>CPF: </strong> {{ paciente.cpf }}</p>
         </div>
         <div class="item-info">
-          <p><strong>Cuidados Específicos:</strong> {{ paciente.listaCuidados }}</p>
+          <p><strong>Data de nascimento: </strong> {{ paciente.dataNascimento | date:'dd/MM/yyyy' }}</p>        </div>
+        <div class="item-info">
+          <p><strong>Contato de emergência: </strong> {{ paciente.contatoEmergencia | formatarTelefone }}</p>
+        </div>
+        <div class="item-info">
+          <p><strong>Alergias: </strong> {{ paciente.listaAlergias }}</p>
+        </div>
+        <div class="item-info">
+          <p><strong>Cuidados específicos: </strong> {{ paciente.listaCuidados }}</p>
         </div>
       </div>
     </section>
@@ -51,7 +59,16 @@
       <ng-container matColumnDef="editar" >
         <th mat-header-cell *matHeaderCellDef class="coluna-editar"></th>
         <td mat-cell *matCellDef="let consulta">
-          <button mat-icon-button color="primary" (click)="editarConsulta(consulta)">
+          <button
+          mat-icon-button
+          color="primary"
+          aria-label="Editar consulta"
+          matTooltip="Editar consulta"
+          matTooltipPosition="above"
+          matTooltipShowDelay="500"
+          matTooltipHideDelay="100"
+          (click)="editarConsulta(consulta)"
+          >
             <mat-icon>edit</mat-icon>
           </button>
         </td>
@@ -90,7 +107,16 @@
 <ng-container matColumnDef="editar">
   <th mat-header-cell *matHeaderCellDef class="coluna-editar"></th>
   <td mat-cell *matCellDef="let exame">
-    <button mat-icon-button color="primary" (click)="editarExame(exame)">
+    <button
+    mat-icon-button
+    color="primary"
+    aria-label="Editar exame"
+    matTooltip="Editar exame"
+    matTooltipPosition="above"
+    matTooltipShowDelay="500"
+    matTooltipHideDelay="100"
+    (click)="editarExame(exame)"
+    >
       <mat-icon>edit</mat-icon>
     </button>
   </td>

@@ -15,7 +15,6 @@ export class Paciente {
     public email: string,
     public naturalidade: string,
     public contatoEmergencia: string,
-    public endereco: Endereco, 
     public listaAlergias: string,
     public listaCuidados: string,
     public convenio: string,

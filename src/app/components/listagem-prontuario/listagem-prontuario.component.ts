@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { PacientesService } from '../../services/pacientes.service';
 import { Router } from '@angular/router';
 import { Paciente } from '../../entities/paciente.model';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-listagem-prontuario',
@@ -21,6 +22,7 @@ import { Paciente } from '../../entities/paciente.model';
     MatInputModule,
     MatTableModule,
     FormsModule,
+    MatTooltipModule
   ],
   templateUrl: './listagem-prontuario.component.html',
   styleUrl: './listagem-prontuario.component.scss',
@@ -59,7 +61,7 @@ export class ListagemProntuarioComponent implements OnInit {
     if (!textoPesquisa) {
       this.atualizarListaPacientes();
     } else {
-      this.pacientesService.pesquisarPacientes(textoPesquisa).subscribe((pacientes) => {
+      this.pacientesService.obterPacientesPorNomeOuPorId(textoPesquisa).subscribe((pacientes) => {
         this.pacientes = pacientes;
       });
     }

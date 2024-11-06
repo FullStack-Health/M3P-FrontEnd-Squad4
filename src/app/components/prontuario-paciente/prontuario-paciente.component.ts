@@ -15,6 +15,7 @@ import { Consulta } from '../../entities/consulta.model';
 import { ProntuarioService } from '../../services/prontuario.service';
 import { Paciente } from '../../entities/paciente.model';
 import { HorarioPipe } from '../../pipes/horario.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
     selector: 'app-prontuario-paciente',
     standalone: true,
@@ -31,7 +32,8 @@ import { HorarioPipe } from '../../pipes/horario.pipe';
         MatIcon,
         CommonModule,
         FormatarTelefonePipe,
-        HorarioPipe
+        HorarioPipe,
+        MatTooltipModule
     ]
 })
 export class ProntuarioPacienteComponent {

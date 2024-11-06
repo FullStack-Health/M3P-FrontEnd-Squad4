@@ -15,7 +15,7 @@ import { AuthService } from '../services/authservice.service';
   providedIn: 'root',
 })
 export class AuthGuard {
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
   canMatch: CanMatchFn = (route: Route, segments: UrlSegment[]): boolean => {
     const isAuthenticated = this.authService.isAuthenticated();
@@ -32,22 +32,48 @@ export class AuthGuard {
     }
 
     const allowedRoutes: { [key: string]: string[] } = {
-      ADMIN: ['home', 'cadastro-paciente', 'cadastro-paciente/:id', 'cadastro-consulta',
-        'cadastro-consulta/:consultaId', 'cadastro-exames', 'cadastro-exames/:exameId',
-        'prontuario-paciente', 'prontuario-paciente/:id', 'listagem-prontuario', 'usuarios'],
+      ADMIN: [
+        'home',
+        'cadastro-paciente',
+        'cadastro-paciente/:id',
+        'cadastro-consulta',
+        'cadastro-consulta/:consultaId',
+        'cadastro-exames',
+        'cadastro-exames/:exameId',
+        'prontuario-paciente',
+        'prontuario-paciente/:id',
+        'listagem-prontuario',
+        'usuarios',
+        'usuarios/:id',
+      ],
 
-      PACIENTE: ['prontuario-paciente/:id', 'cadastro-consulta/:consultaId', 'cadastro-exames/:exameId'],
-      
-      MÉDICO: ['home', 'cadastro-paciente', 'cadastro-paciente/:id', 'cadastro-consulta',
-        'cadastro-consulta/:consultaId', 'cadastro-exames', 'cadastro-exames/:exameId',
-        'prontuario-paciente', 'prontuario-paciente/:id', 'listagem-prontuario'],
+      PACIENTE: [
+        'prontuario-paciente/:id',
+        'cadastro-consulta/:consultaId',
+        'cadastro-exames/:exameId',
+      ],
+
+      MÉDICO: [
+        'home',
+        'cadastro-paciente',
+        'cadastro-paciente/:id',
+        'cadastro-consulta',
+        'cadastro-consulta/:consultaId',
+        'cadastro-exames',
+        'cadastro-exames/:exameId',
+        'prontuario-paciente',
+        'prontuario-paciente/:id',
+        'listagem-prontuario',
+      ],
     };
 
     const routePath = route.path;
     console.log('Rota atual:', routePath);
 
     // Verifica se a rota atual é permitida para o perfil do usuário
-    const isAllowed = allowedRoutes[userProfile]?.some(r => this.routeMatches(r, routePath));
+    const isAllowed = allowedRoutes[userProfile]?.some((r) =>
+      this.routeMatches(r, routePath)
+    );
 
     if (!isAllowed) {
       console.log('Acesso negado à rota:', routePath);
@@ -58,9 +84,17 @@ export class AuthGuard {
     return true; // Permite acesso se tudo estiver correto
   };
 
-  private routeMatches(allowedRoute: string, currentRoute: string | undefined): boolean {
-    console.log('Verificando rota permitida:', allowedRoute, 'com rota atual:', currentRoute);
-    
+  private routeMatches(
+    allowedRoute: string,
+    currentRoute: string | undefined
+  ): boolean {
+    console.log(
+      'Verificando rota permitida:',
+      allowedRoute,
+      'com rota atual:',
+      currentRoute
+    );
+
     // Verifica se a rota atual corresponde à rota permitida
     if (allowedRoute.includes(':')) {
       const allowedRoutePattern = allowedRoute.replace(/:\w+/g, '([^/]+)');

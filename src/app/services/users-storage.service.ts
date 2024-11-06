@@ -44,9 +44,9 @@ export class UserStorageService {
     }
   }
 
-  addUser(user: any): Observable<any> {
+  addUser(user: any): Observable<User> {
     const headers = this.getAuthHeaders();
-    return this.http.post(`${this.urlPath}/pre-registro`, user, { headers });
+    return this.http.post<User>(`${this.urlPath}/pre-registro`, user, { headers });
   };
 
   getUsers(): Observable<User[]> {
@@ -90,31 +90,27 @@ export class UserStorageService {
   isNumeric(buscaInput: string) {
     return /^\d+$/.test(buscaInput);
   }
-
-  searchUserById(id: string): Observable<User> {
-    const headers = this.getAuthHeaders();
-    return this.http.get<User>(`${this.urlPath}?id=${id}`, { headers });
-  }
-
-  getUserById(id: string): Observable<any> {
+  
+  getUserById(id: string): Observable<User> {
     const headers = this.getAuthHeaders();
     const url = `${this.urlPath}/${id}`;
-    return this.http.get(url, { headers });
+    return this.http.get<User>(url, { headers });
   }
-
-  updateUser(id: string, user: any): Observable<any> {
+  
+  updateUser(id: string, user: any): Observable<User> {
     const headers = this.getAuthHeaders();
     console.log("Usuário: " + user);
-    return this.http.put(`${this.urlPath}/${id}`, user, { headers });
+    return this.http.put<User>(`${this.urlPath}/${id}`, user, { headers });
   }
 
-  updatePassword(email: string, password: string): Observable<any> {
-    const headers = this.getAuthHeaders();
-    const body = { email, password };
+  searchUserByEmail(buscaInput: string): Observable<User> {
+    const url = `${this.urlPath}/email`;
+    return this.http.get<User>(`${this.urlPath}?email=${buscaInput}`);
+  }
+
+  updatePassword(email: string, password: string): Observable<void> {
     const url = `${this.urlPath}/email/${email}/redefinir-senha`;
-    console.log('URL:', url); // Log para depuração
-    console.log('Corpo da requisição:', body); // Log para depuração
-    return this.http.patch(`${this.urlPath}/email/${email}/redefinir-senha`, { password }, { headers });
+    return this.http.patch<void>(url, { password });
   }
 
   setProfile(profile: string): void {
