@@ -21,12 +21,13 @@ O objetivo deste sistema é proporcionar uma ferramenta eficiente para a gestão
 4. Acesse o sistema através do navegador utilizando o endereço [http://localhost:4200]
 
 ## Melhorias Futuras
-- Adição de mais estatísticas e informações relevantes na página inicial.
 - Implementação de responsividade, respeitando os conceitos de mobiles-first.
 - Implementação de menu-lateral que se esconde e se mostra.
 - Implementar @mixins nos scss que se repetem.
-- Acesso a edição pela página de Prontuário de Paciente: edições para paciente
 - Deleção de pacientes que estão vinculados a um perfil de usuário.
+- Fazer spinner de login
+- Implementar paginação na listagem dos cards
+- Implementar filtros de ordenação (ordem alfabética e ordem numérica)
 
 ## Equipe de Desenvolvimento do Sistema
 - André Junckes da Silva Mattos
