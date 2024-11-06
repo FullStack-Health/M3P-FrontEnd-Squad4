@@ -5,14 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true
 })
 export class FormatarTelefonePipe implements PipeTransform {
-  transform(telefone: string | null | undefined): string {
-    if (!telefone) {
-      // Retorna uma string vazia ou uma mensagem indicando que o valor é inválido
-      return '';
-    }
-
-    telefone = telefone.toString(); // Garante que o valor seja uma string
-
+  transform(telefone: string): string {
     if (telefone.length === 11) {
       // Formato para telefones com 11 dígitos (xx)xxxxx-xxxx
       return `(${telefone.substring(0, 2)})${telefone.substring(2, 7)}-${telefone.substring(7)}`;

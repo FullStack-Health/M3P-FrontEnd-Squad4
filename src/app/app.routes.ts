@@ -10,6 +10,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { ListagemUsuariosComponent } from './components/listagem-usuarios/listagem-usuarios.component';
 import { EdicaoUsuariosComponent } from './components/edicao-usuarios/edicao-usuarios.component';
 
+
 export const routes: Routes = [
   {
     path: '',

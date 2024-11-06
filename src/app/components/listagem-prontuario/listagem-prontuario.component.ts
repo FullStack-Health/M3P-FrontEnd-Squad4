@@ -9,7 +9,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { PacientesService } from '../../services/pacientes.service';
 import { Router } from '@angular/router';
 import { Paciente } from '../../entities/paciente.model';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-listagem-prontuario',
@@ -22,13 +21,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatInputModule,
     MatTableModule,
     FormsModule,
-    MatTooltipModule
   ],
   templateUrl: './listagem-prontuario.component.html',
   styleUrl: './listagem-prontuario.component.scss',
 })
 export class ListagemProntuarioComponent implements OnInit {
-  displayedColumns: string[] = ['registro', 'nomePaciente', 'telefone', 'convenio', 'acao'];
+  displayedColumns: string[] = ['registro', 'nomePaciente', 'convenio', 'acao'];
   pacientes: Paciente[] = [];
   textoPesquisa: any;
 
@@ -45,15 +43,15 @@ export class ListagemProntuarioComponent implements OnInit {
   }
 
   atualizarListaPacientes() {
-    this.pacientesService.obterPacientes().subscribe({
-      next: (pacientes) => {
+    this.pacientesService.obterPacientes().subscribe(
+      (pacientes) => {
         this.pacientes = pacientes;
-        // console.log("Lista de pacientes:", this.pacientes); 
+        console.log("Lista de pacientes:", this.pacientes);
       },
-      error: (error) => {
-        console.error("Erro ao obter pacientes:", error);
+      (error) => {
+        console.error("Erro ao obter pacientes:", error); // Log para capturar erros
       }
-    });
+    );
   }
   
 
@@ -61,7 +59,7 @@ export class ListagemProntuarioComponent implements OnInit {
     if (!textoPesquisa) {
       this.atualizarListaPacientes();
     } else {
-      this.pacientesService.obterPacientesPorNomeOuPorId(textoPesquisa).subscribe((pacientes) => {
+      this.pacientesService.pesquisarPacientes(textoPesquisa).subscribe((pacientes) => {
         this.pacientes = pacientes;
       });
     }

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgModule, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -18,6 +18,7 @@ import {
   MAT_DATE_LOCALE,
   MatLine,
   MatNativeDateModule,
+  provideNativeDateAdapter,
 } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
@@ -26,7 +27,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Paciente } from '../../entities/paciente.model';
 import { Consulta } from '../../entities/consulta.model';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { duration } from 'moment';
 
 @Component({
   selector: 'app-cadastro-consulta',
@@ -48,13 +49,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FormsModule,
     CommonModule,
     MatNativeDateModule,
-    MatTooltipModule,
   ],
   templateUrl: './cadastro-consulta.component.html',
   styleUrl: './cadastro-consulta.component.scss',
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }],
 })
 export class CadastroConsultaComponent implements OnInit {
+  
   pacientes: Paciente[] = [];
   textoPesquisa: string = '';
   displayedColumns: string[] = ['registro', 'nomePaciente', 'acao'];
@@ -108,8 +109,7 @@ export class CadastroConsultaComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((params) => {
       const consultaId = params.get('consultaId');
-      this.consultaId = consultaId;
-      this.mostrar = !consultaId;
+      (this.consultaId = consultaId), (this.mostrar = !consultaId);
       if (this.consultaId) {
         this.pageTitleService.setPageTitle('EDIÇÃO DE CONSULTA');
         this.cdr.detectChanges();
@@ -146,7 +146,7 @@ export class CadastroConsultaComponent implements OnInit {
                 dataConsulta: dataConsulta,
                 horarioConsulta: horarioConsulta,
                 nome: paciente.nome,
-                paciente: paciente,
+                paciente: paciente 
               });
             });
         } else {
@@ -227,7 +227,7 @@ export class CadastroConsultaComponent implements OnInit {
       nome: this.pacienteSelecionado?.nome,
       idPaciente: this.pacienteSelecionado?.id,
     });
-    console.log(this.consultaForm);
+    console.log(this.consultaForm)
   }
 
   validarForm() {

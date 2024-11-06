@@ -23,9 +23,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: './toolbar.component.scss',
 })
 export class ToolbarComponent implements OnInit {
+  loggedUser: any;
 
   pageTitle: string = '';
-  loggedUser!: LoginResponse;
 
   private titleSubscription: Subscription | undefined;
 

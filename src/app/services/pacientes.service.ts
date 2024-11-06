@@ -39,7 +39,7 @@ export class PacientesService {
   cadastrarPaciente(paciente: Paciente): Observable<any> {
     const headers = this.userService.getAuthHeaders();
     console.log('Paciente a ser enviado:', paciente);
-    console.log('Headers:', headers);
+    // console.log('Headers:', headers);
     return this.http.post(this.urlPath, paciente, { headers }).pipe(
       tap((response) => console.log('Paciente salvo com sucesso:', response)),
       catchError(this.handleError)
@@ -86,7 +86,7 @@ export class PacientesService {
 
   obterPacientesPorNomeOuPorId(buscaInput: string): Observable<Paciente[]> {
     const headers = this.authService.getAuthHeaders();
-    console.log('getPacientesPorNomeOuPorId chamado com:', buscaInput);
+    // console.log('getPacientesPorNomeOuPorId chamado com:', buscaInput);
 
     if (this.isNumeric(buscaInput)) {
       const url = `${this.urlPath}?id=${buscaInput}`;
