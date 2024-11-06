@@ -42,7 +42,7 @@ export class MenuLateralComponent implements OnInit {
   ngOnInit(): void {
     this.profile = this.userService.getProfile().toLowerCase();
     this.loggedUser = this.userService.getLoggedUser();
-    console.log('Usuário logado:', this.loggedUser); // Log para depuração
+    // console.log('Usuário logado:', this.loggedUser); // Log para depuração
     if (!this.loggedUser || Array.isArray(this.loggedUser) && this.loggedUser.length === 0) {
       this.router.navigate(['/login']);
       return;

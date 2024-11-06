@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -7,10 +7,9 @@ import { Observable } from 'rxjs';
 })
 export class ConsultaCepService {
 
-  constructor ( private http: HttpClient ){}
+  constructor ( private readonly http: HttpClient ){}
 
   obterEndereco(cep: any): Observable<any>{
-    // const headers = new HttpHeaders({ 'Content-Type':  'application/json'});
     return this.http.get(`https://viacep.com.br/ws/${cep}/json/`);
   }
 }
