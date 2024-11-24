@@ -16,22 +16,23 @@ VitalCare by LABMedical é uma aplicação para gestão de prontuários médicos
 
 O objetivo deste sistema é proporcionar uma ferramenta eficiente para a gestão médica de clínicas e hospitais. Através de uma interface intuitiva, o LABMedical busca facilitar acompanhamento de pacientes, fornecendo:
 
-- ✅ Cadastro e gestão de pacientes
-- 📋 Registro e acompanhamento de consultas
-- 🔬 Gerenciamento de exames
-- 📊 Análise e acompanhamento de histórico médico
+- Cadastro e gestão de pacientes
+- Registro e acompanhamento de consultas
+- Gerenciamento de exames
+- Análise e acompanhamento de histórico médico
 
 ## 🛠️ Tecnologias Utilizadas
 
-| Tecnologia | Finalidade |
-|:----------:|:----------:|
-| Angular | Framework Frontend |
-| TypeScript | Linguagem de Programação |
-| SCSS | Estilização |
-| Angular Material | Biblioteca de Componentes UI |
-| ViaCEP API | Integração para Endereços |
-| GitHub | Versionamento de Código |
-| Trello | Gestão de Projetos (Kanban) |
+| Tecnologia        | Finalidade                          |
+|-------------------|-------------------------------------|
+| ![Angular](https://img.shields.io/badge/Angular-DD0031?style=flat&logo=angular&logoColor=white) | Framework Frontend               |
+| ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white) | Linguagem de Programação         |
+| ![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=flat&logo=sass&logoColor=white) | Estilização                      |
+| ![Angular Material](https://img.shields.io/badge/Angular%20Material-009688?style=flat&logo=angular&logoColor=white) | Biblioteca de Componentes UI     |
+| ![ViaCEP API](https://img.shields.io/badge/ViaCEP%20API-FFCD00?style=flat&logo=web&logoColor=black) | Integração para Endereços        |
+| ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white) | Versionamento de Código          |
+| ![Trello](https://img.shields.io/badge/Trello-0052CC?style=flat&logo=trello&logoColor=white) | Gestão de Projetos (Kanban)      |
+
 
 ## ⚡ Execução do Sistema
 
